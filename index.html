@@ -1,0 +1,1355 @@
+<!doctype html>
+<html lang="en">
+  <head>
+    <meta charset="UTF-8" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+    <title>Shreyas Singh | Pre-Sales & IT Solutions</title>
+    <link
+      href="https://fonts.googleapis.com/css2?family=Playfair+Display:wght@400;700;900&family=DM+Sans:wght@300;400;500;600&family=DM+Mono:wght@400;500&display=swap"
+      rel="stylesheet"
+    />
+    <style>
+      :root {
+        --navy: #0f2b4a;
+        --navy-mid: #1b4f72;
+        --navy-light: #2e86c1;
+        --gold: #c9a84c;
+        --gold-light: #f0c040;
+        --cream: #f8f5f0;
+        --white: #ffffff;
+        --grey: #6b7280;
+        --grey-light: #f3f4f6;
+        --text: #1a1a2e;
+      }
+
+      * {
+        margin: 0;
+        padding: 0;
+        box-sizing: border-box;
+      }
+
+      html {
+        scroll-behavior: smooth;
+      }
+
+      body {
+        font-family: "DM Sans", sans-serif;
+        background: var(--cream);
+        color: var(--text);
+        overflow-x: hidden;
+      }
+
+      /* ── NAV ─────────────────────────────────────────── */
+      nav {
+        position: fixed;
+        top: 0;
+        left: 0;
+        right: 0;
+        z-index: 100;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+        padding: 20px 60px;
+        background: rgba(15, 43, 74, 0.97);
+        backdrop-filter: blur(12px);
+        border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      }
+      .nav-logo {
+        font-family: "Playfair Display", serif;
+        font-size: 22px;
+        font-weight: 700;
+        color: var(--gold);
+        letter-spacing: 0.5px;
+      }
+      .nav-links {
+        display: flex;
+        gap: 36px;
+        list-style: none;
+      }
+      .nav-links a {
+        color: rgba(255, 255, 255, 0.8);
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 1.2px;
+        text-transform: uppercase;
+        transition: color 0.2s;
+      }
+      .nav-links a:hover {
+        color: var(--gold);
+      }
+
+      /* ── HERO ────────────────────────────────────────── */
+      .hero {
+        min-height: 100vh;
+        background: var(--navy);
+        display: flex;
+        align-items: center;
+        position: relative;
+        overflow: hidden;
+        padding: 120px 60px 80px;
+      }
+      .hero-bg {
+        position: absolute;
+        inset: 0;
+        background:
+          radial-gradient(
+            ellipse 60% 60% at 80% 50%,
+            rgba(46, 134, 193, 0.12) 0%,
+            transparent 60%
+          ),
+          radial-gradient(
+            ellipse 40% 40% at 20% 80%,
+            rgba(201, 168, 76, 0.08) 0%,
+            transparent 50%
+          );
+      }
+      .hero-grid {
+        position: absolute;
+        inset: 0;
+        background-image:
+          linear-gradient(rgba(255, 255, 255, 0.03) 1px, transparent 1px),
+          linear-gradient(90deg, rgba(255, 255, 255, 0.03) 1px, transparent 1px);
+        background-size: 60px 60px;
+      }
+      .hero-content {
+        position: relative;
+        z-index: 2;
+        max-width: 900px;
+      }
+      .hero-tag {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: rgba(201, 168, 76, 0.15);
+        border: 1px solid rgba(201, 168, 76, 0.3);
+        padding: 8px 18px;
+        border-radius: 100px;
+        font-size: 12px;
+        font-weight: 500;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 32px;
+        animation: fadeUp 0.6s ease both;
+      }
+      .hero-tag::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        background: var(--gold);
+        border-radius: 50%;
+        animation: pulse 2s infinite;
+      }
+      @keyframes pulse {
+        0%,
+        100% {
+          opacity: 1;
+          transform: scale(1);
+        }
+        50% {
+          opacity: 0.5;
+          transform: scale(1.4);
+        }
+      }
+      h1 {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(52px, 7vw, 88px);
+        font-weight: 900;
+        line-height: 1;
+        color: var(--white);
+        margin-bottom: 8px;
+        animation: fadeUp 0.6s 0.1s ease both;
+      }
+      h1 span {
+        color: var(--gold);
+      }
+      .hero-sub {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(18px, 2.5vw, 26px);
+        color: rgba(255, 255, 255, 0.5);
+        font-weight: 400;
+        font-style: italic;
+        margin-bottom: 28px;
+        animation: fadeUp 0.6s 0.2s ease both;
+      }
+      .hero-desc {
+        font-size: 16px;
+        line-height: 1.8;
+        color: rgba(255, 255, 255, 0.65);
+        max-width: 580px;
+        margin-bottom: 48px;
+        animation: fadeUp 0.6s 0.3s ease both;
+      }
+      .hero-stats {
+        display: flex;
+        gap: 48px;
+        margin-bottom: 48px;
+        animation: fadeUp 0.6s 0.4s ease both;
+      }
+      .stat-item {
+        text-align: left;
+      }
+      .stat-num {
+        font-family: "Playfair Display", serif;
+        font-size: 36px;
+        font-weight: 700;
+        color: var(--gold);
+        line-height: 1;
+      }
+      .stat-label {
+        font-size: 11px;
+        color: rgba(255, 255, 255, 0.45);
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        margin-top: 4px;
+      }
+      .hero-ctas {
+        display: flex;
+        gap: 16px;
+        flex-wrap: wrap;
+        animation: fadeUp 0.6s 0.5s ease both;
+      }
+      .btn-primary {
+        background: var(--gold);
+        color: var(--navy);
+        padding: 15px 32px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 600;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        text-decoration: none;
+        transition: all 0.2s;
+        border: 2px solid var(--gold);
+      }
+      .btn-primary:hover {
+        background: transparent;
+        color: var(--gold);
+      }
+      .btn-outline {
+        background: transparent;
+        color: rgba(255, 255, 255, 0.8);
+        padding: 15px 32px;
+        border-radius: 4px;
+        font-size: 13px;
+        font-weight: 500;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border: 2px solid rgba(255, 255, 255, 0.2);
+        transition: all 0.2s;
+      }
+      .btn-outline:hover {
+        border-color: var(--gold);
+        color: var(--gold);
+      }
+      .hero-scroll {
+        position: absolute;
+        bottom: 40px;
+        left: 60px;
+        display: flex;
+        align-items: center;
+        gap: 12px;
+        color: rgba(255, 255, 255, 0.3);
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        animation: fadeUp 0.6s 0.7s ease both;
+      }
+      .scroll-line {
+        width: 40px;
+        height: 1px;
+        background: rgba(255, 255, 255, 0.2);
+      }
+
+      @keyframes fadeUp {
+        from {
+          opacity: 0;
+          transform: translateY(24px);
+        }
+        to {
+          opacity: 1;
+          transform: translateY(0);
+        }
+      }
+
+      /* ── SECTIONS ────────────────────────────────────── */
+      section {
+        padding: 100px 60px;
+      }
+      .section-label {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 3px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 12px;
+      }
+      .section-title {
+        font-family: "Playfair Display", serif;
+        font-size: clamp(32px, 4vw, 48px);
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: 16px;
+        line-height: 1.2;
+      }
+      .section-title.light {
+        color: var(--white);
+      }
+      .section-divider {
+        width: 48px;
+        height: 3px;
+        background: var(--gold);
+        margin-bottom: 56px;
+      }
+
+      /* ── ABOUT ───────────────────────────────────────── */
+      #about {
+        background: var(--white);
+      }
+      .about-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+      .about-text p {
+        font-size: 16px;
+        line-height: 1.85;
+        color: var(--grey);
+        margin-bottom: 20px;
+      }
+      .about-text p strong {
+        color: var(--navy);
+      }
+      .competencies {
+        margin-top: 40px;
+      }
+      .comp-title {
+        font-size: 12px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        font-weight: 600;
+        margin-bottom: 16px;
+        font-family: "DM Mono", monospace;
+      }
+      .comp-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 10px;
+      }
+      .comp-item {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13px;
+        color: var(--navy);
+        font-weight: 500;
+      }
+      .comp-item::before {
+        content: "";
+        width: 6px;
+        height: 6px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex-shrink: 0;
+      }
+      .about-right {
+      }
+      .timeline {
+        position: relative;
+        padding-left: 24px;
+      }
+      .timeline::before {
+        content: "";
+        position: absolute;
+        left: 0;
+        top: 8px;
+        bottom: 8px;
+        width: 1px;
+        background: linear-gradient(to bottom, var(--gold), transparent);
+      }
+      .tl-item {
+        margin-bottom: 36px;
+        position: relative;
+      }
+      .tl-dot {
+        position: absolute;
+        left: -28px;
+        top: 6px;
+        width: 10px;
+        height: 10px;
+        border-radius: 50%;
+        background: var(--gold);
+        border: 2px solid var(--white);
+        box-shadow: 0 0 0 3px rgba(201, 168, 76, 0.2);
+      }
+      .tl-period {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        color: var(--gold);
+        letter-spacing: 1px;
+        margin-bottom: 4px;
+      }
+      .tl-role {
+        font-size: 15px;
+        font-weight: 600;
+        color: var(--navy);
+        margin-bottom: 2px;
+      }
+      .tl-company {
+        font-size: 13px;
+        color: var(--grey);
+        margin-bottom: 8px;
+      }
+      .tl-desc {
+        font-size: 13px;
+        line-height: 1.7;
+        color: var(--grey);
+      }
+
+      /* ── ACHIEVEMENTS ────────────────────────────────── */
+      #achievements {
+        background: var(--navy);
+      }
+      .ach-grid {
+        display: grid;
+        grid-template-columns: repeat(4, 1fr);
+        gap: 2px;
+        margin-bottom: 60px;
+      }
+      .ach-card {
+        background: rgba(255, 255, 255, 0.04);
+        border: 1px solid rgba(255, 255, 255, 0.07);
+        padding: 40px 32px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+      }
+      .ach-card::before {
+        content: "";
+        position: absolute;
+        top: 0;
+        left: 0;
+        right: 0;
+        height: 2px;
+        background: linear-gradient(90deg, var(--gold), transparent);
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s;
+      }
+      .ach-card:hover::before {
+        transform: scaleX(1);
+      }
+      .ach-card:hover {
+        background: rgba(255, 255, 255, 0.07);
+      }
+      .ach-icon {
+        font-size: 28px;
+        margin-bottom: 20px;
+      }
+      .ach-num {
+        font-family: "Playfair Display", serif;
+        font-size: 42px;
+        font-weight: 700;
+        color: var(--gold);
+        line-height: 1;
+        margin-bottom: 8px;
+      }
+      .ach-label {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.5;
+      }
+
+      /* ── PROJECTS ────────────────────────────────────── */
+      #projects {
+        background: var(--cream);
+      }
+      .projects-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 24px;
+      }
+      .proj-card {
+        background: var(--white);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        padding: 36px;
+        transition: all 0.3s;
+        position: relative;
+        overflow: hidden;
+        cursor: default;
+      }
+      .proj-card::after {
+        content: "";
+        position: absolute;
+        bottom: 0;
+        left: 0;
+        right: 0;
+        height: 3px;
+        background: linear-gradient(90deg, var(--gold), var(--navy-light));
+        transform: scaleX(0);
+        transform-origin: left;
+        transition: transform 0.3s;
+      }
+      .proj-card:hover::after {
+        transform: scaleX(1);
+      }
+      .proj-card:hover {
+        transform: translateY(-4px);
+        box-shadow: 0 20px 40px rgba(0, 0, 0, 0.08);
+      }
+      .proj-tag {
+        display: inline-block;
+        background: rgba(27, 79, 114, 0.08);
+        color: var(--navy-mid);
+        font-size: 10px;
+        font-weight: 600;
+        letter-spacing: 1.5px;
+        text-transform: uppercase;
+        padding: 5px 12px;
+        border-radius: 100px;
+        margin-bottom: 20px;
+        font-family: "DM Mono", monospace;
+      }
+      .proj-title {
+        font-family: "Playfair Display", serif;
+        font-size: 20px;
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: 12px;
+        line-height: 1.3;
+      }
+      .proj-desc {
+        font-size: 13.5px;
+        line-height: 1.75;
+        color: var(--grey);
+        margin-bottom: 20px;
+      }
+      .proj-outcome {
+        display: flex;
+        align-items: flex-start;
+        gap: 10px;
+        background: rgba(201, 168, 76, 0.08);
+        border-left: 3px solid var(--gold);
+        padding: 12px 16px;
+        font-size: 12.5px;
+        color: var(--navy);
+        font-weight: 500;
+        line-height: 1.5;
+      }
+
+      /* ── CERTIFICATIONS ──────────────────────────────── */
+      #certifications {
+        background: var(--white);
+      }
+      .certs-grid {
+        display: grid;
+        grid-template-columns: repeat(2, 1fr);
+        gap: 20px;
+        margin-bottom: 60px;
+      }
+      .cert-card {
+        display: flex;
+        align-items: center;
+        gap: 20px;
+        padding: 24px 28px;
+        border: 1px solid rgba(0, 0, 0, 0.07);
+        background: var(--cream);
+        transition: all 0.2s;
+      }
+      .cert-card:hover {
+        border-color: var(--gold);
+        box-shadow: 0 4px 20px rgba(201, 168, 76, 0.1);
+      }
+      .cert-icon {
+        width: 48px;
+        height: 48px;
+        border-radius: 12px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 22px;
+        flex-shrink: 0;
+      }
+      .cert-icon.azure {
+        background: rgba(0, 114, 198, 0.1);
+      }
+      .cert-icon.six-sigma {
+        background: rgba(46, 134, 193, 0.1);
+      }
+      .cert-icon.scrum {
+        background: rgba(201, 168, 76, 0.1);
+      }
+      .cert-icon.proposal {
+        background: rgba(27, 79, 114, 0.1);
+      }
+      .cert-name {
+        font-size: 14px;
+        font-weight: 600;
+        color: var(--navy);
+        margin-bottom: 3px;
+      }
+      .cert-issuer {
+        font-size: 12px;
+        color: var(--grey);
+        font-family: "DM Mono", monospace;
+      }
+
+      .recognitions {
+        margin-top: 60px;
+      }
+      .rec-title {
+        font-family: "Playfair Display", serif;
+        font-size: 28px;
+        font-weight: 700;
+        color: var(--navy);
+        margin-bottom: 32px;
+      }
+      .rec-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 20px;
+      }
+      .rec-card {
+        padding: 28px;
+        background: linear-gradient(
+          135deg,
+          var(--navy) 0%,
+          var(--navy-mid) 100%
+        );
+        color: white;
+        position: relative;
+        overflow: hidden;
+      }
+      .rec-card::before {
+        content: "★";
+        position: absolute;
+        right: -10px;
+        top: -10px;
+        font-size: 80px;
+        color: rgba(201, 168, 76, 0.08);
+        font-family: serif;
+      }
+      .rec-award {
+        font-size: 13px;
+        font-weight: 600;
+        color: var(--gold);
+        margin-bottom: 8px;
+        text-transform: uppercase;
+        letter-spacing: 0.8px;
+      }
+      .rec-org {
+        font-size: 15px;
+        font-weight: 600;
+        color: white;
+        margin-bottom: 8px;
+      }
+      .rec-desc {
+        font-size: 12.5px;
+        color: rgba(255, 255, 255, 0.6);
+        line-height: 1.6;
+      }
+
+      /* ── SKILLS ──────────────────────────────────────── */
+      #skills {
+        background: var(--navy);
+      }
+      .skills-grid {
+        display: grid;
+        grid-template-columns: repeat(3, 1fr);
+        gap: 32px;
+      }
+      .skill-group {
+      }
+      .skill-group-title {
+        font-family: "DM Mono", monospace;
+        font-size: 11px;
+        letter-spacing: 2px;
+        text-transform: uppercase;
+        color: var(--gold);
+        margin-bottom: 20px;
+        padding-bottom: 12px;
+        border-bottom: 1px solid rgba(201, 168, 76, 0.2);
+      }
+      .skill-list {
+        list-style: none;
+      }
+      .skill-list li {
+        display: flex;
+        align-items: center;
+        gap: 10px;
+        font-size: 13.5px;
+        color: rgba(255, 255, 255, 0.75);
+        padding: 8px 0;
+        border-bottom: 1px solid rgba(255, 255, 255, 0.04);
+      }
+      .skill-list li::before {
+        content: "";
+        width: 4px;
+        height: 4px;
+        border-radius: 50%;
+        background: var(--gold);
+        flex-shrink: 0;
+      }
+
+      /* ── CONTACT ─────────────────────────────────────── */
+      #contact {
+        background: var(--cream);
+      }
+      .contact-grid {
+        display: grid;
+        grid-template-columns: 1fr 1fr;
+        gap: 80px;
+        align-items: start;
+      }
+      .contact-left p {
+        font-size: 16px;
+        line-height: 1.8;
+        color: var(--grey);
+        margin-bottom: 36px;
+      }
+      .contact-links {
+        display: flex;
+        flex-direction: column;
+        gap: 16px;
+      }
+      .contact-link {
+        display: flex;
+        align-items: center;
+        gap: 16px;
+        text-decoration: none;
+        padding: 16px 20px;
+        background: var(--white);
+        border: 1px solid rgba(0, 0, 0, 0.06);
+        transition: all 0.2s;
+      }
+      .contact-link:hover {
+        border-color: var(--gold);
+        transform: translateX(4px);
+      }
+      .contact-link-icon {
+        width: 40px;
+        height: 40px;
+        background: var(--navy);
+        border-radius: 8px;
+        display: flex;
+        align-items: center;
+        justify-content: center;
+        font-size: 18px;
+        flex-shrink: 0;
+      }
+      .contact-link-text {
+      }
+      .contact-link-label {
+        font-size: 11px;
+        text-transform: uppercase;
+        letter-spacing: 1px;
+        color: var(--grey);
+        font-family: "DM Mono", monospace;
+      }
+      .contact-link-value {
+        font-size: 14px;
+        font-weight: 500;
+        color: var(--navy);
+      }
+      .contact-right {
+      }
+      .cv-download {
+        background: var(--navy);
+        padding: 48px;
+        text-align: center;
+      }
+      .cv-download h3 {
+        font-family: "Playfair Display", serif;
+        font-size: 24px;
+        color: var(--white);
+        margin-bottom: 12px;
+      }
+      .cv-download p {
+        font-size: 13px;
+        color: rgba(255, 255, 255, 0.5);
+        margin-bottom: 28px;
+        line-height: 1.6;
+      }
+      .cv-btn {
+        display: inline-flex;
+        align-items: center;
+        gap: 10px;
+        background: var(--gold);
+        color: var(--navy);
+        padding: 14px 32px;
+        text-decoration: none;
+        font-size: 13px;
+        font-weight: 700;
+        letter-spacing: 0.8px;
+        text-transform: uppercase;
+        transition: all 0.2s;
+      }
+      .cv-btn:hover {
+        background: var(--gold-light);
+      }
+
+      /* ── FOOTER ──────────────────────────────────────── */
+      footer {
+        background: var(--navy);
+        border-top: 1px solid rgba(201, 168, 76, 0.15);
+        padding: 32px 60px;
+        display: flex;
+        align-items: center;
+        justify-content: space-between;
+      }
+      .footer-name {
+        font-family: "Playfair Display", serif;
+        font-size: 18px;
+        color: var(--gold);
+      }
+      .footer-copy {
+        font-size: 12px;
+        color: rgba(255, 255, 255, 0.3);
+        font-family: "DM Mono", monospace;
+      }
+
+      /* ── MOBILE ──────────────────────────────────────── */
+      @media (max-width: 900px) {
+        nav {
+          padding: 16px 24px;
+        }
+        .nav-links {
+          display: none;
+        }
+        section {
+          padding: 70px 24px;
+        }
+        .hero {
+          padding: 100px 24px 70px;
+        }
+        .hero-stats {
+          gap: 28px;
+          flex-wrap: wrap;
+        }
+        .about-grid,
+        .contact-grid {
+          grid-template-columns: 1fr;
+          gap: 48px;
+        }
+        .ach-grid {
+          grid-template-columns: repeat(2, 1fr);
+        }
+        .projects-grid {
+          grid-template-columns: 1fr;
+        }
+        .certs-grid {
+          grid-template-columns: 1fr;
+        }
+        .rec-grid {
+          grid-template-columns: 1fr;
+        }
+        .skills-grid {
+          grid-template-columns: 1fr;
+        }
+        footer {
+          flex-direction: column;
+          gap: 12px;
+          text-align: center;
+          padding: 24px;
+        }
+        .hero-scroll {
+          display: none;
+        }
+        .comp-grid {
+          grid-template-columns: 1fr;
+        }
+      }
+    </style>
+  </head>
+  <body>
+    <!-- NAV -->
+    <nav>
+      <div class="nav-logo">SS</div>
+      <ul class="nav-links">
+        <li><a href="#about">About</a></li>
+        <li><a href="#achievements">Achievements</a></li>
+        <li><a href="#projects">Projects</a></li>
+        <li><a href="#certifications">Credentials</a></li>
+        <li><a href="#skills">Skills</a></li>
+        <li><a href="#contact">Contact</a></li>
+      </ul>
+    </nav>
+
+    <!-- HERO -->
+    <section class="hero" id="home">
+      <div class="hero-bg"></div>
+      <div class="hero-grid"></div>
+      <div class="hero-content">
+        <div class="hero-tag">
+          Available for Pre-Sales &amp; IT Solutions Roles
+        </div>
+        <h1>Shreyas<br /><span>Singh</span></h1>
+        <p class="hero-sub">Where technology meets commercial outcome.</p>
+        <p class="hero-desc">
+          MBA professional bridging enterprise IT delivery and B2B sales. 5+
+          years across cloud operations, proposal strategy, and territory sales
+          — consistently turning complex solutions into measurable client value.
+        </p>
+        <div class="hero-stats">
+          <div class="stat-item">
+            <div class="stat-num">#1</div>
+            <div class="stat-label">National VAS Ranking</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">24</div>
+            <div class="stat-label">Enterprise Clients</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">97%</div>
+            <div class="stat-label">SLA Compliance</div>
+          </div>
+          <div class="stat-item">
+            <div class="stat-num">21%</div>
+            <div class="stat-label">Lead Conversion Lift</div>
+          </div>
+        </div>
+        <div class="hero-ctas">
+          <a href="#projects" class="btn-primary">View My Work</a>
+          <a href="#contact" class="btn-outline">Get In Touch</a>
+        </div>
+      </div>
+      <div class="hero-scroll">
+        <div class="scroll-line"></div>
+        Scroll to explore
+      </div>
+    </section>
+
+    <!-- ABOUT -->
+    <section id="about">
+      <div class="section-label">01 / About</div>
+      <h2 class="section-title">The Professional Behind the Numbers</h2>
+      <div class="section-divider"></div>
+      <div class="about-grid">
+        <div class="about-text">
+          <p>
+            I sit at the intersection of
+            <strong>technology and commercial outcomes</strong> — translating
+            complex IT and SaaS solutions into business value that clients
+            understand and act on.
+          </p>
+          <p>
+            My career spans three distinct but connected chapters: cloud
+            migration delivery at <strong>DXC Technology</strong>, enterprise
+            proposal strategy at <strong>Cognizant</strong>, and territory B2B
+            sales at <strong>Tata Motors</strong>. Each built a layer of
+            capability that the next one amplified.
+          </p>
+          <p>
+            At DXC, I learned how enterprise clients think about risk and
+            reliability. At Cognizant, I learned how to tell the story that wins
+            the deal. At Tata Motors, I learned what it takes to actually close
+            — at scale, under pressure, in a competitive market.
+          </p>
+          <p>
+            I hold an <strong>MBA from IIM</strong> (Operations, IT & Strategy)
+            and a B.Tech in Instrumentation & Control Engineering from MIT
+            Manipal — a combination that gives me both the analytical rigour and
+            business acumen to operate effectively across the
+            technical-commercial divide.
+          </p>
+          <div class="competencies">
+            <div class="comp-title">Core Competencies</div>
+            <div class="comp-grid">
+              <div class="comp-item">Pre-Sales & Solution Positioning</div>
+              <div class="comp-item">Enterprise SaaS / CPaaS Sales</div>
+              <div class="comp-item">RFP / RFI & Proposal Writing</div>
+              <div class="comp-item">Go-to-Market Execution</div>
+              <div class="comp-item">Cloud Migration Delivery</div>
+              <div class="comp-item">Omnichannel VAS Penetration</div>
+              <div class="comp-item">Stakeholder Management</div>
+              <div class="comp-item">Agile & Lean Six Sigma</div>
+            </div>
+          </div>
+        </div>
+        <div class="about-right">
+          <div class="timeline">
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-period">Apr 2024 — Present</div>
+              <div class="tl-role">Territory Sales Manager</div>
+              <div class="tl-company">Tata Motors Commercial Vehicles</div>
+              <div class="tl-desc">
+                Managing 3 dealerships across Haryana. Ranked #1 nationally in
+                VAS penetration and digital adoption. Delivered 3% YoY market
+                share growth.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-period">Apr 2023 — Jun 2023</div>
+              <div class="tl-role">
+                Senior Analyst — Digital Experience & Proposals
+              </div>
+              <div class="tl-company">Cognizant</div>
+              <div class="tl-desc">
+                Developed win themes and proposal differentiators for enterprise
+                IT pursuits. Synthesized 73 case studies across BFSI, retail,
+                and automobile verticals.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-period">Aug 2019 — Jun 2022</div>
+              <div class="tl-role">Information Design Engineer</div>
+              <div class="tl-company">DXC Technology</div>
+              <div class="tl-desc">
+                Led cloud migration delivery for 24 enterprise clients on
+                Microsoft Azure. Maintained 97% SLA compliance. Received
+                Operational Excellence Award.
+              </div>
+            </div>
+            <div class="tl-item">
+              <div class="tl-dot"></div>
+              <div class="tl-period">2017 — 2019</div>
+              <div class="tl-role">MBA — Operations, IT & Strategy</div>
+              <div class="tl-company">Indian Institute of Management</div>
+              <div class="tl-desc">
+                Focus on Operations, IT, and Strategy. Foundation for bridging
+                technical delivery and business outcomes.
+              </div>
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- ACHIEVEMENTS -->
+    <section id="achievements">
+      <div class="section-label" style="color: rgba(201, 168, 76, 0.7)">
+        02 / Achievements
+      </div>
+      <h2 class="section-title light">Numbers That Tell the Story</h2>
+      <div class="section-divider"></div>
+      <div class="ach-grid">
+        <div class="ach-card">
+          <div class="ach-icon">🏆</div>
+          <div class="ach-num">#1</div>
+          <div class="ach-label">
+            National ranking in Value-Added Services penetration across Tata
+            Motors' commercial vehicle network
+          </div>
+        </div>
+        <div class="ach-card">
+          <div class="ach-icon">📱</div>
+          <div class="ach-num">#1</div>
+          <div class="ach-label">
+            National ranking for digital tool adoption — driving 21% improvement
+            in lead conversion rates
+          </div>
+        </div>
+        <div class="ach-card">
+          <div class="ach-icon">☁️</div>
+          <div class="ach-num">24</div>
+          <div class="ach-label">
+            Enterprise clients migrated to Microsoft Azure cloud with consistent
+            SLA delivery
+          </div>
+        </div>
+        <div class="ach-card">
+          <div class="ach-icon">📄</div>
+          <div class="ach-num">73</div>
+          <div class="ach-label">
+            Enterprise case studies synthesized into 6 cross-industry win themes
+            at Cognizant
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- PROJECTS -->
+    <section id="projects">
+      <div class="section-label">03 / Projects</div>
+      <h2 class="section-title">Work That Demonstrates Capability</h2>
+      <div class="section-divider"></div>
+      <div class="projects-grid">
+        <div class="proj-card">
+          <div class="proj-tag">Cloud Delivery · DXC Technology</div>
+          <div class="proj-title">Cloud Migration Playbook</div>
+          <div class="proj-desc">
+            Developed standardized migration checklists, cutover plans, and
+            stabilization KPIs for enterprise clients transitioning from
+            on-premise infrastructure to Microsoft Azure. Built reusable
+            frameworks adopted across 24 client environments.
+          </div>
+          <div class="proj-outcome">
+            📊 Reduced post-migration incidents and improved SLA adherence
+            across all 24 client accounts
+          </div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-tag">Proposal Strategy · Cognizant</div>
+          <div class="proj-title">Enterprise Win-Theme Library</div>
+          <div class="proj-desc">
+            Built a structured knowledge management repository from 73
+            enterprise case studies spanning BFSI, retail, automobile, and
+            manufacturing verticals. Identified 6 cross-industry win themes that
+            significantly enhanced proposal quality and pursuit messaging.
+          </div>
+          <div class="proj-outcome">
+            📊 Reduced proposal cycle time and improved bid team readiness
+            across the Digital Experience practice
+          </div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-tag">Sales Automation · Tata Motors</div>
+          <div class="proj-title">Digital Lead Management Rollout</div>
+          <div class="proj-desc">
+            Implemented and drove adoption of CRM and digital lead management
+            platforms across 3 dealerships in Haryana. Designed training
+            programs, built reporting dashboards, and created adoption incentive
+            frameworks to ensure sustained usage.
+          </div>
+          <div class="proj-outcome">
+            📊 #1 national digital adoption ranking · 21% improvement in lead
+            conversion rates
+          </div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-tag">Revenue Growth · Tata Motors</div>
+          <div class="proj-title">VAS Penetration Program</div>
+          <div class="proj-desc">
+            Designed and executed a multi-touchpoint Value-Added Services
+            penetration strategy across the territory. Built lifecycle-based
+            selling frameworks, trained dealer sales teams on upsell
+            identification, and tracked performance through custom KPI
+            dashboards.
+          </div>
+          <div class="proj-outcome">
+            📊 #1 national ranking in VAS penetration · measurable uplift in
+            revenue per customer
+          </div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-tag">Team Development · DXC Technology</div>
+          <div class="proj-title">Global L1 Team Enablement</div>
+          <div class="proj-desc">
+            Designed and delivered a structured training program for an 8-member
+            global Level-1 support team operating across time zones.
+            Standardized tooling usage, incident response workflows, and
+            knowledge transfer processes to ensure consistency.
+          </div>
+          <div class="proj-outcome">
+            📊 Improved team response quality and reduced escalation rates
+            across managed service accounts
+          </div>
+        </div>
+        <div class="proj-card">
+          <div class="proj-tag">Territory Strategy · Tata Motors</div>
+          <div class="proj-title">Micro-Market Growth Plan</div>
+          <div class="proj-desc">
+            Built and executed micro-market account plans across Haryana,
+            identifying growth opportunities at the dealer and sub-district
+            level. Implemented connected vehicle attach rate programs and AMC
+            conversion strategies through lifecycle-based selling.
+          </div>
+          <div class="proj-outcome">
+            📊 3% YoY market share growth · 2% YoY volume growth in a highly
+            competitive territory
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- CERTIFICATIONS -->
+    <section id="certifications">
+      <div class="section-label">04 / Credentials</div>
+      <h2 class="section-title">Certifications & Recognition</h2>
+      <div class="section-divider"></div>
+      <div class="certs-grid">
+        <div class="cert-card">
+          <div class="cert-icon azure">☁️</div>
+          <div>
+            <div class="cert-name">Microsoft Azure Fundamentals (AZ-900)</div>
+            <div class="cert-issuer">Microsoft · 2022</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon six-sigma">⚙️</div>
+          <div>
+            <div class="cert-name">Lean Six Sigma Green Belt</div>
+            <div class="cert-issuer">KPMG · 2022</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon scrum">🔄</div>
+          <div>
+            <div class="cert-name">Scrum Master Basic Certification</div>
+            <div class="cert-issuer">CareerNinja · 2023</div>
+          </div>
+        </div>
+        <div class="cert-card">
+          <div class="cert-icon proposal">📝</div>
+          <div>
+            <div class="cert-name">
+              Proposal Writing — Executive Summary (Advanced)
+            </div>
+            <div class="cert-issuer">2023</div>
+          </div>
+        </div>
+      </div>
+      <div class="recognitions">
+        <div class="rec-title">Recognition & Awards</div>
+        <div class="rec-grid">
+          <div class="rec-card">
+            <div class="rec-award">🏅 Award</div>
+            <div class="rec-org">Operational Excellence Award</div>
+            <div class="rec-desc">
+              Recognised at DXC Technology for SLA-driven service delivery and
+              operational reliability across 24 enterprise cloud migration
+              accounts.
+            </div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-award">🏅 Award</div>
+            <div class="rec-org">Practice Enablement Recognition</div>
+            <div class="rec-desc">
+              Awarded at Cognizant for contributions to proposal excellence,
+              win-theme development, and reusable value assets across the
+              Digital Experience practice.
+            </div>
+          </div>
+          <div class="rec-card">
+            <div class="rec-award">🏅 Award</div>
+            <div class="rec-org">Territory Performance Recognition</div>
+            <div class="rec-desc">
+              Recognised at Tata Motors Commercial Vehicles for driving market
+              share growth, #1 VAS penetration ranking, and connected solutions
+              adoption nationally.
+            </div>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- SKILLS -->
+    <section id="skills">
+      <div class="section-label" style="color: rgba(201, 168, 76, 0.7)">
+        05 / Skills
+      </div>
+      <h2 class="section-title light">Technical & Professional Skills</h2>
+      <div class="section-divider"></div>
+      <div class="skills-grid">
+        <div class="skill-group">
+          <div class="skill-group-title">Sales & GTM</div>
+          <ul class="skill-list">
+            <li>Pre-Sales & Solution Positioning</li>
+            <li>RFP / RFI Response & Management</li>
+            <li>Proposal Writing & Win Themes</li>
+            <li>Go-to-Market Strategy</li>
+            <li>Pipeline & CRM Management</li>
+            <li>VAS Upsell & Cross-sell</li>
+            <li>Territory & Account Planning</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Cloud & Technology</div>
+          <ul class="skill-list">
+            <li>Microsoft Azure (AZ-900)</li>
+            <li>Cloud Migration Delivery</li>
+            <li>SLA Management & Reporting</li>
+            <li>API Integration Coordination</li>
+            <li>CRM Platforms (Salesforce)</li>
+            <li>Document Management Systems</li>
+            <li>Omnichannel Platforms</li>
+          </ul>
+        </div>
+        <div class="skill-group">
+          <div class="skill-group-title">Tools & Methods</div>
+          <ul class="skill-list">
+            <li>Agile / Scrum</li>
+            <li>Lean Six Sigma (Green Belt)</li>
+            <li>KPI Dashboards & Reporting</li>
+            <li>Jira & Trello</li>
+            <li>Microsoft Excel & PowerPoint</li>
+            <li>MS Teams & Outlook</li>
+            <li>Stakeholder Management</li>
+          </ul>
+        </div>
+      </div>
+    </section>
+
+    <!-- CONTACT -->
+    <section id="contact">
+      <div class="section-label">06 / Contact</div>
+      <h2 class="section-title">Let's Connect</h2>
+      <div class="section-divider"></div>
+      <div class="contact-grid">
+        <div class="contact-left">
+          <p>
+            I'm actively exploring Pre-Sales, Solution Consulting, and IT
+            Business Development roles in Delhi NCR and Noida. If you're
+            building a team that needs someone who can bridge technology and
+            commercial outcomes — let's talk.
+          </p>
+          <div class="contact-links">
+            <a href="mailto:shreyas.singh2911@gmail.com" class="contact-link">
+              <div class="contact-link-icon">✉️</div>
+              <div class="contact-link-text">
+                <div class="contact-link-label">Email</div>
+                <div class="contact-link-value">
+                  shreyas.singh2911@gmail.com
+                </div>
+              </div>
+            </a>
+            <a href="tel:+919304649242" class="contact-link">
+              <div class="contact-link-icon">📱</div>
+              <div class="contact-link-text">
+                <div class="contact-link-label">Phone</div>
+                <div class="contact-link-value">+91 93046 49242</div>
+              </div>
+            </a>
+            <a
+              href="https://linkedin.com/in/shreyas-singh2911"
+              target="_blank"
+              class="contact-link"
+            >
+              <div class="contact-link-icon">💼</div>
+              <div class="contact-link-text">
+                <div class="contact-link-label">LinkedIn</div>
+                <div class="contact-link-value">
+                  linkedin.com/in/shreyas-singh2911
+                </div>
+              </div>
+            </a>
+            <div class="contact-link" style="cursor: default">
+              <div class="contact-link-icon">📍</div>
+              <div class="contact-link-text">
+                <div class="contact-link-label">Location</div>
+                <div class="contact-link-value">
+                  Gurgaon, India · Open to Delhi NCR & Noida
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
+        <div class="contact-right">
+          <div class="cv-download">
+            <h3>Download My CV</h3>
+            <p>
+              Full resume with detailed experience, certifications, and key
+              achievements — available as a PDF.
+            </p>
+            <a href="#" class="cv-btn">⬇ Download CV</a>
+          </div>
+        </div>
+      </div>
+    </section>
+
+    <!-- FOOTER -->
+    <footer>
+      <div class="footer-name">Shreyas Singh</div>
+      <div class="footer-copy">
+        Pre-Sales & IT Solutions · Gurgaon, India · 2026
+      </div>
+    </footer>
+  </body>
+</html>
