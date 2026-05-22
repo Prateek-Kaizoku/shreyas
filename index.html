@@ -188,6 +188,23 @@
       .nav-cta:hover {
         background: var(--gold-l);
       }
+      .nav-ventures {
+        background: transparent;
+        color: var(--gold);
+        padding: 8px 20px;
+        font-size: 11px;
+        font-weight: 700;
+        letter-spacing: 1px;
+        text-transform: uppercase;
+        text-decoration: none;
+        border-radius: 2px;
+        border: 1px solid var(--gold);
+        transition: all 0.2s;
+      }
+      .nav-ventures:hover {
+        background: var(--gold);
+        color: var(--navy);
+      }
 
       /* ══ HERO ══ */
       .hero {
@@ -1840,8 +1857,10 @@
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
       </ul>
-      <a href="ventures.html" class="nav-cta" style="margin-right:8px;background:var(--gold);color:var(--navy);">Ventures</a>
-      <a href="#contact" class="nav-cta">Hire Me</a>
+      <div style="display:flex;align-items:center;gap:10px;">
+        <a href="ventures.html" class="nav-ventures">Ventures</a>
+        <a href="#contact" class="nav-cta">Hire Me</a>
+      </div>
     </nav>
 
     <!-- HERO -->
