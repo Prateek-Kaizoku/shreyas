@@ -1,0 +1,992 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Venture Ideas | Shreyas Singh</title>
+  <meta name="description" content="Land venture opportunities — Agra & Purnea. Business ideas, financials, risks, and portfolio combinations." />
+  <style>
+    /* ── RESET & BASE — matching shreyassingh.in ── */
+    *, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+    :root {
+      --bg:       #0a0a0a;
+      --surface:  #111111;
+      --surface2: #181818;
+      --border:   #222222;
+      --border2:  #2a2a2a;
+      --accent:   #c8a96e;   /* gold — matches SS site */
+      --accent2:  #a0845a;
+      --text:     #e8e8e8;
+      --muted:    #888888;
+      --dimmed:   #555555;
+      --green:    #4ade80;
+      --red:      #f87171;
+      --blue:     #60a5fa;
+      --purple:   #c084fc;
+      --teal:     #2dd4bf;
+      --orange:   #fb923c;
+      --radius:   6px;
+      --radius-lg:12px;
+    }
+
+    html { scroll-behavior: smooth; }
+
+    body {
+      background: var(--bg);
+      color: var(--text);
+      font-family: 'Georgia', 'Times New Roman', serif;
+      line-height: 1.6;
+      min-height: 100vh;
+    }
+
+    a { color: var(--accent); text-decoration: none; }
+    a:hover { color: var(--text); }
+
+    /* ── NAV — identical to main site ── */
+    nav {
+      position: fixed; top: 0; left: 0; right: 0; z-index: 100;
+      background: rgba(10,10,10,0.96);
+      backdrop-filter: blur(12px);
+      border-bottom: 1px solid var(--border);
+      display: flex; align-items: center;
+      padding: 0 24px; height: 60px;
+      gap: 32px;
+    }
+
+    .nav-logo {
+      font-size: 13px; font-weight: 700; letter-spacing: 0.08em;
+      color: var(--accent); text-transform: uppercase; white-space: nowrap;
+    }
+
+    .nav-links {
+      display: flex; gap: 20px; list-style: none;
+      margin-left: auto;
+    }
+
+    .nav-links a {
+      font-size: 12px; color: var(--muted); letter-spacing: 0.04em;
+      transition: color 0.2s; font-family: 'Georgia', serif;
+      text-transform: uppercase;
+    }
+    .nav-links a:hover, .nav-links a.active { color: var(--text); }
+
+    .nav-back {
+      font-size: 11px; color: var(--dimmed);
+      letter-spacing: 0.04em; border: 1px solid var(--border2);
+      padding: 5px 12px; border-radius: var(--radius);
+      transition: all 0.2s; white-space: nowrap;
+    }
+    .nav-back:hover { color: var(--accent); border-color: var(--accent); }
+
+    /* ── HERO ── */
+    .hero {
+      padding: 120px 24px 60px;
+      max-width: 1100px; margin: 0 auto;
+      border-bottom: 1px solid var(--border);
+    }
+
+    .hero-tag {
+      font-size: 11px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.1em;
+      margin-bottom: 16px; display: flex; gap: 8px; align-items: center;
+      flex-wrap: wrap;
+    }
+    .hero-tag span {
+      background: rgba(200,169,110,0.08);
+      border: 1px solid rgba(200,169,110,0.2);
+      padding: 3px 10px; border-radius: 100px;
+    }
+
+    .hero h1 {
+      font-size: clamp(28px, 5vw, 48px);
+      font-weight: 700; letter-spacing: -0.02em;
+      line-height: 1.15; margin-bottom: 16px;
+    }
+    .hero h1 em { color: var(--accent); font-style: normal; }
+
+    .hero-sub {
+      font-size: 15px; color: var(--muted); max-width: 600px;
+      line-height: 1.7; margin-bottom: 28px;
+    }
+
+    /* KPI strip */
+    .kpi-strip {
+      display: grid; grid-template-columns: repeat(4, 1fr);
+      gap: 12px; margin-top: 32px;
+    }
+    .kpi-box {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      padding: 16px 14px; text-align: center;
+    }
+    .kpi-val {
+      font-size: 20px; font-weight: 700; color: var(--accent);
+      font-family: 'Georgia', serif; line-height: 1.2; margin-bottom: 4px;
+    }
+    .kpi-lbl { font-size: 10px; color: var(--dimmed); text-transform: uppercase; letter-spacing: 0.06em; }
+
+    .flyash-note {
+      margin-top: 20px;
+      background: rgba(192,132,252,0.06);
+      border: 1px solid rgba(192,132,252,0.2);
+      border-left: 3px solid var(--purple);
+      border-radius: var(--radius);
+      padding: 10px 14px;
+      font-size: 13px; color: #c4b5fd;
+    }
+
+    /* ── LAYOUT ── */
+    .main { max-width: 1100px; margin: 0 auto; padding: 0 24px 80px; }
+
+    /* ── SECTION HEADING ── */
+    .section-hd {
+      display: flex; align-items: center; gap: 12px;
+      margin: 44px 0 20px;
+    }
+    .section-hd h2 {
+      font-size: 11px; color: var(--accent);
+      text-transform: uppercase; letter-spacing: 0.1em; font-weight: 700;
+    }
+    .section-hd::after {
+      content: ''; flex: 1; height: 1px; background: var(--border);
+    }
+
+    /* ── FILTERS ── */
+    .filters {
+      display: flex; gap: 8px; flex-wrap: wrap; align-items: center;
+      margin-bottom: 16px;
+    }
+    .filter-label { font-size: 10px; color: var(--dimmed); text-transform: uppercase; letter-spacing: 0.06em; }
+    .filter-btn {
+      background: transparent; border: 1px solid var(--border2);
+      color: var(--dimmed); padding: 5px 12px; border-radius: var(--radius);
+      font-size: 11px; cursor: pointer; font-family: 'Georgia', serif;
+      transition: all 0.15s; letter-spacing: 0.03em;
+    }
+    .filter-btn:hover { color: var(--text); border-color: var(--border2); }
+    .filter-btn.active {
+      background: rgba(200,169,110,0.12);
+      border-color: var(--accent); color: var(--accent);
+    }
+    .sort-select {
+      background: var(--surface); border: 1px solid var(--border2);
+      color: var(--muted); padding: 5px 10px; border-radius: var(--radius);
+      font-size: 11px; font-family: 'Georgia', serif; cursor: pointer;
+      margin-left: auto;
+    }
+
+    /* ── VENTURE CARDS ── */
+    .venture-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      margin-bottom: 10px;
+      overflow: hidden;
+      transition: border-color 0.2s;
+    }
+    .venture-card:hover { border-color: var(--border2); }
+    .venture-card.open { border-color: rgba(200,169,110,0.35); }
+
+    .card-row {
+      display: grid;
+      grid-template-columns: 28px 22px 190px 64px 110px 100px 70px 72px 90px 100px 28px;
+      gap: 0 10px;
+      padding: 13px 14px;
+      align-items: center;
+      cursor: pointer;
+      transition: background 0.15s;
+    }
+    .card-row:hover { background: rgba(255,255,255,0.02); }
+
+    .card-rank { font-size: 10px; color: var(--dimmed); font-family: monospace; }
+    .card-icon { font-size: 18px; line-height: 1; }
+    .card-name { font-size: 13px; font-weight: 700; color: var(--text); margin-bottom: 2px; }
+    .card-cat  { font-size: 10px; color: var(--dimmed); }
+
+    .loc-pill {
+      font-size: 10px; padding: 2px 7px; border-radius: 100px;
+      font-weight: 600; display: inline-block;
+    }
+    .loc-agra   { background: rgba(96,165,250,0.1); color: var(--blue); }
+    .loc-purnea { background: rgba(192,132,252,0.1); color: var(--purple); }
+
+    .card-capex .primary { font-size: 12px; font-weight: 700; color: var(--text); }
+    .card-capex .secondary { font-size: 10px; color: var(--dimmed); }
+
+    .card-num { font-size: 12px; color: #cbd5e1; }
+
+    .margin-val {
+      font-size: 13px; font-weight: 700;
+    }
+    .margin-hi { color: var(--green); }
+    .margin-md { color: var(--accent); }
+
+    .be-val { font-size: 11px; color: var(--muted); }
+
+    .score-badge {
+      font-size: 11px; font-weight: 700; font-family: monospace;
+      padding: 3px 8px; border-radius: 5px; border: 1px solid;
+    }
+    .score-hi  { color: var(--green);  border-color: rgba(74,222,128,0.3); }
+    .score-mid { color: var(--accent); border-color: rgba(200,169,110,0.3); }
+    .score-lo  { color: var(--red);    border-color: rgba(248,113,113,0.3); }
+
+    .chevron {
+      font-size: 10px; color: var(--dimmed);
+      transition: transform 0.2s; user-select: none;
+    }
+    .chevron.open { transform: rotate(180deg); }
+
+    /* ── EXPANDED DETAIL ── */
+    .card-detail {
+      display: none;
+      padding: 0 14px 16px;
+      border-top: 1px solid rgba(200,169,110,0.15);
+    }
+    .card-detail.open { display: block; }
+
+    .detail-grid {
+      display: grid; grid-template-columns: 1fr 1fr 1fr;
+      gap: 14px; margin-top: 14px;
+    }
+
+    .detail-col-hd {
+      font-size: 9px; text-transform: uppercase; letter-spacing: 0.08em;
+      margin-bottom: 8px; font-weight: 700;
+    }
+    .detail-col-hd.fin  { color: #818cf8; }
+    .detail-col-hd.risk { color: var(--red); }
+    .detail-col-hd.mit  { color: var(--green); }
+
+    .fin-row {
+      display: flex; justify-content: space-between;
+      padding: 4px 0; border-bottom: 1px solid rgba(255,255,255,0.04);
+      font-size: 11.5px;
+    }
+    .fin-row .fl { color: var(--dimmed); }
+    .fin-row .fv { color: var(--text); font-weight: 600; font-family: monospace; }
+
+    .govt-chip {
+      margin-top: 8px; background: rgba(251,191,36,0.07);
+      border: 1px solid rgba(251,191,36,0.2);
+      border-radius: var(--radius); padding: 7px 9px;
+      font-size: 10.5px; color: #fbbf24; line-height: 1.5;
+    }
+
+    .risk-item, .mit-item {
+      display: flex; gap: 6px; margin-bottom: 6px;
+      padding: 7px 9px; border-radius: var(--radius);
+      font-size: 11.5px; align-items: flex-start;
+    }
+    .risk-item { background: rgba(248,113,113,0.06); color: #fca5a5; }
+    .risk-item .dot { color: var(--red); flex-shrink: 0; margin-top: 1px; }
+    .mit-item  { background: rgba(74,222,128,0.06); color: #86efac; }
+    .mit-item .dot  { color: var(--green); flex-shrink: 0; margin-top: 1px; }
+
+    .synergy-chip {
+      margin-top: 8px; background: rgba(96,165,250,0.06);
+      border: 1px solid rgba(96,165,250,0.2);
+      border-radius: var(--radius); padding: 7px 9px;
+      font-size: 11px; color: #93c5fd; line-height: 1.5;
+    }
+
+    /* score breakdown */
+    .score-breakdown {
+      margin-top: 14px; background: rgba(255,255,255,0.02);
+      border: 1px solid var(--border); border-radius: var(--radius);
+      padding: 12px 14px;
+    }
+    .sb-hd { font-size: 9px; color: var(--dimmed); text-transform: uppercase; letter-spacing: 0.07em; margin-bottom: 10px; }
+    .sb-grid { display: grid; grid-template-columns: repeat(3,1fr); gap: 10px; }
+    .sb-item-lbl {
+      display: flex; justify-content: space-between;
+      font-size: 9px; color: var(--dimmed); margin-bottom: 3px;
+    }
+    .bar-track { height: 4px; background: rgba(255,255,255,0.07); border-radius: 2px; overflow: hidden; }
+    .bar-fill { height: 100%; border-radius: 2px; transition: width 0.5s ease; }
+
+    /* ── PORTFOLIO SECTION ── */
+    .portfolio-grid { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+
+    .pf-card {
+      background: var(--surface);
+      border: 1px solid var(--border);
+      border-radius: var(--radius-lg);
+      overflow: hidden; cursor: pointer;
+      transition: border-color 0.2s;
+    }
+    .pf-card:hover { border-color: var(--border2); }
+
+    .pf-header { padding: 16px; }
+    .pf-loc { font-size: 10px; text-transform: uppercase; letter-spacing: 0.07em; font-weight: 700; margin-bottom: 3px; }
+    .pf-name { font-size: 16px; font-weight: 700; color: var(--text); margin-bottom: 4px; }
+    .pf-sub  { font-size: 11px; color: var(--dimmed); }
+    .pf-ventures { display: flex; gap: 5px; flex-wrap: wrap; margin: 10px 0; }
+    .pf-vtag {
+      background: rgba(255,255,255,0.05); border: 1px solid rgba(255,255,255,0.08);
+      border-radius: 5px; padding: 3px 8px; font-size: 10px; color: #94a3b8;
+    }
+    .pf-kpis {
+      display: grid; grid-template-columns: repeat(4,1fr);
+      border-top: 1px solid var(--border);
+    }
+    .pf-kpi { padding: 10px 8px; text-align: center; border-right: 1px solid var(--border); }
+    .pf-kpi:last-child { border-right: none; }
+    .pf-kpi-val { font-size: 11px; font-weight: 700; font-family: monospace; line-height: 1.3; }
+    .pf-kpi-lbl { font-size: 9px; color: var(--dimmed); margin-top: 2px; }
+    .pf-desc { padding: 12px 16px; font-size: 12px; color: var(--muted); line-height: 1.6; border-top: 1px solid var(--border); }
+    .pf-why { padding: 0 16px 14px; }
+    .pf-why-hd { font-size: 9px; text-transform: uppercase; letter-spacing: 0.07em; color: var(--dimmed); margin-bottom: 8px; }
+    .pf-why-item {
+      display: flex; gap: 6px; margin-bottom: 5px;
+      font-size: 11.5px; color: #94a3b8; align-items: flex-start;
+    }
+    .pf-why-item::before { content: '→'; flex-shrink: 0; color: var(--accent); }
+
+    /* ── MASTER STRATEGY ── */
+    .master-box {
+      margin-top: 20px;
+      background: rgba(200,169,110,0.04);
+      border: 1px solid rgba(200,169,110,0.2);
+      border-left: 3px solid var(--accent);
+      border-radius: var(--radius-lg);
+      padding: 20px 22px;
+    }
+    .master-box h3 { font-size: 14px; color: var(--accent); margin-bottom: 8px; }
+    .master-box p { font-size: 13px; color: var(--muted); line-height: 1.7; }
+    .master-stats {
+      display: grid; grid-template-columns: repeat(3,1fr);
+      gap: 10px; margin-top: 16px;
+    }
+    .master-stat {
+      background: var(--surface2); border: 1px solid var(--border);
+      border-radius: var(--radius); padding: 10px; text-align: center;
+    }
+    .master-stat .val { font-size: 15px; font-weight: 700; color: var(--accent); font-family: monospace; }
+    .master-stat .lbl { font-size: 9px; color: var(--dimmed); margin-top: 2px; text-transform: uppercase; }
+
+    /* ── DISCLAIMER ── */
+    .disclaimer {
+      margin-top: 40px; padding: 14px 16px;
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius); font-size: 10.5px; color: var(--dimmed); line-height: 1.7;
+    }
+    .disclaimer strong { color: var(--dimmed); }
+
+    /* ── SCORING TAB ── */
+    .score-rank-card {
+      background: var(--surface); border: 1px solid var(--border);
+      border-radius: var(--radius-lg); padding: 14px 16px; margin-bottom: 10px;
+      display: flex; gap: 14px; align-items: center;
+    }
+    .score-ring {
+      width: 48px; height: 48px; border-radius: 50%;
+      display: flex; align-items: center; justify-content: center;
+      flex-shrink: 0; position: relative;
+    }
+    .score-ring canvas { position: absolute; top: 0; left: 0; }
+    .score-ring-inner {
+      width: 36px; height: 36px; border-radius: 50%;
+      background: var(--surface); display: flex; align-items: center;
+      justify-content: center; font-size: 11px; font-weight: 700;
+      font-family: monospace; position: relative; z-index: 2;
+    }
+    .sr-info { flex: 1; }
+    .sr-title { display: flex; gap: 8px; align-items: center; margin-bottom: 8px; flex-wrap: wrap; }
+    .sr-name { font-size: 14px; font-weight: 700; color: var(--text); }
+    .sr-bars { display: grid; grid-template-columns: repeat(6,1fr); gap: 8px; }
+    .sr-bar-lbl { font-size: 9px; color: var(--dimmed); margin-bottom: 3px; }
+    .sr-roi { font-size: 12px; font-weight: 700; color: var(--muted); margin-left: auto; }
+
+    /* ── TABS ── */
+    .tab-nav {
+      display: flex; gap: 0; border-bottom: 1px solid var(--border);
+      margin: 0 0 0; position: sticky; top: 60px; z-index: 50;
+      background: var(--bg);
+    }
+    .tab-btn {
+      background: none; border: none; border-bottom: 2px solid transparent;
+      color: var(--dimmed); padding: 13px 18px; font-size: 12px;
+      cursor: pointer; font-family: 'Georgia', serif; transition: color 0.15s;
+      letter-spacing: 0.02em; white-space: nowrap;
+    }
+    .tab-btn:hover { color: var(--text); }
+    .tab-btn.active { color: var(--accent); border-bottom-color: var(--accent); }
+
+    .tab-pane { display: none; }
+    .tab-pane.active { display: block; }
+
+    /* ── RESPONSIVE ── */
+    @media (max-width: 768px) {
+      .card-row { grid-template-columns: 20px 20px 1fr 60px 60px 28px; }
+      .card-row .hide-mob { display: none; }
+      .detail-grid { grid-template-columns: 1fr; }
+      .kpi-strip { grid-template-columns: repeat(2,1fr); }
+      .portfolio-grid { grid-template-columns: 1fr; }
+      .master-stats { grid-template-columns: 1fr; }
+      .sb-grid { grid-template-columns: repeat(2,1fr); }
+      .pf-kpis { grid-template-columns: repeat(2,1fr); }
+      .sr-bars { grid-template-columns: repeat(3,1fr); }
+      nav { gap: 16px; }
+      .nav-links { gap: 12px; }
+    }
+  </style>
+</head>
+<body>
+
+<!-- NAV -->
+<nav>
+  <span class="nav-logo">SS</span>
+  <ul class="nav-links">
+    <li><a href="https://shreyassingh.in/#about">About</a></li>
+    <li><a href="https://shreyassingh.in/#presentations">Decks</a></li>
+    <li><a href="https://shreyassingh.in/#projects">Projects</a></li>
+    <li><a href="https://shreyassingh.in/#contact">Contact</a></li>
+    <li><a href="/ventures.html" class="active" style="color:var(--accent)">Venture Ideas</a></li>
+  </ul>
+  <a href="https://shreyassingh.in" class="nav-back">← Back to Portfolio</a>
+</nav>
+
+<!-- HERO -->
+<div class="hero">
+  <div class="hero-tag">
+    <span>Agra, UP</span>
+    <span>Purnea, Bihar</span>
+    <span>15 Ventures</span>
+    <span>4 Portfolios</span>
+  </div>
+  <h1>Land Venture <em>Ideas</em></h1>
+  <p class="hero-sub">
+    Business opportunities for idle land across Agra and Purnea — scored by ROI, risk, synergy with existing assets, and government support available in 2025–26.
+  </p>
+
+  <div class="kpi-strip">
+    <div class="kpi-box">
+      <div class="kpi-val">15</div>
+      <div class="kpi-lbl">Total Ventures</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-val">₹35 L</div>
+      <div class="kpi-lbl">Min Net CapEx</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-val">~49%</div>
+      <div class="kpi-lbl">Top Net Margin</div>
+    </div>
+    <div class="kpi-box">
+      <div class="kpi-val">~20 mo</div>
+      <div class="kpi-lbl">Fastest Break-even</div>
+    </div>
+  </div>
+
+  <div class="flyash-note">
+    🧱 <strong>Flyash Brick Plant (Purnea) — Already Running.</strong> All portfolio combinations factor in existing infrastructure, shared logistics, and operational experience from the running plant.
+  </div>
+</div>
+
+<!-- MAIN -->
+<div class="main">
+
+  <!-- TAB NAV -->
+  <div class="tab-nav">
+    <button class="tab-btn active" onclick="switchTab('matrix',this)">📊 Venture Matrix</button>
+    <button class="tab-btn" onclick="switchTab('scoring',this)">🏆 Scoring</button>
+    <button class="tab-btn" onclick="switchTab('portfolio',this)">🗂 Portfolio View</button>
+  </div>
+
+  <!-- TAB: MATRIX -->
+  <div class="tab-pane active" id="tab-matrix">
+
+    <div class="section-hd"><h2>All 15 Ventures — Detailed Breakdown</h2></div>
+
+    <div class="filters">
+      <span class="filter-label">Location</span>
+      <button class="filter-btn active" onclick="filterBy('loc','All',this)">All</button>
+      <button class="filter-btn" onclick="filterBy('loc','Agra',this)">Agra</button>
+      <button class="filter-btn" onclick="filterBy('loc','Purnea',this)">Purnea</button>
+      <span class="filter-label" style="margin-left:12px">Category</span>
+      <button class="filter-btn active" onclick="filterBy('cat','All',this)">All</button>
+      <button class="filter-btn" onclick="filterBy('cat','energy',this)">Energy</button>
+      <button class="filter-btn" onclick="filterBy('cat','agri',this)">Agri</button>
+      <button class="filter-btn" onclick="filterBy('cat','mfg',this)">Manufacturing</button>
+      <button class="filter-btn" onclick="filterBy('cat','service',this)">Services</button>
+      <select class="sort-select" onchange="sortCards(this.value)">
+        <option value="score">↕ Sort: Score</option>
+        <option value="roi">↕ Sort: ROI</option>
+        <option value="breakeven">↕ Sort: Break-even</option>
+        <option value="margin">↕ Sort: Margin</option>
+      </select>
+    </div>
+
+    <div style="font-size:11px;color:var(--dimmed);margin-bottom:12px">
+      Click any card to expand · * Net capex after applicable govt subsidies
+    </div>
+
+    <div id="cards-container"></div>
+  </div>
+
+  <!-- TAB: SCORING -->
+  <div class="tab-pane" id="tab-scoring">
+    <div class="section-hd"><h2>Composite Scoring — Risk-Adjusted Opportunity</h2></div>
+    <p style="font-size:12px;color:var(--dimmed);margin-bottom:16px">
+      Weighted score out of 100: ROI 25% · Risk 20% · Synergy 20% · Ease 15% · Govt Support 10% · Market Size 10%
+    </p>
+
+    <!-- Legend -->
+    <div style="display:flex;gap:8px;flex-wrap:wrap;margin-bottom:20px">
+      <div style="display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:4px 10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:#818cf8"></div>
+        <span style="font-size:11px;color:var(--dimmed)">ROI Potential · 25%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:4px 10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:#34d399"></div>
+        <span style="font-size:11px;color:var(--dimmed)">Risk Level · 20%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:4px 10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:#f59e0b"></div>
+        <span style="font-size:11px;color:var(--dimmed)">Synergy · 20%</span>
+      </div>
+      <div style="display:flex;align-items:center;gap:5px;background:var(--surface);border:1px solid var(--border);border-radius:5px;padding:4px 10px">
+        <div style="width:8px;height:8px;border-radius:50%;background:#60a5fa"></div>
+        <span style="font-size:11px;color:var(--dimmed)">Ease · 15%</span>
+      </div>
+    </div>
+
+    <div id="scoring-container"></div>
+
+    <!-- Callout boxes -->
+    <div style="display:grid;grid-template-columns:1fr 1fr;gap:12px;margin-top:24px" id="callout-boxes"></div>
+  </div>
+
+  <!-- TAB: PORTFOLIO -->
+  <div class="tab-pane" id="tab-portfolio">
+    <div class="section-hd"><h2>Portfolio Combinations</h2></div>
+    <p style="font-size:12px;color:var(--dimmed);margin-bottom:20px">
+      Recommended ways to combine ventures on your two plots for maximum synergy, shared infrastructure, and compounding returns.
+    </p>
+    <div class="portfolio-grid" id="portfolio-container"></div>
+
+    <div class="master-box" id="master-strategy">
+      <h3>🌐 Master Strategy — Both Plots Combined</h3>
+      <p>Start with <strong style="color:var(--accent)">Flyash Bricks + UCO Biodiesel in Purnea</strong> (infrastructure exists) and <strong style="color:var(--accent)">UCO Biodiesel + Marble Export in Agra</strong> (highest scored, lowest capex). These 4 ventures share the best composite scores and break even within 20 months. Layer Cold Storage and EV Hub in Year 2. Add Solar in Year 3 to power all ventures — opex collapses across the board.</p>
+      <div class="master-stats">
+        <div class="master-stat"><div class="val">₹1.5–3 Cr</div><div class="lbl">Total Net CapEx (Phase 1)</div></div>
+        <div class="master-stat"><div class="val">₹33–57 L/mo</div><div class="lbl">Combined Year 2 Profit</div></div>
+        <div class="master-stat"><div class="val">~20 months</div><div class="lbl">Earliest Break-even</div></div>
+      </div>
+    </div>
+  </div>
+
+  <!-- DISCLAIMER -->
+  <div class="disclaimer">
+    <strong>Disclaimer:</strong> All financial figures are indicative estimates based on 2024–25 Indian market data and publicly available government scheme guidelines. Net CapEx assumes maximum eligible subsidies — actual subsidy subject to project approval and compliance. ROI excludes depreciation, taxes, and debt servicing. Composite scores are qualitative advisory tools. Engage a CA and domain-specific project consultant before committing capital.
+    &nbsp;·&nbsp; <strong>Govt schemes:</strong> RUCO/MoPNG · PM Kisan SAMPADA · PMEGP · PM-KUSUM · ODOP UP · FAME-II · NABARD · PMFME · SATAT · PMSFY
+  </div>
+</div>
+
+<script>
+// ── DATA ──────────────────────────────────────────────────────────────
+const ventures = [
+  { id:1, icon:"⚗️", name:"UCO Biodiesel Plant", loc:"Agra", cat:"energy",
+    capex:"₹1.5–2.5 Cr", net:"₹60–80 L", opex:"₹50–55 L/mo", rev:"₹1–1.05 Cr/mo",
+    margin:49, be:19, roi:65, beStr:"18–20 mo", roiStr:"~65%/yr",
+    tag:"Recommended", tagStyle:"color:#f87171",
+    scores:{roi:5,risk:3,ease:3,syn:5,govt:5,mkt:5},
+    govt:"70% capex subsidy + OMC guaranteed biodiesel offtake (RUCO scheme) + UP biofuel policy",
+    risks:["Hotel supply agreements needed upfront","Urban space constraints for plant","New competition may emerge over time"],
+    mits:["Lock Oberoi/ITC/Marriott contracts before launch","Owned land = zero land cost, biggest moat","RUCO first-mover — register before competitors"],
+    syn:"6.9M tourists/yr = India's richest UCO density per km². Fatehabad Rd hotel belt 3km long." },
+
+  { id:2, icon:"⚗️", name:"UCO Biodiesel Plant", loc:"Purnea", cat:"energy",
+    capex:"₹1.5–2.5 Cr", net:"₹60–80 L", opex:"₹50–55 L/mo", rev:"₹1–1.05 Cr/mo",
+    margin:49, be:20, roi:60, beStr:"19–22 mo", roiStr:"~60%/yr",
+    tag:"High Priority", tagStyle:"color:#4ade80",
+    scores:{roi:5,risk:3,ease:3,syn:5,govt:5,mkt:4},
+    govt:"70% capex subsidy + OMC guaranteed offtake (RUCO) + Bihar biofuel policy",
+    risks:["UCO supply inconsistency from dhabas/restaurants","Crude oil price dip impacts biodiesel margins","FSSAI RUCO compliance overhead"],
+    mits:["Long-term FBO agreements on NH-31 hotel corridor","OMC offtake contract locks biodiesel selling price","RUCO registration grants legal protection"],
+    syn:"Shares logistics fleet with flyash brick plant. Rice bran oil from agro-processing = bonus feedstock." },
+
+  { id:3, icon:"🧱", name:"Flyash Brick Manufacturing", loc:"Purnea", cat:"mfg",
+    capex:"₹25–60 L", net:"₹15–40 L", opex:"₹3–5 L/mo", rev:"₹8–12 L/mo",
+    margin:40, be:15, roi:45, beStr:"12–18 mo", roiStr:"~40–50%/yr",
+    tag:"✓ Running", tagStyle:"color:#c084fc",
+    scores:{roi:4,risk:4,ease:5,syn:4,govt:4,mkt:4},
+    govt:"PMEGP subsidy 15–35% + MSME credit guarantee + ZLD compliance incentives",
+    risks:["Flyash supply from thermal plants may fluctuate","Monsoon demand dip (Jun–Sep)","Raw material cost hike (cement, lime)"],
+    mits:["Long-term MOU with NTPC Kahalgaon & Barauni plants","Build 2–3 month pre-monsoon inventory","6-month fixed-price supply contracts"],
+    syn:"Bihar construction boom: NH-31 expansion, PMAY housing, Patna metro demand." },
+
+  { id:4, icon:"🏭", name:"Cold Storage Facility", loc:"Purnea", cat:"agri",
+    capex:"₹2.5–4.5 Cr", net:"₹1.5–2.5 Cr", opex:"₹4–7 L/mo", rev:"₹15–25 L/mo",
+    margin:55, be:30, roi:35, beStr:"24–36 mo", roiStr:"~30–40%/yr",
+    tag:"High Potential", tagStyle:"color:#60a5fa",
+    scores:{roi:3,risk:3,ease:3,syn:5,govt:5,mkt:5},
+    govt:"PM Kisan SAMPADA: up to ₹10 Cr grant + 35–50% subsidy (MoFPI) + NABARD priority lending",
+    risks:["High electricity cost (₹2–4 L/mo)","Seasonal occupancy gaps","APMC govt warehouse competition"],
+    mits:["Rooftop solar covers 50–60% power — links to solar venture","Multi-crop occupancy: potato, maize, litchi, onion","Private quality & traceability beats govt storage"],
+    syn:"Purnea is Bihar's potato/litchi/maize belt. 40% of produce rots due to no cold chain." },
+
+  { id:5, icon:"☀️", name:"Solar Power Plant", loc:"Purnea", cat:"energy",
+    capex:"₹1–1.2 Cr/acre", net:"₹70L–1Cr/acre", opex:"₹2–2.5 L/yr", rev:"₹85K–1L/mo",
+    margin:70, be:96, roi:13, beStr:"7–9 yrs", roiStr:"~12–15%/yr",
+    tag:"Passive Income", tagStyle:"color:#fbbf24",
+    scores:{roi:2,risk:5,ease:4,syn:5,govt:5,mkt:4},
+    govt:"PM-KUSUM + MNRE 40% accelerated depreciation + Bihar REWA solar policy",
+    risks:["Long break-even (7–9 years)","Grid connectivity delays from DISCOM","Panel degradation 0.5%/yr"],
+    mits:["25-yr PPA with DISCOM locks tariff — guaranteed offtake","Engage Bihar BREDA early for grid approval","Tier-1 panels (Adani/Waaree) with 25-yr output warranty"],
+    syn:"Powers cold storage + flyash plant on-site — saves ₹3–5 L/mo combined opex across ventures." },
+
+  { id:6, icon:"☀️", name:"Solar Power Plant", loc:"Agra", cat:"energy",
+    capex:"₹1–1.2 Cr/acre", net:"₹70L–1Cr/acre", opex:"₹2–2.5 L/yr", rev:"₹85K–1L/mo",
+    margin:70, be:96, roi:13, beStr:"7–9 yrs", roiStr:"~12–15%/yr",
+    tag:"Passive Income", tagStyle:"color:#fbbf24",
+    scores:{roi:2,risk:5,ease:4,syn:4,govt:5,mkt:4},
+    govt:"PM-KUSUM + UPNEDA subsidies + UP net metering policy",
+    risks:["Urban Agra land high opportunity cost","Grid saturation near Agra city circle","Space constraint if plot is small"],
+    mits:["Rooftop solar if ground area limited — net metering still earns","Apply early for PVVNL grid interconnection NOC","Lease surplus land: ₹21K+/acre/yr passive with 5% escalation"],
+    syn:"Agra has 300 sunny days/yr. Powers biodiesel plant + marble unit — big opex reduction." },
+
+  { id:7, icon:"🪨", name:"Marble Processing & Export", loc:"Agra", cat:"mfg",
+    capex:"₹40–80 L", net:"₹25–55 L", opex:"₹5–8 L/mo", rev:"₹20–40 L/mo",
+    margin:47, be:16, roi:52, beStr:"12–20 mo", roiStr:"~45–60%/yr",
+    tag:"Unique to Agra", tagStyle:"color:#2dd4bf",
+    scores:{roi:5,risk:3,ease:4,syn:5,govt:5,mkt:5},
+    govt:"ODOP UP scheme + GI tag protection + handicraft export incentives + artisan cluster subsidies",
+    risks:["Skilled artisan retention is difficult","NGT restrictions on stone-cutting dust","Tourism seasonality (though exports buffer)"],
+    mits:["Partner with existing Agra clusters — don't build from scratch","Wet cutting + dust suppression for NGT compliance","B2B export to US/EU/Middle East luxury décor brands"],
+    syn:"Agra exports ₹407 Cr+ stone craft/yr. 6.9M tourists = direct retail customers on site." },
+
+  { id:8, icon:"🏨", name:"Boutique Heritage Homestay", loc:"Agra", cat:"service",
+    capex:"₹50L–2 Cr", net:"₹40L–1.5 Cr", opex:"₹3–8 L/mo", rev:"₹10–30 L/mo",
+    margin:42, be:24, roi:32, beStr:"18–30 mo", roiStr:"~25–40%/yr",
+    tag:"Asset Monetisation", tagStyle:"color:#f472b6",
+    scores:{roi:3,risk:2,ease:2,syn:4,govt:3,mkt:5},
+    govt:"UP Tourism homestay scheme + MUDRA loans + Incredible India B&B scheme + GST input credit",
+    risks:["High competition from 4–5 star hotels on Fatehabad Rd","OTA commissions 15–25% (Booking.com/MakeMyTrip)","Occupancy drops Apr–Sep (summer/monsoon)"],
+    mits:["'Mughal experience' boutique positioning vs mass market","Direct booking: WhatsApp + Google Business — bypass OTA","MICE & group bookings for off-season: weddings, corporate"],
+    syn:"Taj Mahal drew 6.9M tourists in 2024 — all-time record. Year-round demand engine 3km away." },
+
+  { id:9, icon:"🌾", name:"Agro-Processing (Rice/Maize)", loc:"Purnea", cat:"agri",
+    capex:"₹60L–1.5 Cr", net:"₹35–90 L", opex:"₹8–15 L/mo", rev:"₹20–40 L/mo",
+    margin:30, be:21, roi:37, beStr:"18–24 mo", roiStr:"~30–45%/yr",
+    tag:"Bihar Advantage", tagStyle:"color:#34d399",
+    scores:{roi:3,risk:3,ease:3,syn:4,govt:5,mkt:4},
+    govt:"PM Kisan SAMPADA + PMFME + NABARD agro-processing loans at 7% + FCI procurement tie-up",
+    risks:["Crop failure/monsoon dependency on raw material","MSP fluctuations hurt procurement margins","Working capital-intensive during procurement season"],
+    mits:["Multi-crop: rice + maize + mustard — diversifies seasonal risk","FCI/Bihar State Food Corp forward contracts","NABARD crop loan + Kisan Credit Card at 4–7%"],
+    syn:"Purnea is Bihar's rice bowl. Zero transport cost. Rice bran oil = UCO biodiesel feedstock." },
+
+  { id:10, icon:"⚡", name:"EV Charging Hub", loc:"Agra", cat:"service",
+    capex:"₹30–80 L", net:"₹20–60 L", opex:"₹2–5 L/mo", rev:"₹8–20 L/mo",
+    margin:37, be:23, roi:42, beStr:"18–28 mo", roiStr:"~35–50%/yr",
+    tag:"Future-Ready", tagStyle:"color:#60a5fa",
+    scores:{roi:4,risk:3,ease:4,syn:4,govt:5,mkt:4},
+    govt:"FAME-II + UP EV Policy 2022 (100% stamp duty exemption) + DISCOM net metering + fast-charger subsidy",
+    risks:["EV adoption pace uncertain in India","Highway land cost high in Agra","Grid load management at peak hours"],
+    mits:["Hybrid EV + biodiesel station — links to UCO plant for dual-fuel","NH-2 (Delhi–Agra) 1L+ vehicles/day ensures traffic","On-site solar reduces grid dependency 40–50%"],
+    syn:"NH-2 is India's busiest highway. Dual-fuel EV+biodiesel station is a unique offering." },
+
+  { id:11, icon:"🌱", name:"Polyhouse / Precision Farming", loc:"Purnea", cat:"agri",
+    capex:"₹40–90 L", net:"₹25–60 L", opex:"₹3–6 L/mo", rev:"₹12–22 L/mo",
+    margin:52, be:18, roi:55, beStr:"14–22 mo", roiStr:"~50–65%/yr",
+    tag:"Modern Farming", tagStyle:"color:#34d399",
+    scores:{roi:5,risk:3,ease:3,syn:4,govt:5,mkt:4},
+    govt:"NHM polyhouse subsidy 50–65% of cost + NABARD Agri-Infra Fund + Bihar Horticulture Mission",
+    risks:["High water requirement — needs drip irrigation setup","Initial crop learning curve for exotic vegetables","Pest management inside enclosed structure"],
+    mits:["Drip irrigation funded under PM Krishi Sinchai Yojana (55–75% subsidy)","Partner with KVK (Krishi Vigyan Kendra) Purnea for technical guidance","Use integrated pest management; avoid chemicals"],
+    syn:"Grow cherry tomatoes, capsicum, cucumber — 3–5x price premium vs open-field. Sell to Kolkata/Patna supermarkets." },
+
+  { id:12, icon:"🐠", name:"Integrated Fishery (Biofloc)", loc:"Purnea", cat:"agri",
+    capex:"₹20–50 L", net:"₹12–30 L", opex:"₹2–4 L/mo", rev:"₹8–16 L/mo",
+    margin:55, be:12, roi:60, beStr:"10–16 mo", roiStr:"~55–70%/yr",
+    tag:"High ROI", tagStyle:"color:#fbbf24",
+    scores:{roi:5,risk:3,ease:3,syn:3,govt:5,mkt:4},
+    govt:"PMMSY (PM Matsya Sampada Yojana): 40–60% subsidy on fish farming infrastructure",
+    risks:["Water quality management is technical","Fish disease outbreaks can wipe a batch","Monsoon flooding risk on low-lying land"],
+    mits:["Biofloc technology is closed system — no land/pond needed","Tie up with CIFE (Central Institute of Fisheries Education) for technical support","Elevated tanks + insurance under PMMSY"],
+    syn:"Bihar's high fish demand. Catla, Rohu sell ₹150–250/kg. Zero competition in Purnea district for biofloc." },
+
+  { id:13, icon:"🏗️", name:"Warehouse / Logistics Hub", loc:"Purnea", cat:"service",
+    capex:"₹80L–2 Cr", net:"₹50L–1.2 Cr", opex:"₹3–6 L/mo", rev:"₹12–25 L/mo",
+    margin:58, be:22, roi:40, beStr:"18–28 mo", roiStr:"~38–48%/yr",
+    tag:"Infra Leasing", tagStyle:"color:#fb923c",
+    scores:{roi:4,risk:4,ease:4,syn:5,govt:4,mkt:5},
+    govt:"PM Gati Shakti + Logistics Policy 2022: tax incentives, priority clearances for warehousing",
+    risks:["Long-term leases require creditworthy anchor tenants","Infrastructure maintenance cost","Competition from organised 3PL players (Delhivery, XpressBees)"],
+    mits:["Pre-lease to e-commerce (Flipkart/Meesho) or FMCG before construction","Design to warehouse spec — pallet racking, dock levellers","Purnea on NH-31 = natural logistics node for NE India corridor"],
+    syn:"NH-31 connects Bihar to NE India. Purnea is a natural break-bulk point. Complements cold storage and agro-processing." },
+
+  { id:14, icon:"☘️", name:"Organic Farming + Direct Export", loc:"Agra", cat:"agri",
+    capex:"₹15–40 L", net:"₹10–28 L", opex:"₹2–4 L/mo", rev:"₹8–18 L/mo",
+    margin:48, be:14, roi:50, beStr:"12–18 mo", roiStr:"~45–58%/yr",
+    tag:"Low Capex", tagStyle:"color:#34d399",
+    scores:{roi:4,risk:3,ease:4,syn:3,govt:5,mkt:4},
+    govt:"Paramparagat Krishi Vikas Yojana (PKVY): ₹50K/ha cluster grant + organic certification support + APEDA export incentives",
+    risks:["3-year organic transition period before certification","Yield dip (20–30%) during transition","Export logistics require compliance documentation"],
+    mits:["Grow high-value crops: turmeric, amla, guava — all UP-native","APEDA connects to international organic buyers","Sell to tourist hotels in Agra at 2–3x premium — no export needed initially"],
+    syn:"Agra tourists = premium buyer captive audience. Heritage organic from Agra = strong brand story for export." },
+
+  { id:15, icon:"🏘️", name:"Infrastructure Leasing (Land + Shed)", loc:"Both", cat:"service",
+    capex:"₹30–80 L", net:"₹20–55 L", opex:"₹50K–1 L/mo", rev:"₹3–8 L/mo",
+    margin:75, be:36, roi:20, beStr:"30–42 mo", roiStr:"~18–25%/yr",
+    tag:"Lowest Risk", tagStyle:"color:#a5b4fc",
+    scores:{roi:2,risk:5,ease:5,syn:3,govt:3,mkt:4},
+    govt:"MSME cluster scheme + state industrial park incentives + long-term lease exemptions",
+    risks:["Low ROI vs active business ventures","Tenant default risk","Long-term lock-in of land asset"],
+    mits:["Lease to govt agencies (Railways, FCI, NTPC) — zero default risk","Tri-party lease agreement with bank guarantee","Escalation clause: 10–15% rent increase every 3 years"],
+    syn:"Idle land generates zero return today. Even passive leasing at ₹3–8 L/mo beats zero while you plan active ventures." },
+];
+
+const portfolios = [
+  { name:"Purnea Core", loc:"Purnea", color:"#c084fc",
+    vIds:[3,2], capex:"₹35–65 L", rev:"₹18–22 L/mo", profit:"₹8–12 L/mo", be:"12–18 mo",
+    desc:"Build on the running flyash plant. Add UCO biodiesel using same land and logistics. Minimum new infrastructure.",
+    why:["Flyash plant already operational — zero setup delay","Collection truck doubles as flyash delivery vehicle","Combined net capex under ₹65L after subsidies","Both ventures have guaranteed govt offtake"] },
+
+  { name:"Purnea Full Stack", loc:"Purnea", color:"#60a5fa",
+    vIds:[3,2,4,5,9,11,13], capex:"₹4–7 Cr net", rev:"₹80L–1.3 Cr/mo", profit:"₹45–75 L/mo", be:"24–36 mo",
+    desc:"Full industrial-agri cluster: flyash + biodiesel + cold storage + solar + agro-processing + polyhouse + warehouse. Self-sustaining.",
+    why:["Solar powers all other ventures — opex collapses","Rice bran oil from agro-processing feeds biodiesel plant","Cold storage + warehouse serves the same farmers","Polyhouse premium produce stored in cold storage"] },
+
+  { name:"Agra Premium", loc:"Agra", color:"#f87171",
+    vIds:[1,7,10], capex:"₹1–2.5 Cr net", rev:"₹50–85 L/mo", profit:"₹25–45 L/mo", be:"18–24 mo",
+    desc:"Tourism economy is the asset. Hotels supply UCO, tourists buy marble, NH-2 charges EVs.",
+    why:["3 ventures all leverage Agra's tourism density","Marble unit sells directly to hotel guests on site","Same hotels supply UCO to biodiesel plant","EV hub on NH-2 — land is the moat"] },
+
+  { name:"Agra Full Stack", loc:"Agra", color:"#2dd4bf",
+    vIds:[1,7,10,8,6,14], capex:"₹2.5–5.5 Cr net", rev:"₹1.1–1.9 Cr/mo", profit:"₹60L–1.05 Cr/mo", be:"24–36 mo",
+    desc:"Full monetisation: biodiesel + marble + EV hub + boutique hotel + solar + organic farming. Hotel guests are retail customers.",
+    why:["Hotel generates UCO that feeds biodiesel plant — circular","Solar powers hotel + EV hub — near-zero electricity cost","Marble unit = direct retail to hotel's own guests","Organic farm supplies the hotel restaurant at premium"] },
+];
+
+// ── STATE ─────────────────────────────────────────────────────────────
+let activeFilters = { loc: 'All', cat: 'All' };
+let currentSort = 'score';
+let openCards = new Set();
+
+function calcScore(v) {
+  const w = {roi:0.25, risk:0.20, syn:0.20, ease:0.15, govt:0.10, mkt:0.10};
+  return Math.round(Object.entries(w).reduce((s,[k,wt]) => s + (v.scores[k]||3)*wt*20, 0));
+}
+
+function scoreClass(s) {
+  return s >= 80 ? 'score-hi' : s >= 65 ? 'score-mid' : 'score-lo';
+}
+function scoreColor(s) {
+  return s >= 80 ? '#4ade80' : s >= 65 ? '#c8a96e' : '#f87171';
+}
+
+// ── RENDER CARDS ──────────────────────────────────────────────────────
+function renderCards() {
+  let data = ventures.map(v => ({...v, score: calcScore(v)}));
+
+  if (activeFilters.loc !== 'All') {
+    data = data.filter(v => v.loc === activeFilters.loc || v.loc === 'Both');
+  }
+  if (activeFilters.cat !== 'All') {
+    data = data.filter(v => v.cat === activeFilters.cat);
+  }
+
+  const sortFns = {
+    score: (a,b) => b.score - a.score,
+    roi:   (a,b) => b.roi - a.roi,
+    breakeven: (a,b) => a.be - b.be,
+    margin:(a,b) => b.margin - a.margin,
+  };
+  data.sort(sortFns[currentSort] || sortFns.score);
+
+  const locCls = loc => loc === 'Agra' ? 'loc-agra' : loc === 'Purnea' ? 'loc-purnea' : 'loc-purnea';
+
+  const container = document.getElementById('cards-container');
+  container.innerHTML = data.map((v, i) => {
+    const isOpen = openCards.has(v.id);
+    const sc = v.score;
+    const barColors = { roi:'#818cf8', risk:'#4ade80', syn:'#f59e0b', ease:'#60a5fa', govt:'#fbbf24', mkt:'#e879f9' };
+    const barLabels = { roi:'ROI', risk:'Risk', syn:'Synergy', ease:'Ease', govt:'Govt', mkt:'Market' };
+
+    return `
+    <div class="venture-card ${isOpen ? 'open' : ''}" id="card-${v.id}">
+      <div class="card-row" onclick="toggleCard(${v.id})">
+        <span class="card-rank">#${i+1}</span>
+        <span class="card-icon">${v.icon}</span>
+        <div>
+          <div class="card-name">${v.name}</div>
+          <div class="card-cat">${v.cat}</div>
+        </div>
+        <div><span class="loc-pill ${locCls(v.loc)}">${v.loc}</span></div>
+        <div class="card-capex hide-mob">
+          <div class="primary">${v.net}</div>
+          <div class="secondary">${v.capex} gross</div>
+        </div>
+        <div class="card-num hide-mob">${v.opex}</div>
+        <div class="margin-val hide-mob ${v.margin > 50 ? 'margin-hi' : 'margin-md'}">${v.margin}%</div>
+        <div class="be-val hide-mob">${v.beStr}</div>
+        <div class="card-num" style="color:#818cf8;font-weight:700">${v.roiStr}</div>
+        <div><span class="score-badge ${scoreClass(sc)}">${sc}/100</span></div>
+        <div class="chevron ${isOpen ? 'open' : ''}">▼</div>
+      </div>
+      <div class="card-detail ${isOpen ? 'open' : ''}">
+        <div class="detail-grid">
+          <!-- Financials -->
+          <div>
+            <div class="detail-col-hd fin">Financial Detail</div>
+            ${[['Gross CapEx',v.capex],['Net CapEx*',v.net],['Monthly OpEx',v.opex],['Monthly Revenue',v.rev],['Net Margin',v.margin+'%'],['Break-even',v.beStr],['Est. ROI/yr',v.roiStr]]
+              .map(([k,val]) => `<div class="fin-row"><span class="fl">${k}</span><span class="fv">${val}</span></div>`).join('')}
+            <div class="govt-chip">🏛 ${v.govt}</div>
+          </div>
+          <!-- Risks -->
+          <div>
+            <div class="detail-col-hd risk">Key Risks</div>
+            ${v.risks.map(r => `<div class="risk-item"><span class="dot">⚠</span>${r}</div>`).join('')}
+          </div>
+          <!-- Mitigations -->
+          <div>
+            <div class="detail-col-hd mit">Mitigations</div>
+            ${v.mits.map(m => `<div class="mit-item"><span class="dot">✓</span>${m}</div>`).join('')}
+            <div class="synergy-chip">🔗 <strong>Synergy:</strong> ${v.syn}</div>
+          </div>
+        </div>
+        <!-- Score breakdown -->
+        <div class="score-breakdown">
+          <div class="sb-hd">Composite Score Breakdown — ${sc}/100</div>
+          <div class="sb-grid">
+            ${Object.entries(barColors).map(([k,c]) => `
+              <div>
+                <div class="sb-item-lbl"><span>${barLabels[k]}</span><span style="color:var(--dimmed)">${v.scores[k]*20}/100</span></div>
+                <div class="bar-track"><div class="bar-fill" style="width:${v.scores[k]*20}%;background:${c}"></div></div>
+              </div>`).join('')}
+          </div>
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+}
+
+function toggleCard(id) {
+  if (openCards.has(id)) openCards.delete(id);
+  else openCards.add(id);
+  renderCards();
+}
+
+// ── SCORING TAB ───────────────────────────────────────────────────────
+function renderScoring() {
+  const sorted = [...ventures].map(v => ({...v, score: calcScore(v)})).sort((a,b) => b.score - a.score);
+  const barColors = { roi:'#818cf8', risk:'#4ade80', syn:'#f59e0b', ease:'#60a5fa', govt:'#fbbf24', mkt:'#e879f9' };
+  const barLabels = { roi:'ROI Potential', risk:'Risk Level', syn:'Synergy', ease:'Ease', govt:'Govt Support', mkt:'Market Size' };
+
+  document.getElementById('scoring-container').innerHTML = sorted.map((v, i) => {
+    const sc = v.score;
+    const c = scoreColor(sc);
+    const deg = Math.round(sc * 3.6);
+    const locCls = v.loc === 'Agra' ? 'loc-agra' : 'loc-purnea';
+    return `
+    <div class="score-rank-card">
+      <div style="font-size:12px;color:var(--dimmed);font-family:monospace;min-width:24px">#${i+1}</div>
+      <div class="score-ring" style="background:conic-gradient(${c} ${deg}deg, rgba(255,255,255,0.07) 0deg)">
+        <div class="score-ring-inner" style="color:${c}">${sc}</div>
+      </div>
+      <div class="sr-info">
+        <div class="sr-title">
+          <span style="font-size:18px">${v.icon}</span>
+          <span class="sr-name">${v.name}</span>
+          <span class="loc-pill ${locCls}">${v.loc}</span>
+          <span class="sr-roi">${v.roiStr} · ${v.beStr}</span>
+        </div>
+        <div class="sr-bars">
+          ${Object.entries(barColors).map(([k,c]) => `
+            <div>
+              <div class="sr-bar-lbl">${barLabels[k]}</div>
+              <div class="bar-track"><div class="bar-fill" style="width:${v.scores[k]*20}%;background:${c}"></div></div>
+            </div>`).join('')}
+        </div>
+      </div>
+    </div>`;
+  }).join('');
+
+  // Callout boxes
+  const top3 = sorted.slice(0,3);
+  const fastBE = [...ventures].map(v=>({...v,score:calcScore(v)})).sort((a,b)=>a.be-b.be).slice(0,3);
+  document.getElementById('callout-boxes').innerHTML = `
+    <div style="background:rgba(74,222,128,0.05);border:1px solid rgba(74,222,128,0.2);border-left:3px solid var(--green);border-radius:var(--radius-lg);padding:14px">
+      <div style="font-size:10px;color:var(--green);text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">🏆 Top 3 — Start Now</div>
+      ${top3.map((v,i)=>`
+        <div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:${i<2?'1px solid rgba(255,255,255,0.04)':'none'}">
+          <span style="font-size:14px">${v.icon}</span>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--text)">${v.name} — ${v.loc}</div>
+          <div style="font-size:10px;color:var(--dimmed)">Net ${v.net} · ${v.roiStr}</div></div>
+          <span style="font-size:13px;font-weight:700;color:var(--green);font-family:monospace">${v.score}</span>
+        </div>`).join('')}
+    </div>
+    <div style="background:rgba(251,191,36,0.05);border:1px solid rgba(251,191,36,0.2);border-left:3px solid #fbbf24;border-radius:var(--radius-lg);padding:14px">
+      <div style="font-size:10px;color:#fbbf24;text-transform:uppercase;letter-spacing:.07em;margin-bottom:10px">⚡ Quickest Break-even</div>
+      ${fastBE.map((v,i)=>`
+        <div style="display:flex;gap:8px;align-items:center;padding:6px 0;border-bottom:${i<2?'1px solid rgba(255,255,255,0.04)':'none'}">
+          <span style="font-size:14px">${v.icon}</span>
+          <div style="flex:1"><div style="font-size:12px;font-weight:600;color:var(--text)">${v.name} — ${v.loc}</div>
+          <div style="font-size:10px;color:var(--dimmed)">Break-even ${v.beStr} · Margin ${v.margin}%</div></div>
+          <span style="font-size:13px;font-weight:700;color:#fbbf24;font-family:monospace">${v.beStr}</span>
+        </div>`).join('')}
+    </div>`;
+}
+
+// ── PORTFOLIO TAB ─────────────────────────────────────────────────────
+function renderPortfolio() {
+  const pfColors = { "Purnea Core":"#c084fc","Purnea Full Stack":"#60a5fa","Agra Premium":"#f87171","Agra Full Stack":"#2dd4bf" };
+  document.getElementById('portfolio-container').innerHTML = portfolios.map(p => {
+    const c = p.color;
+    const pvs = p.vIds.map(id => ventures.find(v => v.id === id)).filter(Boolean);
+    return `
+    <div class="pf-card">
+      <div class="pf-header">
+        <div class="pf-loc" style="color:${c}">${p.loc}</div>
+        <div class="pf-name">${p.name}</div>
+        <div class="pf-sub">${p.desc}</div>
+        <div class="pf-ventures">${pvs.map(v=>`<span class="pf-vtag">${v.icon} ${v.name.split(' ').slice(0,2).join(' ')}</span>`).join('')}</div>
+      </div>
+      <div class="pf-kpis">
+        <div class="pf-kpi"><div class="pf-kpi-val" style="color:${c}">${p.capex}</div><div class="pf-kpi-lbl">Net CapEx*</div></div>
+        <div class="pf-kpi"><div class="pf-kpi-val" style="color:var(--green)">${p.rev}</div><div class="pf-kpi-lbl">Monthly Revenue</div></div>
+        <div class="pf-kpi"><div class="pf-kpi-val" style="color:var(--accent)">${p.profit}</div><div class="pf-kpi-lbl">Monthly Profit</div></div>
+        <div class="pf-kpi"><div class="pf-kpi-val" style="color:var(--red)">${p.be}</div><div class="pf-kpi-lbl">Break-even</div></div>
+      </div>
+      <div class="pf-why">
+        <div class="pf-why-hd">Why This Works</div>
+        ${p.why.map(w=>`<div class="pf-why-item">${w}</div>`).join('')}
+      </div>
+    </div>`;
+  }).join('');
+}
+
+// ── FILTER / SORT / TAB LOGIC ─────────────────────────────────────────
+function filterBy(type, val, btn) {
+  activeFilters[type] = val;
+  const group = btn.parentElement.querySelectorAll('.filter-btn');
+  const allBtns = [...group];
+  const sameCat = allBtns.filter(b => b.getAttribute('onclick') && b.getAttribute('onclick').includes(`'${type}'`));
+  sameCat.forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderCards();
+}
+
+function sortCards(val) {
+  currentSort = val;
+  renderCards();
+}
+
+function switchTab(id, btn) {
+  document.querySelectorAll('.tab-pane').forEach(p => p.classList.remove('active'));
+  document.querySelectorAll('.tab-btn').forEach(b => b.classList.remove('active'));
+  document.getElementById('tab-' + id).classList.add('active');
+  btn.classList.add('active');
+}
+
+// ── INIT ──────────────────────────────────────────────────────────────
+renderCards();
+renderScoring();
+renderPortfolio();
+</script>
+</body>
+</html>
