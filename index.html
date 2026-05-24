@@ -188,22 +188,20 @@
       .nav-cta:hover {
         background: var(--gold-l);
       }
-      .nav-ventures {
-        background: transparent;
-        color: var(--gold);
-        padding: 8px 20px;
-        font-size: 11px;
-        font-weight: 700;
-        letter-spacing: 1px;
-        text-transform: uppercase;
-        text-decoration: none;
+.nav-ventures {
+        background: var(--gold) !important;
+        color: var(--navy) !important;
+        padding: 5px 14px !important;
         border-radius: 2px;
-        border: 1px solid var(--gold);
-        transition: all 0.2s;
+        font-weight: 700 !important;
+        opacity: 1 !important;
       }
       .nav-ventures:hover {
-        background: var(--gold);
-        color: var(--navy);
+        background: var(--gold-l) !important;
+        color: var(--navy) !important;
+      }
+      .nav-ventures-mobile {
+        display: none;
       }
 
       /* ══ HERO ══ */
@@ -1789,6 +1787,20 @@
         .nav-cta {
           display: none;
         }
+        .nav-ventures-mobile {
+          display: inline-flex;
+          align-items: center;
+          margin-left: auto;
+          background: var(--gold);
+          color: var(--navy);
+          padding: 8px 18px;
+          font-size: 11px;
+          font-weight: 700;
+          letter-spacing: 1px;
+          text-transform: uppercase;
+          text-decoration: none;
+          border-radius: 2px;
+        }
         section {
           padding: 64px 20px;
         }
@@ -1856,11 +1868,10 @@
         <li><a href="#certifications">Credentials</a></li>
         <li><a href="#faq">FAQ</a></li>
         <li><a href="#contact">Contact</a></li>
+        <li><a href="ventures.html" class="nav-ventures">Ventures</a></li>
       </ul>
-      <div style="display:flex;align-items:center;gap:10px;">
-        <a href="ventures.html" class="nav-ventures">Ventures</a>
-        <a href="#contact" class="nav-cta">Hire Me</a>
-      </div>
+      <a href="ventures.html" class="nav-ventures-mobile">Ventures</a>
+      <a href="#contact" class="nav-cta">Hire Me</a>
     </nav>
 
     <!-- HERO -->
