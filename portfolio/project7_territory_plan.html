@@ -1,0 +1,368 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Territory Micro-Market Plan · Shreyas Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root{--navy:#0f2b4a;--navy-m:#142848;--navy-l:#1e3d6e;--gold:#c8972a;--gold-l:#e8b84b;--gold-p:#fbf3e2;--cream:#f9f7f4;--white:#ffffff;--grey:#64748b;--grey-l:#f1f5f9;--grey-b:#e2e8f0;--text:#0f172a;--border:rgba(0,0,0,0.07);--green:#10b981;--blue:#2563eb;--red:#ef4444;}
+    *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    body > nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(10,22,40,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,151,42,0.15);}
+    .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-mono{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--navy);}
+    .nav-name{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--white);}
+    .nav-links{display:flex;gap:28px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:1.3px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--gold-l);}
+    .nav-back{background:var(--gold);color:var(--navy);padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.2s;}
+    .nav-back:hover{background:var(--gold-l);}
+    .proj-hero{min-height:54vh;background:var(--navy);display:flex;align-items:center;position:relative;overflow:hidden;padding:140px 60px 80px;}
+    .orb1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.15) 0%,transparent 70%);right:-100px;top:-100px;pointer-events:none;}
+    .orb2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,151,42,0.1) 0%,transparent 70%);left:-100px;bottom:-50px;pointer-events:none;}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:80px 80px;}
+    .proj-hero-c{position:relative;z-index:2;max-width:860px;}
+    .proj-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+    .proj-hero-c h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,5vw,64px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .proj-hero-c h1 em{font-style:italic;color:var(--gold-l);}
+    .proj-hero-desc{font-size:15px;line-height:1.75;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:36px;font-weight:300;}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;}
+    .badge{background:rgba(200,151,42,0.12);border:1px solid rgba(200,151,42,0.25);color:var(--gold-l);font-size:10px;font-family:"JetBrains Mono",monospace;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:100px;}
+    section{padding:80px 60px;}
+    .sec-tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:14px;}
+    h2{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--navy);margin-bottom:12px;line-height:1.15;}
+    h2.ld{color:var(--white);}
+    .rule{width:48px;height:2px;background:var(--gold);margin-bottom:40px;}
+
+    /* Overview stats */
+    #overview{background:var(--navy);}
+    .ov-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;}
+    .ov-tile{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:28px 20px;text-align:center;border-radius:4px;}
+    .ov-n{font-family:"Cormorant Garamond",serif;font-size:40px;font-weight:700;color:var(--gold-l);line-height:1;margin-bottom:6px;}
+    .ov-l{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.4;font-weight:300;}
+    .ov-sub{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(200,151,42,0.5);letter-spacing:1px;margin-top:6px;text-transform:uppercase;}
+
+    /* Micro-market segmentation */
+    #segments{background:var(--cream);}
+    .seg-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .seg-card{background:var(--white);border:1px solid var(--border);padding:28px;border-radius:4px;transition:all 0.2s;}
+    .seg-card:hover{border-color:var(--gold);}
+    .seg-cluster{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+    .seg-title{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:700;color:var(--navy);margin-bottom:10px;}
+    .seg-body{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;margin-bottom:14px;}
+    .seg-stats{display:flex;flex-direction:column;gap:6px;}
+    .seg-stat{display:flex;justify-content:space-between;font-size:11px;}
+    .seg-stat-l{color:var(--grey);}
+    .seg-stat-v{color:var(--navy);font-weight:600;font-family:"JetBrains Mono",monospace;}
+
+    /* Top 20 accounts */
+    #accounts{background:var(--white);}
+    .filter-strip{display:flex;gap:8px;margin-bottom:24px;flex-wrap:wrap;}
+    .filt-btn{background:transparent;border:1px solid var(--border);color:var(--grey);font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:2px;cursor:pointer;transition:all 0.2s;}
+    .filt-btn.active,.filt-btn:hover{background:var(--navy);color:var(--white);border-color:var(--navy);}
+    .acc-table{width:100%;border-collapse:collapse;}
+    .acc-table th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border);}
+    .acc-table td{padding:14px 16px;font-size:12px;border-bottom:1px solid var(--border);vertical-align:middle;}
+    .acc-table tr:hover td{background:var(--gold-p);}
+    .acc-name{font-weight:600;color:var(--navy);}
+    .acc-loc{font-size:10px;color:var(--grey);margin-top:2px;}
+    .fit-bar{display:flex;align-items:center;gap:8px;}
+    .fit-track{width:80px;height:6px;background:var(--grey-b);border-radius:3px;}
+    .fit-fill{height:6px;border-radius:3px;background:var(--gold);}
+    .fit-n{font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--navy);font-weight:700;}
+    .seg-pill{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:100px;}
+    .s-bfsi{background:rgba(37,99,235,0.1);color:var(--blue);}
+    .s-it{background:rgba(139,92,246,0.1);color:#8b5cf6;}
+    .s-mnfg{background:rgba(16,185,129,0.1);color:var(--green);}
+    .s-hc{background:rgba(239,68,68,0.1);color:var(--red);}
+    .acc-hidden{display:none;}
+
+    /* Pipeline by month */
+    #pipeline{background:var(--cream);}
+    .pipe-grid{display:grid;grid-template-columns:1fr 1fr;gap:24px;}
+    .chart-box{background:var(--white);border:1px solid var(--border);border-radius:4px;padding:24px;}
+    .chart-title{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+    .chart-wrap{position:relative;height:220px;}
+
+    /* Messaging */
+    #messaging{background:var(--white);}
+    .msg-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+    .msg-card{border:1px solid var(--border);padding:28px;border-radius:4px;transition:all 0.2s;}
+    .msg-card:hover{border-color:var(--gold);}
+    .msg-seg{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+    .msg-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:12px;}
+    .msg-hook{background:var(--gold-p);border-left:3px solid var(--gold);padding:14px;font-size:13px;color:var(--navy);line-height:1.7;font-style:italic;margin-bottom:14px;}
+    .msg-body{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;}
+
+    footer{background:var(--navy);padding:32px 60px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(200,151,42,0.1);}
+    .f-brand{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:var(--white);}
+    .f-meta{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.5px;}
+    .f-links{display:flex;gap:20px;}
+    .f-links a{font-size:10px;color:rgba(255,255,255,0.28);text-decoration:none;letter-spacing:1px;text-transform:uppercase;font-family:"JetBrains Mono",monospace;transition:color 0.2s;}
+    .f-links a:hover{color:var(--gold);}
+    @media(max-width:960px){
+      body > nav{padding:14px 20px;}.nav-links{display:none;}
+      .proj-hero,section{padding-left:20px;padding-right:20px;}
+      .ov-grid{grid-template-columns:repeat(2,1fr);}
+      .seg-grid,.pipe-grid,.msg-grid{grid-template-columns:1fr;}
+      footer{flex-direction:column;gap:12px;text-align:center;padding:24px 20px;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand"><div class="nav-mono">SS</div><span class="nav-name">Shreyas Singh</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a href="../index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<section class="proj-hero">
+  <div class="orb1"></div><div class="orb2"></div><div class="hero-grid"></div>
+  <div class="proj-hero-c">
+    <div class="proj-eyebrow">Project 07 · Account Strategy · Noida / NCR</div>
+    <h1>Territory<br /><em>Micro-Market Plan</em></h1>
+    <p class="proj-hero-desc">
+      90-day territory plan for the Noida/NCR IT corridor. 420 total accounts mapped, 20-account priority list with fit scores, segment messaging frameworks, and monthly pipeline targets totalling ₹8Cr.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">420 Accounts</span>
+      <span class="badge">₹8Cr Pipeline</span>
+      <span class="badge">Noida / NCR</span>
+      <span class="badge">Fit Scoring</span>
+      <span class="badge">90-Day Plan</span>
+    </div>
+  </div>
+</section>
+
+<!-- OVERVIEW -->
+<section id="overview">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Territory Overview</div>
+  <h2 class="ld">Noida/NCR IT Corridor — Snapshot</h2>
+  <div class="rule"></div>
+  <div class="ov-grid">
+    <div class="ov-tile"><div class="ov-n">420</div><div class="ov-l">Total Accounts Mapped</div><div class="ov-sub">Noida + Gurgaon + Delhi</div></div>
+    <div class="ov-tile"><div class="ov-n">20</div><div class="ov-l">Priority Accounts</div><div class="ov-sub">Fit score ≥ 7/10</div></div>
+    <div class="ov-tile"><div class="ov-n">₹8Cr</div><div class="ov-l">90-Day Pipeline Target</div><div class="ov-sub">Across 4 segments</div></div>
+    <div class="ov-tile"><div class="ov-n">4</div><div class="ov-l">Micro-Market Clusters</div><div class="ov-sub">BFSI · IT · Mnfg · Health</div></div>
+  </div>
+</section>
+
+<!-- SEGMENTS -->
+<section id="segments">
+  <div class="sec-tag">Micro-Market Segmentation</div>
+  <h2>4 Clusters — NCR IT Corridor</h2>
+  <div class="rule"></div>
+  <div class="seg-grid">
+    <div class="seg-card">
+      <div class="seg-cluster">Cluster 1 · BFSI</div>
+      <div class="seg-title">Financial Services — Noida Sector 62/63</div>
+      <div class="seg-body">Concentrated BFSI presence: HDFC, Bajaj Finserv, IDFC First, Muthoot Finance. Primary pain: CPaaS consolidation + DLT compliance ahead of 2026 TRAI deadline.</div>
+      <div class="seg-stats">
+        <div class="seg-stat"><span class="seg-stat-l">Total Accounts</span><span class="seg-stat-v">85</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Priority Accounts</span><span class="seg-stat-v">7</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Pipeline Target</span><span class="seg-stat-v">₹3.2Cr</span></div>
+      </div>
+    </div>
+    <div class="seg-card">
+      <div class="seg-cluster">Cluster 2 · IT / IT-Enabled</div>
+      <div class="seg-title">Tech Companies — Noida Expressway</div>
+      <div class="seg-body">Mid-to-large IT companies: HCL, Wipro BPO, Birlasoft, NIIT Technologies. Primary pain: developer-friendly CPaaS API with WhatsApp + voice for internal and external communications.</div>
+      <div class="seg-stats">
+        <div class="seg-stat"><span class="seg-stat-l">Total Accounts</span><span class="seg-stat-v">140</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Priority Accounts</span><span class="seg-stat-v">6</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Pipeline Target</span><span class="seg-stat-v">₹2.4Cr</span></div>
+      </div>
+    </div>
+    <div class="seg-card">
+      <div class="seg-cluster">Cluster 3 · Manufacturing</div>
+      <div class="seg-title">Automotive &amp; Industrial — Greater Noida</div>
+      <div class="seg-body">Maruti, Honda, Samsung (Noida plant), LG Electronics. Primary pain: dealer/distributor communication automation + voice bots for order status and delivery notifications.</div>
+      <div class="seg-stats">
+        <div class="seg-stat"><span class="seg-stat-l">Total Accounts</span><span class="seg-stat-v">110</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Priority Accounts</span><span class="seg-stat-v">4</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Pipeline Target</span><span class="seg-stat-v">₹1.6Cr</span></div>
+      </div>
+    </div>
+    <div class="seg-card">
+      <div class="seg-cluster">Cluster 4 · Healthcare</div>
+      <div class="seg-title">Hospitals &amp; Diagnostics — Delhi NCR</div>
+      <div class="seg-body">Max Healthcare, Fortis, Dr Lal PathLabs, Apollo. Primary pain: patient communication automation — appointment reminders, lab report delivery, and WhatsApp prescription follow-up.</div>
+      <div class="seg-stats">
+        <div class="seg-stat"><span class="seg-stat-l">Total Accounts</span><span class="seg-stat-v">85</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Priority Accounts</span><span class="seg-stat-v">3</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Pipeline Target</span><span class="seg-stat-v">₹0.8Cr</span></div>
+      </div>
+    </div>
+    <div class="seg-card" style="background:var(--cream);border-style:dashed;">
+      <div class="seg-cluster">Long Tail</div>
+      <div class="seg-title">Remaining 400 Accounts</div>
+      <div class="seg-body">Qualified but not yet in active pipeline. Managed via marketing sequence and quarterly check-ins. Promoted to priority list when trigger events occur (funding, hiring, RFP).</div>
+      <div class="seg-stats">
+        <div class="seg-stat"><span class="seg-stat-l">Total Accounts</span><span class="seg-stat-v">400</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Marketing Sequence</span><span class="seg-stat-v">Active</span></div>
+        <div class="seg-stat"><span class="seg-stat-l">Pipeline Target</span><span class="seg-stat-v">—</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TOP 20 ACCOUNTS -->
+<section id="accounts">
+  <div class="sec-tag">Priority Account List</div>
+  <h2>Top 20 Accounts — Fit Scored</h2>
+  <div class="rule"></div>
+  <div class="filter-strip">
+    <button class="filt-btn active" onclick="filterAccounts('all',this)">All Segments</button>
+    <button class="filt-btn" onclick="filterAccounts('bfsi',this)">BFSI</button>
+    <button class="filt-btn" onclick="filterAccounts('it',this)">IT</button>
+    <button class="filt-btn" onclick="filterAccounts('mnfg',this)">Manufacturing</button>
+    <button class="filt-btn" onclick="filterAccounts('hc',this)">Healthcare</button>
+  </div>
+  <table class="acc-table">
+    <thead><tr><th>#</th><th>Account</th><th>Segment</th><th>Fit Score</th><th>Primary Pain</th><th>Est. Deal</th></tr></thead>
+    <tbody id="acc-tbody"></tbody>
+  </table>
+</section>
+
+<!-- PIPELINE CHARTS -->
+<section id="pipeline">
+  <div class="sec-tag">Pipeline Targets</div>
+  <h2>90-Day Pipeline Build — ₹8Cr</h2>
+  <div class="rule"></div>
+  <div class="pipe-grid">
+    <div class="chart-box">
+      <div class="chart-title">Monthly Pipeline Target vs. Projection (₹ Lakhs)</div>
+      <div class="chart-wrap"><canvas id="pipeChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Pipeline by Segment (₹ Lakhs)</div>
+      <div class="chart-wrap"><canvas id="segChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- SEGMENT MESSAGING -->
+<section id="messaging">
+  <div class="sec-tag">Segment Messaging</div>
+  <h2>Opening Message by Vertical</h2>
+  <div class="rule"></div>
+  <div class="msg-grid">
+    <div class="msg-card">
+      <div class="msg-seg">BFSI</div>
+      <div class="msg-title">The Compliance Hook</div>
+      <div class="msg-hook">"Every bank using &gt;2 CPaaS vendors is one TRAI audit away from a compliance gap they didn't build. I'd like 20 minutes to show you how [Bank] can consolidate before the 2026 deadline."</div>
+      <div class="msg-body">Lead with the regulatory urgency — then the consolidation ROI. BFSI buyers are risk-averse. The compliance angle gets the discovery call. The ROI closes it.</div>
+    </div>
+    <div class="msg-card">
+      <div class="msg-seg">IT / ITES</div>
+      <div class="msg-title">The Developer-First Hook</div>
+      <div class="msg-hook">"Your team is using [vendor] for SMS and a separate provider for WhatsApp. I've seen 40+ IT companies fix this with a single API layer — one SDK, one dashboard, one SLA. Worth a look?"</div>
+      <div class="msg-body">Tech teams respond to simplification. Show the unified API, the sandbox, the docs. Get engineering to pull in procurement — not the other way around.</div>
+    </div>
+    <div class="msg-card">
+      <div class="msg-seg">Manufacturing</div>
+      <div class="msg-title">The Dealer Network Hook</div>
+      <div class="msg-hook">"[Company] has 200+ dealers sending updates to customers via personal WhatsApp. That's not a communication strategy — it's a compliance liability. Here's how to fix it in 60 days."</div>
+      <div class="msg-body">Manufacturing CXOs care about brand consistency and dealer compliance. The DPDP Act (2023) makes personal WhatsApp use for business comms a legal risk. Own that narrative.</div>
+    </div>
+    <div class="msg-card">
+      <div class="msg-seg">Healthcare</div>
+      <div class="msg-title">The Patient Experience Hook</div>
+      <div class="msg-hook">"85% of missed appointments at Indian hospitals happen because the reminder SMS either didn't arrive or went to spam. I can show you how Max Healthcare dropped missed appointments by 34%."</div>
+      <div class="msg-body">Healthcare buyers respond to patient outcomes and operational cost. Lead with the missed appointment data — then show the WhatsApp appointment confirmation flow. Concreteness wins.</div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">Shreyas Singh</div>
+  <div class="f-meta">Pre-Sales &amp; IT Solutions · Gurgaon · 2026</div>
+  <nav class="f-links"><a href="../index.html">Home</a><a href="../index.html#projects">Projects</a><a href="../index.html#contact">Contact</a></nav>
+</footer>
+
+<script>
+const ACCOUNTS = [
+  {n:1,name:'HDFC Bank — Digital Banking Div.',loc:'Noida Sec 62',seg:'bfsi',segLabel:'BFSI',fit:95,pain:'CPaaS consolidation + DLT compliance',deal:'₹1.2Cr'},
+  {n:2,name:'Bajaj Finserv',loc:'Noida Expressway',seg:'bfsi',segLabel:'BFSI',fit:91,pain:'WhatsApp for loan communication',deal:'₹85L'},
+  {n:3,name:'HCL Technologies — Communications',loc:'Noida Sec 126',seg:'it',segLabel:'IT',fit:89,pain:'Unified CPaaS API across 4 BUs',deal:'₹70L'},
+  {n:4,name:'IDFC First Bank',loc:'Gurgaon',seg:'bfsi',segLabel:'BFSI',fit:88,pain:'OTP reliability + consent management',deal:'₹65L'},
+  {n:5,name:'Birlasoft',loc:'Noida Sec 63',seg:'it',segLabel:'IT',fit:86,pain:'Client communication automation',deal:'₹55L'},
+  {n:6,name:'Muthoot Finance',loc:'Greater Noida',seg:'bfsi',segLabel:'BFSI',fit:85,pain:'Collections + EMI reminder automation',deal:'₹60L'},
+  {n:7,name:'Max Healthcare',loc:'Delhi NCR',seg:'hc',segLabel:'Healthcare',fit:84,pain:'Appointment reminders + lab reports',deal:'₹40L'},
+  {n:8,name:'Honda Cars India',loc:'Greater Noida',seg:'mnfg',segLabel:'Mnfg',fit:83,pain:'Dealer comms + service notifications',deal:'₹50L'},
+  {n:9,name:'Wipro BPO',loc:'Noida Sec 135',seg:'it',segLabel:'IT',fit:82,pain:'Voice bot for inbound customer service',deal:'₹45L'},
+  {n:10,name:'NIIT Technologies',loc:'Gurgaon',seg:'it',segLabel:'IT',fit:81,pain:'Developer-friendly CPaaS API',deal:'₹35L'},
+  {n:11,name:'Dr Lal PathLabs',loc:'Delhi',seg:'hc',segLabel:'Healthcare',fit:80,pain:'Report delivery + WhatsApp notifications',deal:'₹30L'},
+  {n:12,name:'Samsung India — Noida Plant',loc:'Noida Sec 81',seg:'mnfg',segLabel:'Mnfg',fit:79,pain:'Dealer network WhatsApp compliance',deal:'₹45L'},
+  {n:13,name:'ICICI Lombard',loc:'Gurgaon',seg:'bfsi',segLabel:'BFSI',fit:78,pain:'Policy renewal + claim notifications',deal:'₹55L'},
+  {n:14,name:'Fortis Healthcare',loc:'Gurgaon',seg:'hc',segLabel:'Healthcare',fit:77,pain:'Appointment + discharge notifications',deal:'₹25L'},
+  {n:15,name:'LG Electronics India',loc:'Greater Noida',seg:'mnfg',segLabel:'Mnfg',fit:76,pain:'Service engineer + customer communication',deal:'₹35L'},
+  {n:16,name:'Maruti Suzuki — Parts Div.',loc:'Gurgaon',seg:'mnfg',segLabel:'Mnfg',fit:75,pain:'Dealer inventory + customer alerts',deal:'₹40L'},
+  {n:17,name:'SBI Life Insurance',loc:'Noida',seg:'bfsi',segLabel:'BFSI',fit:74,pain:'Renewal campaign + policy servicing',deal:'₹50L'},
+  {n:18,name:'Infoedge (Naukri)',loc:'Noida Sec 132',seg:'it',segLabel:'IT',fit:73,pain:'Job alert + employer notifications',deal:'₹30L'},
+  {n:19,name:'Apollo Diagnostics',loc:'Delhi NCR',seg:'hc',segLabel:'Healthcare',fit:72,pain:'Test booking + result delivery',deal:'₹20L'},
+  {n:20,name:'Paytm Money',loc:'Noida',seg:'bfsi',segLabel:'BFSI',fit:71,pain:'Transaction + KYC notifications',deal:'₹35L'}
+];
+
+const SEG_CLASS = {bfsi:'s-bfsi',it:'s-it',mnfg:'s-mnfg',hc:'s-hc'};
+
+function renderAccounts(filter) {
+  const tbody = document.getElementById('acc-tbody');
+  tbody.innerHTML = '';
+  ACCOUNTS.filter(a => filter === 'all' || a.seg === filter).forEach(a => {
+    const tr = document.createElement('tr');
+    tr.innerHTML = `
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--grey)">${a.n}</td>
+      <td><div class="acc-name">${a.name}</div><div class="acc-loc">${a.loc}</div></td>
+      <td><span class="seg-pill ${SEG_CLASS[a.seg]}">${a.segLabel}</span></td>
+      <td><div class="fit-bar"><div class="fit-track"><div class="fit-fill" style="width:${a.fit}%"></div></div><span class="fit-n">${a.fit}</span></div></td>
+      <td style="color:var(--grey);font-size:12px">${a.pain}</td>
+      <td style="font-family:'JetBrains Mono',monospace;font-size:11px;color:var(--navy);font-weight:700">${a.deal}</td>
+    `;
+    tbody.appendChild(tr);
+  });
+}
+
+function filterAccounts(f, btn) {
+  document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+  btn.classList.add('active');
+  renderAccounts(f);
+}
+
+renderAccounts('all');
+
+const gridC = 'rgba(0,0,0,0.06)', labelC = 'rgba(0,0,0,0.4)';
+const gold = '#c8972a', goldL = '#e8b84b', blue = '#2563eb', green = '#10b981', purple = '#8b5cf6';
+
+new Chart(document.getElementById('pipeChart'), {
+  type:'bar',
+  data:{
+    labels:['Month 1','Month 2','Month 3'],
+    datasets:[
+      {label:'Target',data:[200,300,300],backgroundColor:'rgba(200,151,42,0.3)',borderColor:gold,borderWidth:2},
+      {label:'Projection',data:[180,320,310],backgroundColor:'rgba(200,151,42,0.6)',borderColor:goldL,borderWidth:1}
+    ]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'rgba(0,0,0,0.5)',font:{size:9,family:'JetBrains Mono'},boxWidth:12}}},scales:{x:{grid:{color:gridC},ticks:{color:labelC,font:{size:9,family:'JetBrains Mono'}}},y:{grid:{color:gridC},ticks:{color:labelC,font:{size:9,family:'JetBrains Mono'},callback:v=>'₹'+v+'L'}}}}
+});
+
+new Chart(document.getElementById('segChart'), {
+  type:'doughnut',
+  data:{
+    labels:['BFSI','IT / ITES','Manufacturing','Healthcare'],
+    datasets:[{data:[320,240,160,80],backgroundColor:[blue,'rgba(139,92,246,0.8)',green,'rgba(239,68,68,0.8)'],borderWidth:0}]
+  },
+  options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{position:'bottom',labels:{color:'rgba(0,0,0,0.6)',font:{size:9,family:'JetBrains Mono'},boxWidth:12,padding:14}}}}
+});
+</script>
+</body>
+</html>

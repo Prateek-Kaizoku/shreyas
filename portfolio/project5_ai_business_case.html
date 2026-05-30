@@ -1,0 +1,309 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>AI Adoption Business Case · Shreyas Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root{--navy:#0f2b4a;--navy-m:#142848;--navy-l:#1e3d6e;--gold:#c8972a;--gold-l:#e8b84b;--gold-p:#fbf3e2;--cream:#f9f7f4;--white:#ffffff;--grey:#64748b;--grey-l:#f1f5f9;--grey-b:#e2e8f0;--text:#0f172a;--border:rgba(0,0,0,0.07);--green:#10b981;--blue:#2563eb;--red:#ef4444;}
+    *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    body > nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(10,22,40,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,151,42,0.15);}
+    .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-mono{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--navy);}
+    .nav-name{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--white);}
+    .nav-links{display:flex;gap:28px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:1.3px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--gold-l);}
+    .nav-back{background:var(--gold);color:var(--navy);padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.2s;}
+    .nav-back:hover{background:var(--gold-l);}
+    .proj-hero{min-height:54vh;background:var(--navy);display:flex;align-items:center;position:relative;overflow:hidden;padding:140px 60px 80px;}
+    .orb1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.15) 0%,transparent 70%);right:-100px;top:-100px;pointer-events:none;}
+    .orb2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,151,42,0.1) 0%,transparent 70%);left:-100px;bottom:-50px;pointer-events:none;}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:80px 80px;}
+    .proj-hero-c{position:relative;z-index:2;max-width:860px;}
+    .proj-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+    .proj-hero-c h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,5vw,64px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .proj-hero-c h1 em{font-style:italic;color:var(--gold-l);}
+    .proj-hero-desc{font-size:15px;line-height:1.75;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:36px;font-weight:300;}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;}
+    .badge{background:rgba(200,151,42,0.12);border:1px solid rgba(200,151,42,0.25);color:var(--gold-l);font-size:10px;font-family:"JetBrains Mono",monospace;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:100px;}
+    section{padding:80px 60px;}
+    .sec-tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:14px;}
+    h2{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--navy);margin-bottom:12px;line-height:1.15;}
+    h2.ld{color:var(--white);}
+    .rule{width:48px;height:2px;background:var(--gold);margin-bottom:40px;}
+
+    /* Executive summary */
+    #exec-summary{background:var(--navy);}
+    .es-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px;}
+    .es-tile{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:28px 20px;text-align:center;border-radius:4px;}
+    .es-n{font-family:"Cormorant Garamond",serif;font-size:44px;font-weight:700;color:var(--gold-l);line-height:1;margin-bottom:6px;}
+    .es-l{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.4;font-weight:300;}
+    .es-sub{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(200,151,42,0.5);letter-spacing:1px;margin-top:6px;text-transform:uppercase;}
+
+    /* ROI chart */
+    #roi-chart{background:var(--navy);padding-top:0;}
+    .chart-box{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);border-radius:4px;padding:28px;}
+    .chart-title{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:18px;}
+    .charts-row{display:grid;grid-template-columns:1fr 1fr;gap:20px;}
+    .chart-wrap{position:relative;height:240px;}
+
+    /* Use cases */
+    #use-cases{background:var(--cream);}
+    .uc-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .uc-card{background:var(--white);border:1px solid var(--border);padding:24px;border-radius:4px;transition:all 0.2s;}
+    .uc-card:hover{border-color:var(--gold);}
+    .uc-icon{font-size:28px;margin-bottom:14px;}
+    .uc-label{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+    .uc-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+    .uc-body{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;}
+    .uc-metric{margin-top:14px;background:var(--gold-p);border-left:3px solid var(--gold);padding:10px 12px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--navy);}
+
+    /* Implementation roadmap */
+    #roadmap{background:var(--white);}
+    .rm-list{display:flex;flex-direction:column;gap:0;}
+    .rm-item{display:grid;grid-template-columns:180px 1fr;gap:32px;padding:28px 0;border-bottom:1px solid var(--border);}
+    .rm-item:last-child{border-bottom:none;}
+    .rm-left{text-align:right;}
+    .rm-phase{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+    .rm-period{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;color:var(--navy);line-height:1;}
+    .rm-right h4{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+    .rm-right p{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;margin-bottom:10px;}
+    .rm-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .rm-tag{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;background:var(--grey-l);color:var(--navy);padding:4px 10px;border-radius:2px;}
+
+    /* Risk register */
+    #risks{background:var(--cream);}
+    .risk-table{width:100%;border-collapse:collapse;}
+    .risk-table th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border);}
+    .risk-table td{padding:16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:top;}
+    .risk-table tr:hover td{background:var(--gold-p);}
+    .rtag{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 10px;border-radius:100px;}
+    .rh{background:rgba(239,68,68,0.1);color:var(--red);}
+    .rm-{background:rgba(234,179,8,0.1);color:#ca8a04;}
+    .rl{background:rgba(16,185,129,0.1);color:var(--green);}
+
+    footer{background:var(--navy);padding:32px 60px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(200,151,42,0.1);}
+    .f-brand{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:var(--white);}
+    .f-meta{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.5px;}
+    .f-links{display:flex;gap:20px;}
+    .f-links a{font-size:10px;color:rgba(255,255,255,0.28);text-decoration:none;letter-spacing:1px;text-transform:uppercase;font-family:"JetBrains Mono",monospace;transition:color 0.2s;}
+    .f-links a:hover{color:var(--gold);}
+    @media(max-width:960px){
+      body > nav{padding:14px 20px;}.nav-links{display:none;}
+      .proj-hero,section{padding-left:20px;padding-right:20px;}
+      .es-grid{grid-template-columns:repeat(2,1fr);}
+      .charts-row,.uc-grid{grid-template-columns:1fr;}
+      .rm-item{grid-template-columns:1fr;}.rm-left{text-align:left;}
+      footer{flex-direction:column;gap:12px;text-align:center;padding:24px 20px;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand"><div class="nav-mono">SS</div><span class="nav-name">Shreyas Singh</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a href="../index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<section class="proj-hero">
+  <div class="orb1"></div><div class="orb2"></div><div class="hero-grid"></div>
+  <div class="proj-hero-c">
+    <div class="proj-eyebrow">Project 05 · AI Business Case · BFSI</div>
+    <h1>AI Adoption<br /><em>Business Case</em></h1>
+    <p class="proj-hero-desc">
+      Full business case for an Indian bank adopting Salesforce Einstein AI. 284% ROI, 14-month payback, ₹22.4Cr NPV. Covers 4 use cases, a phased implementation roadmap, and a full risk register. Built to CFO and CTO audience standards.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">284% ROI</span>
+      <span class="badge">₹22.4Cr NPV</span>
+      <span class="badge">Salesforce Einstein</span>
+      <span class="badge">BFSI</span>
+      <span class="badge">Implementation Plan</span>
+    </div>
+  </div>
+</section>
+
+<!-- EXEC SUMMARY -->
+<section id="exec-summary">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Executive Summary</div>
+  <h2 class="ld">The Business Case — 4 Numbers</h2>
+  <div class="rule"></div>
+  <div class="es-grid">
+    <div class="es-tile"><div class="es-n">284%</div><div class="es-l">3-Year ROI</div><div class="es-sub">Net of all costs</div></div>
+    <div class="es-tile"><div class="es-n">14mo</div><div class="es-l">Payback Period</div><div class="es-sub">From go-live</div></div>
+    <div class="es-tile"><div class="es-n">₹22.4Cr</div><div class="es-l">3-Year NPV</div><div class="es-sub">@ 12% discount rate</div></div>
+    <div class="es-tile"><div class="es-n">₹7.8Cr</div><div class="es-l">Total Investment</div><div class="es-sub">Licenses + implementation</div></div>
+  </div>
+</section>
+
+<!-- ROI CHARTS -->
+<section id="roi-chart">
+  <div class="charts-row">
+    <div class="chart-box">
+      <div class="chart-title">Cumulative Cash Flow — 36 Months (₹ Lakhs)</div>
+      <div class="chart-wrap"><canvas id="cashflowChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Benefits by Use Case (₹ Lakhs / Year)</div>
+      <div class="chart-wrap"><canvas id="benefitsChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- USE CASES -->
+<section id="use-cases">
+  <div class="sec-tag">Use Cases</div>
+  <h2>4 AI Use Cases — Benefit Analysis</h2>
+  <div class="rule"></div>
+  <div class="uc-grid">
+    <div class="uc-card">
+      <div class="uc-icon">🤖</div>
+      <div class="uc-label">Use Case 1</div>
+      <div class="uc-title">AI-Powered Lead Scoring</div>
+      <div class="uc-body">Einstein AI scores inbound leads from digital banking applications, web enquiries, and branch walk-ins. Routes high-probability leads to relationship managers within 5 minutes vs. 2 days currently.</div>
+      <div class="uc-metric">₹4.2Cr / year · 35% conversion lift</div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">💬</div>
+      <div class="uc-label">Use Case 2</div>
+      <div class="uc-title">Next-Best-Action Engine</div>
+      <div class="uc-body">Einstein Next Best Action recommends product cross-sells during RM interactions. Trained on 3 years of transaction data. Predicts which customers are likely to respond to a home loan offer vs. mutual fund upsell.</div>
+      <div class="uc-metric">₹6.8Cr / year · 28% cross-sell increase</div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">📞</div>
+      <div class="uc-label">Use Case 3</div>
+      <div class="uc-title">Service Deflection via AI Chat</div>
+      <div class="uc-body">Einstein Bots handles 65% of routine service queries — balance enquiries, statement requests, and EMI recalculation — without human intervention. Frees 120 FTE hours per month at the contact centre.</div>
+      <div class="uc-metric">₹3.4Cr / year · 65% deflection rate</div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">⚠️</div>
+      <div class="uc-label">Use Case 4</div>
+      <div class="uc-title">Churn Prediction &amp; Retention</div>
+      <div class="uc-body">ML model scores each customer's 90-day churn probability based on transaction drop, service complaints, and competitor activity signals. Triggers proactive retention campaign 60 days before predicted churn.</div>
+      <div class="uc-metric">₹2.8Cr / year · 22% churn reduction</div>
+    </div>
+    <div class="uc-card">
+      <div class="uc-icon">📊</div>
+      <div class="uc-label">Efficiency Gains</div>
+      <div class="uc-title">Operational Cost Reduction</div>
+      <div class="uc-body">Automated pipeline reporting eliminates 8 hours/week of manual CRM data entry per RM. 240 RMs × 8 hours = 1,920 hours/month redirected to client-facing activities.</div>
+      <div class="uc-metric">₹3.2Cr / year · 1,920 hrs/month saved</div>
+    </div>
+    <div class="uc-card" style="border-color:var(--gold);background:var(--gold-p);">
+      <div class="uc-icon">💰</div>
+      <div class="uc-label">Total Benefits</div>
+      <div class="uc-title" style="color:var(--navy)">₹20.4Cr / Year</div>
+      <div class="uc-body" style="color:var(--navy)">Combined Year 3 benefits across all use cases. Against a total investment of ₹7.8Cr (licenses + implementation + training), the 3-year NPV at 12% discount rate is ₹22.4Cr.</div>
+      <div class="uc-metric">284% ROI · 14-month payback</div>
+    </div>
+  </div>
+</section>
+
+<!-- IMPLEMENTATION ROADMAP -->
+<section id="roadmap">
+  <div class="sec-tag">Implementation Roadmap</div>
+  <h2>Phased Rollout — 12 Months</h2>
+  <div class="rule"></div>
+  <div class="rm-list">
+    <div class="rm-item">
+      <div class="rm-left"><div class="rm-phase">Phase 1</div><div class="rm-period">Month 1–3</div></div>
+      <div class="rm-right">
+        <h4>Foundation &amp; Data Readiness</h4>
+        <p>Salesforce Sales Cloud implementation and CRM data migration. Connect core banking system (CBS) via MuleSoft API layer. Data quality audit — Einstein models are only as good as the data they train on.</p>
+        <div class="rm-tags"><span class="rm-tag">Salesforce CRM</span><span class="rm-tag">MuleSoft API</span><span class="rm-tag">Data Migration</span><span class="rm-tag">CBS Integration</span></div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-left"><div class="rm-phase">Phase 2</div><div class="rm-period">Month 4–6</div></div>
+      <div class="rm-right">
+        <h4>Lead Scoring &amp; Service Bots</h4>
+        <p>Einstein Lead Scoring configured and trained on 18-month historical conversion data. Einstein Bots deployed on the bank's WhatsApp and web channels. Target: 40% service deflection by end of Phase 2.</p>
+        <div class="rm-tags"><span class="rm-tag">Einstein Lead Score</span><span class="rm-tag">Einstein Bots</span><span class="rm-tag">WhatsApp Integration</span><span class="rm-tag">Training Data</span></div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-left"><div class="rm-phase">Phase 3</div><div class="rm-period">Month 7–9</div></div>
+      <div class="rm-right">
+        <h4>Next-Best-Action &amp; Churn Model</h4>
+        <p>Einstein NBA model trained on product purchase history and customer segment data. Churn prediction model built and validated against last 12 months of actual churn events. Both models piloted with 50 RMs before full rollout.</p>
+        <div class="rm-tags"><span class="rm-tag">Einstein NBA</span><span class="rm-tag">Churn Model</span><span class="rm-tag">RM Pilot</span><span class="rm-tag">Model Validation</span></div>
+      </div>
+    </div>
+    <div class="rm-item">
+      <div class="rm-left"><div class="rm-phase">Phase 4</div><div class="rm-period">Month 10–12</div></div>
+      <div class="rm-right">
+        <h4>Full Rollout &amp; Optimisation</h4>
+        <p>All 240 RMs live. Weekly model performance reviews. A/B testing on NBA recommendations. Executive dashboard for CISO, CMO, and CFO showing AI ROI vs. targets. Year 2 roadmap presented at 12-month review.</p>
+        <div class="rm-tags"><span class="rm-tag">240 RM Rollout</span><span class="rm-tag">A/B Testing</span><span class="rm-tag">Executive Dashboard</span><span class="rm-tag">Year 2 Planning</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- RISK REGISTER -->
+<section id="risks">
+  <div class="sec-tag">Risk Register</div>
+  <h2>Key Risks &amp; Mitigations</h2>
+  <div class="rule"></div>
+  <table class="risk-table">
+    <thead><tr><th>Risk</th><th>Probability</th><th>Impact</th><th>Mitigation</th></tr></thead>
+    <tbody>
+      <tr><td><strong>Data quality issues in CBS</strong><br/><small style="color:var(--grey)">Inconsistent customer records reducing model accuracy</small></td><td><span class="rtag rh">High</span></td><td><span class="rtag rh">High</span></td><td>6-week data cleansing sprint in Phase 1. Minimum 95% data completeness gate before model training begins.</td></tr>
+      <tr><td><strong>RM adoption resistance</strong><br/><small style="color:var(--grey)">RMs ignoring AI recommendations in favour of intuition</small></td><td><span class="rtag rh">High</span></td><td><span class="rtag rm-">Medium</span></td><td>Phase 3 pilot with 50 champion RMs. Incentive structure tied to NBA follow-through rate. Manager dashboards showing individual adoption scores.</td></tr>
+      <tr><td><strong>RBI data residency compliance</strong><br/><small style="color:var(--grey)">Customer data must remain within India borders</small></td><td><span class="rtag rm-">Medium</span></td><td><span class="rtag rh">High</span></td><td>Salesforce Government Cloud deployed on AWS Mumbai (ap-south-1). RBI compliance certification obtained pre-Phase 1 go-live.</td></tr>
+      <tr><td><strong>Integration complexity with CBS</strong><br/><small style="color:var(--grey)">Legacy core banking system API limitations</small></td><td><span class="rtag rm-">Medium</span></td><td><span class="rtag rm-">Medium</span></td><td>MuleSoft middleware layer abstracts CBS complexity. 4-week API design sprint with CBS vendor before Phase 1 begins.</td></tr>
+      <tr><td><strong>Model bias in lead scoring</strong><br/><small style="color:var(--grey)">Historical data encoding socioeconomic bias</small></td><td><span class="rtag rl">Low</span></td><td><span class="rtag rh">High</span></td><td>Fairness audit on training data by independent data science team. Geographic and demographic bias checks before production deployment.</td></tr>
+    </tbody>
+  </table>
+</section>
+
+<footer>
+  <div class="f-brand">Shreyas Singh</div>
+  <div class="f-meta">Pre-Sales &amp; IT Solutions · Gurgaon · 2026</div>
+  <nav class="f-links"><a href="../index.html">Home</a><a href="../index.html#projects">Projects</a><a href="../index.html#contact">Contact</a></nav>
+</footer>
+
+<script>
+  const gridC = 'rgba(255,255,255,0.06)', labelC = 'rgba(255,255,255,0.4)';
+  const gold = '#c8972a', goldL = '#e8b84b', blue = '#2563eb', green = '#10b981', purple = '#8b5cf6', red = '#ef4444';
+
+  new Chart(document.getElementById('cashflowChart'), {
+    type:'line',
+    data:{
+      labels:['M1','M2','M3','M4','M5','M6','M7','M8','M9','M10','M11','M12','M18','M24','M30','M36'],
+      datasets:[
+        {label:'Cumulative Investment',data:[-120,-200,-320,-420,-500,-580,-640,-700,-740,-760,-770,-780,-780,-780,-780,-780],borderColor:red,backgroundColor:'transparent',tension:0.4,pointRadius:2},
+        {label:'Cumulative Benefit',data:[0,0,0,20,50,90,140,200,270,340,420,510,900,1380,1860,2400],borderColor:green,backgroundColor:'rgba(16,185,129,0.08)',fill:true,tension:0.4,pointRadius:2}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'rgba(255,255,255,0.5)',font:{size:9,family:'JetBrains Mono'},boxWidth:12}}},scales:{x:{grid:{color:gridC},ticks:{color:labelC,font:{size:9,family:'JetBrains Mono'}}},y:{grid:{color:gridC},ticks:{color:labelC,font:{size:9,family:'JetBrains Mono'},callback:v=>'₹'+v+'L'}}}}
+  });
+
+  new Chart(document.getElementById('benefitsChart'), {
+    type:'bar',
+    data:{
+      labels:['Lead\nScoring','NBA\nEngine','Service\nBots','Churn\nPrediction','Ops\nEfficiency'],
+      datasets:[
+        {label:'Year 1',data:[140,180,100,80,90],backgroundColor:'rgba(200,151,42,0.4)',borderColor:gold,borderWidth:1},
+        {label:'Year 2',data:[310,500,260,200,240],backgroundColor:'rgba(200,151,42,0.6)',borderColor:gold,borderWidth:1},
+        {label:'Year 3',data:[420,680,340,280,320],backgroundColor:gold,borderColor:goldL,borderWidth:1}
+      ]
+    },
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{labels:{color:'rgba(255,255,255,0.5)',font:{size:9,family:'JetBrains Mono'},boxWidth:12}}},scales:{x:{grid:{color:gridC},ticks:{color:labelC,font:{size:9,family:'JetBrains Mono'}}},y:{grid:{color:gridC},ticks:{color:labelC,font:{size:9,family:'JetBrains Mono'},callback:v=>'₹'+v+'L'}}}}
+  });
+</script>
+</body>
+</html>

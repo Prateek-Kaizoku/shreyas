@@ -1,0 +1,342 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>CPaaS India Competitive Analysis · Shreyas Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root { --navy:#0f2b4a; --navy-m:#142848; --navy-l:#1e3d6e; --gold:#c8972a; --gold-l:#e8b84b; --gold-p:#fbf3e2; --cream:#f9f7f4; --white:#ffffff; --grey:#64748b; --grey-l:#f1f5f9; --grey-b:#e2e8f0; --text:#0f172a; --border:rgba(0,0,0,0.07); --green:#10b981; --blue:#2563eb; --red:#ef4444; }
+    *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+
+    body > nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(10,22,40,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,151,42,0.15);}
+    .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-mono{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--navy);}
+    .nav-name{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--white);}
+    .nav-links{display:flex;gap:28px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:1.3px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--gold-l);}
+    .nav-back{background:var(--gold);color:var(--navy);padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.2s;}
+    .nav-back:hover{background:var(--gold-l);}
+
+    .proj-hero{min-height:54vh;background:var(--navy);display:flex;align-items:center;position:relative;overflow:hidden;padding:140px 60px 80px;}
+    .orb1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.15) 0%,transparent 70%);right:-100px;top:-100px;pointer-events:none;}
+    .orb2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,151,42,0.1) 0%,transparent 70%);left:-100px;bottom:-50px;pointer-events:none;}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:80px 80px;}
+    .proj-hero-c{position:relative;z-index:2;max-width:860px;}
+    .proj-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+    .proj-hero-c h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,5vw,64px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .proj-hero-c h1 em{font-style:italic;color:var(--gold-l);}
+    .proj-hero-desc{font-size:15px;line-height:1.75;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:36px;font-weight:300;}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;}
+    .badge{background:rgba(200,151,42,0.12);border:1px solid rgba(200,151,42,0.25);color:var(--gold-l);font-size:10px;font-family:"JetBrains Mono",monospace;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:100px;}
+
+    section{padding:80px 60px;}
+    .sec-tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:14px;}
+    h2{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--navy);margin-bottom:12px;line-height:1.15;}
+    h2.ld{color:var(--white);}
+    .rule{width:48px;height:2px;background:var(--gold);margin-bottom:40px;}
+
+    /* Market stats */
+    #market{background:var(--navy);}
+    .mkt-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:48px;}
+    .mkt-tile{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:28px 20px;text-align:center;border-radius:4px;}
+    .mkt-n{font-family:"Cormorant Garamond",serif;font-size:42px;font-weight:700;color:var(--gold-l);line-height:1;margin-bottom:6px;}
+    .mkt-label{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.4;font-weight:300;}
+    .mkt-sub{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(200,151,42,0.5);letter-spacing:1px;margin-top:6px;text-transform:uppercase;}
+
+    /* Competitor table */
+    #competitors{background:var(--cream);}
+    .comp-table{width:100%;border-collapse:collapse;margin-bottom:40px;}
+    .comp-table th{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--grey);padding:12px 16px;text-align:left;border-bottom:2px solid var(--border);}
+    .comp-table td{padding:18px 16px;font-size:13px;border-bottom:1px solid var(--border);vertical-align:top;}
+    .comp-table tr:hover td{background:var(--gold-p);}
+    .comp-name{font-weight:700;color:var(--navy);font-size:14px;}
+    .comp-pos{font-size:11px;color:var(--grey);margin-top:3px;}
+    .score-bar-wrap{background:var(--grey-b);height:8px;border-radius:4px;width:120px;}
+    .score-bar{height:8px;border-radius:4px;background:var(--gold);}
+    .score-num{font-family:"JetBrains Mono",monospace;font-size:11px;color:var(--navy);margin-left:8px;font-weight:700;}
+    .score-cell{display:flex;align-items:center;gap:8px;}
+    .tag-sm{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;padding:3px 8px;border-radius:100px;}
+    .t-strength{background:rgba(16,185,129,0.1);color:var(--green);}
+    .t-weak{background:rgba(239,68,68,0.1);color:var(--red);}
+
+    /* Battlecards */
+    #battlecards{background:var(--white);}
+    .bc-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+    .bc-card{border:1px solid var(--border);padding:28px;border-radius:4px;transition:all 0.2s;}
+    .bc-card:hover{border-color:var(--gold);box-shadow:0 4px 20px rgba(200,151,42,0.08);}
+    .bc-vs{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:8px;}
+    .bc-name{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;color:var(--navy);margin-bottom:20px;}
+    .bc-row{display:flex;gap:16px;margin-bottom:14px;}
+    .bc-col{flex:1;padding:14px;border-radius:4px;}
+    .bc-col.their{background:rgba(239,68,68,0.05);border:1px solid rgba(239,68,68,0.12);}
+    .bc-col.ours{background:rgba(16,185,129,0.05);border:1px solid rgba(16,185,129,0.12);}
+    .bc-col-label{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-bottom:6px;}
+    .bc-col-body{font-size:12px;line-height:1.65;color:var(--text);font-weight:400;}
+    .bc-win{margin-top:14px;background:var(--gold-p);border-left:3px solid var(--gold);padding:12px 14px;font-size:12px;color:var(--navy);line-height:1.6;}
+
+    /* Win themes */
+    #winthemes{background:var(--cream);}
+    .wt-list{display:flex;flex-direction:column;gap:16px;}
+    .wt-item{display:flex;align-items:flex-start;gap:20px;padding:24px;background:var(--white);border:1px solid var(--border);border-radius:4px;transition:all 0.2s;}
+    .wt-item:hover{border-color:var(--gold);}
+    .wt-num{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:700;color:var(--gold);min-width:48px;line-height:1;}
+    .wt-body h4{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+    .wt-body p{font-size:13px;line-height:1.75;color:var(--grey);font-weight:300;}
+
+    footer{background:var(--navy);padding:32px 60px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(200,151,42,0.1);}
+    .f-brand{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:var(--white);}
+    .f-meta{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.5px;}
+    .f-links{display:flex;gap:20px;}
+    .f-links a{font-size:10px;color:rgba(255,255,255,0.28);text-decoration:none;letter-spacing:1px;text-transform:uppercase;font-family:"JetBrains Mono",monospace;transition:color 0.2s;}
+    .f-links a:hover{color:var(--gold);}
+
+    @media(max-width:960px){
+      body > nav{padding:14px 20px;}.nav-links{display:none;}
+      .proj-hero,section{padding-left:20px;padding-right:20px;}
+      .mkt-grid{grid-template-columns:repeat(2,1fr);}
+      .bc-grid{grid-template-columns:1fr;}
+      .bc-row{flex-direction:column;}
+      footer{flex-direction:column;gap:12px;text-align:center;padding:24px 20px;}
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-brand">
+    <div class="nav-mono">SS</div>
+    <span class="nav-name">Shreyas Singh</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a href="../index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<section class="proj-hero">
+  <div class="orb1"></div><div class="orb2"></div><div class="hero-grid"></div>
+  <div class="proj-hero-c">
+    <div class="proj-eyebrow">Project 02 · Competitive Intelligence · CPaaS</div>
+    <h1>CPaaS India<br /><em>Competitive Analysis</em></h1>
+    <p class="proj-hero-desc">
+      Research-backed analysis of India's $1.28B CPaaS market. 6 players scored across product depth, pricing, compliance, and BFSI fit. Sales battlecards built for each competitor. Source: Mordor Intelligence 2026.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">Market Research</span>
+      <span class="badge">Competitive Intel</span>
+      <span class="badge">Sales Battlecards</span>
+      <span class="badge">BFSI</span>
+      <span class="badge">CPaaS</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET OVERVIEW -->
+<section id="market">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Market Landscape</div>
+  <h2 class="ld">India CPaaS Market — 2026 Snapshot</h2>
+  <div class="rule"></div>
+  <div class="mkt-grid">
+    <div class="mkt-tile">
+      <div class="mkt-n">$1.28B</div>
+      <div class="mkt-label">India CPaaS Market Size</div>
+      <div class="mkt-sub">Mordor Intelligence · 2026</div>
+    </div>
+    <div class="mkt-tile">
+      <div class="mkt-n">13%</div>
+      <div class="mkt-label">CAGR 2026–2031</div>
+      <div class="mkt-sub">Growing to $2.36B</div>
+    </div>
+    <div class="mkt-tile">
+      <div class="mkt-n">6</div>
+      <div class="mkt-label">Competitors Analysed</div>
+      <div class="mkt-sub">Full profile + score</div>
+    </div>
+    <div class="mkt-tile">
+      <div class="mkt-n">5</div>
+      <div class="mkt-label">Sales Battlecards</div>
+      <div class="mkt-sub">Head-to-head positioning</div>
+    </div>
+  </div>
+</section>
+
+<!-- COMPETITOR SCORECARD -->
+<section id="competitors">
+  <div class="sec-tag">Competitor Scorecard</div>
+  <h2>6 Players — Scored &amp; Ranked</h2>
+  <div class="rule"></div>
+  <table class="comp-table">
+    <thead>
+      <tr>
+        <th>Company</th>
+        <th>Primary Strength</th>
+        <th>BFSI Fit Score</th>
+        <th>Key Risk</th>
+      </tr>
+    </thead>
+    <tbody>
+      <tr>
+        <td><div class="comp-name">Tanla Platforms</div><div class="comp-pos">Market leader · SMS/OTP volume play</div></td>
+        <td><span class="tag-sm t-strength">Telco Trust</span><br/><small style="color:var(--grey);font-size:12px;margin-top:6px;display:block;">Strongest carrier relationships; most trusted by banks for OTP delivery</small></td>
+        <td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:78%"></div></div><span class="score-num">78/100</span></div></td>
+        <td><span class="tag-sm t-weak">Compliance depth</span></td>
+      </tr>
+      <tr>
+        <td><div class="comp-name">Gupshup</div><div class="comp-pos">Conversational AI · WhatsApp market leader</div></td>
+        <td><span class="tag-sm t-strength">WhatsApp API</span><br/><small style="color:var(--grey);font-size:12px;margin-top:6px;display:block;">Best-in-class conversational AI; strong WhatsApp Business API coverage</small></td>
+        <td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:72%"></div></div><span class="score-num">72/100</span></div></td>
+        <td><span class="tag-sm t-weak">Consent management</span></td>
+      </tr>
+      <tr>
+        <td><div class="comp-name">Route Mobile</div><div class="comp-pos">Global carrier network · Deliverability play</div></td>
+        <td><span class="tag-sm t-strength">Global Reach</span><br/><small style="color:var(--grey);font-size:12px;margin-top:6px;display:block;">Widest global carrier network; highest deliverability SLAs in class</small></td>
+        <td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:68%"></div></div><span class="score-num">68/100</span></div></td>
+        <td><span class="tag-sm t-weak">Video engagement</span></td>
+      </tr>
+      <tr>
+        <td><div class="comp-name">Infobip</div><div class="comp-pos">Global omnichannel · Enterprise platform</div></td>
+        <td><span class="tag-sm t-strength">Platform Breadth</span><br/><small style="color:var(--grey);font-size:12px;margin-top:6px;display:block;">Most complete omnichannel platform globally; strong enterprise pedigree</small></td>
+        <td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:74%"></div></div><span class="score-num">74/100</span></div></td>
+        <td><span class="tag-sm t-weak">India pricing gap</span></td>
+      </tr>
+      <tr>
+        <td><div class="comp-name">Kaleyra</div><div class="comp-pos">Mid-market · Voice &amp; SMS bundle</div></td>
+        <td><span class="tag-sm t-strength">Voice CPaaS</span><br/><small style="color:var(--grey);font-size:12px;margin-top:6px;display:block;">Strong voice CPaaS; good mid-market pricing; established in BFSI collections</small></td>
+        <td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:62%"></div></div><span class="score-num">62/100</span></div></td>
+        <td><span class="tag-sm t-weak">Digital channel gaps</span></td>
+      </tr>
+      <tr>
+        <td><div class="comp-name">ValueFirst</div><div class="comp-pos">Tata-backed · India enterprise</div></td>
+        <td><span class="tag-sm t-strength">Enterprise Trust</span><br/><small style="color:var(--grey);font-size:12px;margin-top:6px;display:block;">Tata Group backing creates instant credibility; strong India enterprise relationships</small></td>
+        <td><div class="score-cell"><div class="score-bar-wrap"><div class="score-bar" style="width:70%"></div></div><span class="score-num">70/100</span></div></td>
+        <td><span class="tag-sm t-weak">Innovation pace</span></td>
+      </tr>
+    </tbody>
+  </table>
+</section>
+
+<!-- BATTLECARDS -->
+<section id="battlecards">
+  <div class="sec-tag">Sales Battlecards</div>
+  <h2>Head-to-Head Positioning</h2>
+  <div class="rule"></div>
+  <div class="bc-grid">
+    <div class="bc-card">
+      <div class="bc-vs">vs Competitor</div>
+      <div class="bc-name">Tanla Platforms</div>
+      <div class="bc-row">
+        <div class="bc-col their">
+          <div class="bc-col-label">Their Claim</div>
+          <div class="bc-col-body">Market leader. Most trusted by banks. Highest SMS OTP volume in India.</div>
+        </div>
+        <div class="bc-col ours">
+          <div class="bc-col-label">Our Counter</div>
+          <div class="bc-col-body">Market share ≠ right fit. CERF's consent management goes deeper than Tanla's SMS volume play.</div>
+        </div>
+      </div>
+      <div class="bc-win">Win Theme: Banks choosing Tanla are optimising for volume. Banks choosing us are optimising for consent compliance and TRAI audit-readiness — a fundamentally different strategic need.</div>
+    </div>
+    <div class="bc-card">
+      <div class="bc-vs">vs Competitor</div>
+      <div class="bc-name">Gupshup</div>
+      <div class="bc-row">
+        <div class="bc-col their">
+          <div class="bc-col-label">Their Claim</div>
+          <div class="bc-col-body">Best WhatsApp & conversational AI. GenAI-first platform.</div>
+        </div>
+        <div class="bc-col ours">
+          <div class="bc-col-label">Our Counter</div>
+          <div class="bc-col-body">Conversational is one layer. Enterprises need consent, compliance, and identity together — not just chat.</div>
+        </div>
+      </div>
+      <div class="bc-win">Win Theme: GenAI chat is table stakes in 2026. What differentiates is whether your communication layer is TRAI-compliant and consent-auditable. Gupshup doesn't solve this.</div>
+    </div>
+    <div class="bc-card">
+      <div class="bc-vs">vs Competitor</div>
+      <div class="bc-name">Route Mobile</div>
+      <div class="bc-row">
+        <div class="bc-col their">
+          <div class="bc-col-label">Their Claim</div>
+          <div class="bc-col-body">Global carrier network. Highest deliverability. Proven at scale.</div>
+        </div>
+        <div class="bc-col ours">
+          <div class="bc-col-label">Our Counter</div>
+          <div class="bc-col-body">Deliverability is a commodity — all tier-1 CPaaS players hit 99%+. VSPAGY personalised video creates engagement post-send.</div>
+        </div>
+      </div>
+      <div class="bc-win">Win Theme: Getting the message delivered is solved. The unsolved problem is getting it read and acted on. Personalised video at scale changes the engagement equation entirely.</div>
+    </div>
+    <div class="bc-card">
+      <div class="bc-vs">vs Competitor</div>
+      <div class="bc-name">Infobip</div>
+      <div class="bc-row">
+        <div class="bc-col their">
+          <div class="bc-col-label">Their Claim</div>
+          <div class="bc-col-body">Most complete omnichannel platform globally. 800+ carriers. Proven with Fortune 500.</div>
+        </div>
+        <div class="bc-col ours">
+          <div class="bc-col-label">Our Counter</div>
+          <div class="bc-col-body">Global completeness at 3–5x India pricing. CERF delivers enterprise-grade at India-right pricing with local compliance built in.</div>
+        </div>
+      </div>
+      <div class="bc-win">Win Theme: Indian banks don't need a global CPaaS platform — they need a compliant, cost-effective one built for BFSI in India. Infobip is over-engineered for this use case.</div>
+    </div>
+  </div>
+</section>
+
+<!-- WIN THEMES -->
+<section id="winthemes">
+  <div class="sec-tag">Strategic Analysis</div>
+  <h2>4 Win Themes for the BFSI Segment</h2>
+  <div class="rule"></div>
+  <div class="wt-list">
+    <div class="wt-item">
+      <div class="wt-num">01</div>
+      <div class="wt-body">
+        <h4>Compliance as a Moat</h4>
+        <p>Every Indian bank is under TRAI scrutiny for DLT (Distributed Ledger Technology) compliance. The CPaaS vendor with the deepest DLT and consent management layer wins the risk-averse CISO conversation — before price is even discussed.</p>
+      </div>
+    </div>
+    <div class="wt-item">
+      <div class="wt-num">02</div>
+      <div class="wt-body">
+        <h4>Engagement Beyond Delivery</h4>
+        <p>SMS OTP and push notifications are solved problems. The next battleground is engagement after delivery — personalised video statements, interactive loan summaries, and AI-driven upsell triggers embedded in transactional messages.</p>
+      </div>
+    </div>
+    <div class="wt-item">
+      <div class="wt-num">03</div>
+      <div class="wt-body">
+        <h4>India-Optimised Pricing</h4>
+        <p>Global CPaaS players (Infobip, Twilio) price for global markets. India BFSI deals require competitive per-message pricing plus an on-premise or hybrid deployment option for data localisation. Local players who match this model win on TCO.</p>
+      </div>
+    </div>
+    <div class="wt-item">
+      <div class="wt-num">04</div>
+      <div class="wt-body">
+        <h4>Omnichannel or Single-Vendor Lock</h4>
+        <p>Banks that standardise on a single CPaaS vendor for SMS, WhatsApp, voice, email, and video gain negotiating leverage and operational simplicity. The vendor who can credibly own all five channels wins the multi-year contract — not just the pilot.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">Shreyas Singh</div>
+  <div class="f-meta">Pre-Sales &amp; IT Solutions · Gurgaon · 2026</div>
+  <nav class="f-links">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#projects">Projects</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</footer>
+</body>
+</html>

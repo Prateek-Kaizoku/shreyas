@@ -1,0 +1,341 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>GTM Playbook — Enterprise CPaaS · Shreyas Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#0f2b4a;--navy-m:#142848;--navy-l:#1e3d6e;--gold:#c8972a;--gold-l:#e8b84b;--gold-p:#fbf3e2;--cream:#f9f7f4;--white:#ffffff;--grey:#64748b;--grey-l:#f1f5f9;--grey-b:#e2e8f0;--text:#0f172a;--border:rgba(0,0,0,0.07);--green:#10b981;--blue:#2563eb;--red:#ef4444;}
+    *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    body > nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(10,22,40,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,151,42,0.15);}
+    .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-mono{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--navy);}
+    .nav-name{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--white);}
+    .nav-links{display:flex;gap:28px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:1.3px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--gold-l);}
+    .nav-back{background:var(--gold);color:var(--navy);padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.2s;}
+    .nav-back:hover{background:var(--gold-l);}
+    .proj-hero{min-height:54vh;background:var(--navy);display:flex;align-items:center;position:relative;overflow:hidden;padding:140px 60px 80px;}
+    .orb1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.15) 0%,transparent 70%);right:-100px;top:-100px;pointer-events:none;}
+    .orb2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,151,42,0.1) 0%,transparent 70%);left:-100px;bottom:-50px;pointer-events:none;}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:80px 80px;}
+    .proj-hero-c{position:relative;z-index:2;max-width:860px;}
+    .proj-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+    .proj-hero-c h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,5vw,64px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .proj-hero-c h1 em{font-style:italic;color:var(--gold-l);}
+    .proj-hero-desc{font-size:15px;line-height:1.75;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:36px;font-weight:300;}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;}
+    .badge{background:rgba(200,151,42,0.12);border:1px solid rgba(200,151,42,0.25);color:var(--gold-l);font-size:10px;font-family:"JetBrains Mono",monospace;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:100px;}
+    section{padding:80px 60px;}
+    .sec-tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:14px;}
+    h2{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--navy);margin-bottom:12px;line-height:1.15;}
+    h2.ld{color:var(--white);}
+    .rule{width:48px;height:2px;background:var(--gold);margin-bottom:40px;}
+
+    /* Market sizing */
+    #market-size{background:var(--navy);}
+    .ms-grid{display:grid;grid-template-columns:1fr 1fr;gap:32px;}
+    .ms-left{}
+    .ms-metric{margin-bottom:28px;}
+    .ms-label{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:6px;}
+    .ms-val{font-family:"Cormorant Garamond",serif;font-size:48px;font-weight:700;color:var(--gold-l);line-height:1;}
+    .ms-sub{font-size:12px;color:rgba(255,255,255,0.4);margin-top:4px;}
+    .ms-right{display:flex;flex-direction:column;gap:16px;}
+    .ms-card{background:rgba(255,255,255,0.04);border:1px solid rgba(255,255,255,0.07);padding:20px;border-radius:4px;}
+    .ms-card-label{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+    .ms-card-val{font-family:"Cormorant Garamond",serif;font-size:24px;font-weight:700;color:var(--white);margin-bottom:4px;}
+    .ms-card-desc{font-size:11px;color:rgba(255,255,255,0.4);line-height:1.5;}
+
+    /* ICP */
+    #icp{background:var(--cream);}
+    .icp-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .icp-card{background:var(--white);border:1px solid var(--border);padding:24px;border-radius:4px;transition:all 0.2s;}
+    .icp-card:hover{border-color:var(--gold);}
+    .icp-tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:10px;}
+    .icp-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:10px;}
+    .icp-body{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;}
+    .icp-crit{margin-top:14px;}
+    .icp-crit-label{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:1.5px;text-transform:uppercase;color:var(--grey);margin-bottom:8px;}
+    .icp-pill{display:inline-block;background:var(--gold-p);color:var(--navy);font-size:10px;padding:3px 10px;border-radius:100px;margin:2px 2px;}
+
+    /* 90-day sequence */
+    #sequence{background:var(--white);}
+    .seq-list{display:flex;flex-direction:column;gap:0;}
+    .seq-item{display:flex;gap:24px;padding:24px 0;border-bottom:1px solid var(--border);}
+    .seq-item:last-child{border-bottom:none;}
+    .seq-week{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);min-width:80px;padding-top:2px;}
+    .seq-body h4{font-family:"Cormorant Garamond",serif;font-size:17px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+    .seq-body p{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;margin-bottom:10px;}
+    .seq-actions{display:flex;flex-wrap:wrap;gap:6px;}
+    .seq-act{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1px;text-transform:uppercase;background:var(--grey-l);color:var(--navy);padding:4px 10px;border-radius:2px;}
+
+    /* Win themes */
+    #winthemes{background:var(--cream);}
+    .wt-grid{display:grid;grid-template-columns:repeat(2,1fr);gap:20px;}
+    .wt-card{border:1px solid var(--border);background:var(--white);padding:28px;border-radius:4px;transition:all 0.2s;}
+    .wt-card:hover{border-color:var(--gold);}
+    .wt-n{font-family:"Cormorant Garamond",serif;font-size:40px;font-weight:700;color:var(--gold);line-height:1;margin-bottom:12px;}
+    .wt-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+    .wt-body{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;}
+
+    /* Pipeline */
+    #pipeline{background:var(--navy);}
+    .pipe-row{display:flex;align-items:center;justify-content:space-between;padding:20px 0;border-bottom:1px solid rgba(255,255,255,0.06);}
+    .pipe-row:last-child{border-bottom:none;}
+    .pipe-month{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);}
+    .pipe-activity{font-size:13px;color:rgba(255,255,255,0.7);flex:1;margin:0 24px;}
+    .pipe-target{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;color:var(--gold-l);}
+
+    footer{background:var(--navy);padding:32px 60px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(200,151,42,0.1);}
+    .f-brand{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:var(--white);}
+    .f-meta{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.5px;}
+    .f-links{display:flex;gap:20px;}
+    .f-links a{font-size:10px;color:rgba(255,255,255,0.28);text-decoration:none;letter-spacing:1px;text-transform:uppercase;font-family:"JetBrains Mono",monospace;transition:color 0.2s;}
+    .f-links a:hover{color:var(--gold);}
+
+    @media(max-width:960px){
+      body > nav{padding:14px 20px;}.nav-links{display:none;}
+      .proj-hero,section{padding-left:20px;padding-right:20px;}
+      .ms-grid,.icp-grid,.wt-grid{grid-template-columns:1fr;}
+      footer{flex-direction:column;gap:12px;text-align:center;padding:24px 20px;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand"><div class="nav-mono">SS</div><span class="nav-name">Shreyas Singh</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a href="../index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<section class="proj-hero">
+  <div class="orb1"></div><div class="orb2"></div><div class="hero-grid"></div>
+  <div class="proj-hero-c">
+    <div class="proj-eyebrow">Project 03 · GTM Strategy · BFSI Vertical</div>
+    <h1>GTM Playbook —<br /><em>Enterprise CPaaS</em></h1>
+    <p class="proj-hero-desc">
+      Full go-to-market strategy for the BFSI vertical. Covers market sizing, ICP definition, a 90-day outreach sequence with 8-step enterprise sales motion, 4 win themes, and ₹12Cr pipeline targets.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">GTM Strategy</span>
+      <span class="badge">BFSI Vertical</span>
+      <span class="badge">ICP Definition</span>
+      <span class="badge">90-Day Sequence</span>
+      <span class="badge">₹12Cr Pipeline</span>
+    </div>
+  </div>
+</section>
+
+<!-- MARKET SIZE -->
+<section id="market-size">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Market Sizing</div>
+  <h2 class="ld">BFSI CPaaS Opportunity — India</h2>
+  <div class="rule"></div>
+  <div class="ms-grid">
+    <div class="ms-left">
+      <div class="ms-metric">
+        <div class="ms-label">Total Addressable Market</div>
+        <div class="ms-val">$420M</div>
+        <div class="ms-sub">BFSI share of India CPaaS — 33% of $1.28B total</div>
+      </div>
+      <div class="ms-metric">
+        <div class="ms-label">Serviceable Addressable Market</div>
+        <div class="ms-val">₹180Cr</div>
+        <div class="ms-sub">Enterprise BFSI in NCR/Mumbai/Bengaluru corridors</div>
+      </div>
+      <div class="ms-metric">
+        <div class="ms-label">90-Day Pipeline Target</div>
+        <div class="ms-val">₹12Cr</div>
+        <div class="ms-sub">Based on 20 qualified accounts × avg deal size</div>
+      </div>
+    </div>
+    <div class="ms-right">
+      <div class="ms-card">
+        <div class="ms-card-label">Primary Driver</div>
+        <div class="ms-card-val">TRAI DLT Mandate</div>
+        <div class="ms-card-desc">Every bank must register and audit all commercial communication. Creates immediate CPaaS upgrade cycle through 2026–27.</div>
+      </div>
+      <div class="ms-card">
+        <div class="ms-card-label">Secondary Driver</div>
+        <div class="ms-card-val">Digital Lending Growth</div>
+        <div class="ms-card-desc">Instant loan approvals require real-time SMS/WhatsApp communication at scale. 40% YoY growth in digital lending creates proportional CPaaS demand.</div>
+      </div>
+      <div class="ms-card">
+        <div class="ms-card-label">Tertiary Driver</div>
+        <div class="ms-card-val">UPI + Payment Notifications</div>
+        <div class="ms-card-desc">₹20L Cr+ monthly UPI transactions generate proportional notification volume. Banks looking to consolidate notification infrastructure.</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- ICP -->
+<section id="icp">
+  <div class="sec-tag">Ideal Customer Profile</div>
+  <h2>ICP Definition — 3 Segments</h2>
+  <div class="rule"></div>
+  <div class="icp-grid">
+    <div class="icp-card">
+      <div class="icp-tag">Segment A · Tier 2 Private Banks</div>
+      <div class="icp-title">Mid-Sized Private Banks</div>
+      <div class="icp-body">Banks with ₹5,000–₹50,000Cr AUM. Currently using 2–3 fragmented CPaaS vendors. CTO and Head of Digital on the buyer side. Pain: compliance audit gaps + siloed channels.</div>
+      <div class="icp-crit">
+        <div class="icp-crit-label">Qualifying Criteria</div>
+        <span class="icp-pill">₹5,000Cr+ AUM</span>
+        <span class="icp-pill">DLT registered</span>
+        <span class="icp-pill">2+ CPaaS vendors</span>
+        <span class="icp-pill">Digital lending active</span>
+      </div>
+    </div>
+    <div class="icp-card">
+      <div class="icp-tag">Segment B · NBFCs</div>
+      <div class="icp-title">Large NBFCs &amp; Fintechs</div>
+      <div class="icp-body">NBFCs doing ₹500Cr+ disbursals monthly. High notification volume for collections, EMI reminders, and KYC. Engineering-led decisions. Pain: per-message cost + OTP reliability.</div>
+      <div class="icp-crit">
+        <div class="icp-crit-label">Qualifying Criteria</div>
+        <span class="icp-pill">₹500Cr+ monthly</span>
+        <span class="icp-pill">Collections use case</span>
+        <span class="icp-pill">API-first team</span>
+        <span class="icp-pill">Cost sensitivity</span>
+      </div>
+    </div>
+    <div class="icp-card">
+      <div class="icp-tag">Segment C · Insurance</div>
+      <div class="icp-title">Life &amp; General Insurers</div>
+      <div class="icp-body">Top 20 life and general insurance companies. Renewal communication, claim status updates, and policy document delivery. IRDAI compliance creates similar DLT-level urgency to banking.</div>
+      <div class="icp-crit">
+        <div class="icp-crit-label">Qualifying Criteria</div>
+        <span class="icp-pill">Top 20 insurer</span>
+        <span class="icp-pill">IRDAI regulated</span>
+        <span class="icp-pill">Renewal automation</span>
+        <span class="icp-pill">WhatsApp active</span>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- 90-DAY SEQUENCE -->
+<section id="sequence">
+  <div class="sec-tag">Outreach Sequence</div>
+  <h2>90-Day Enterprise Sales Motion — 8 Steps</h2>
+  <div class="rule"></div>
+  <div class="seq-list">
+    <div class="seq-item">
+      <div class="seq-week">Week 1–2</div>
+      <div class="seq-body">
+        <h4>Trigger-Based Prospecting</h4>
+        <p>Identify accounts via TRAI DLT registration announcements, funding news, and job postings for "Head of Digital Communications." These are buying signals — act within 48 hours of trigger.</p>
+        <div class="seq-actions"><span class="seq-act">LinkedIn Signal</span><span class="seq-act">Funding Alert</span><span class="seq-act">TRAI Trigger</span></div>
+      </div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-week">Week 2–3</div>
+      <div class="seq-body">
+        <h4>Cold Outreach — CTO / Head of Digital</h4>
+        <p>1-2-3 email sequence. Email 1: personalised insight on their CPaaS stack (gleaned from job posts). Email 2: ROI-focused case study. Email 3: direct ask for 20-min compliance audit call.</p>
+        <div class="seq-actions"><span class="seq-act">Email Sequence</span><span class="seq-act">LinkedIn Connect</span><span class="seq-act">Case Study</span></div>
+      </div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-week">Week 3–4</div>
+      <div class="seq-body">
+        <h4>Discovery Call — Pain Mapping</h4>
+        <p>MEDDIC-led discovery. Quantify the cost of their current fragmented setup: vendor management hours, missed SLAs, compliance gaps. Build the economic case before demoing anything.</p>
+        <div class="seq-actions"><span class="seq-act">MEDDIC</span><span class="seq-act">Pain Quantification</span><span class="seq-act">Economic Buyer ID</span></div>
+      </div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-week">Week 4–5</div>
+      <div class="seq-body">
+        <h4>Technical Demo — Use-Case Specific</h4>
+        <p>Demo anchored to their exact use case: OTP compliance + personalised video for a bank; collections sequence for NBFC; renewal automation for insurer. Never generic.</p>
+        <div class="seq-actions"><span class="seq-act">Custom Demo</span><span class="seq-act">POC Setup</span><span class="seq-act">Integration Map</span></div>
+      </div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-week">Week 5–8</div>
+      <div class="seq-body">
+        <h4>Proof of Concept</h4>
+        <p>4-week paid or free POC. Track two metrics: OTP delivery rate vs. current vendor and DLT audit score. Present results in a business review with CFO and CTO.</p>
+        <div class="seq-actions"><span class="seq-act">POC Delivery</span><span class="seq-act">KPI Tracking</span><span class="seq-act">Business Review</span></div>
+      </div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-week">Week 8–10</div>
+      <div class="seq-body">
+        <h4>Commercial Proposal</h4>
+        <p>3-tier pricing: Starter, Professional, Enterprise. Include a consolidation discount for accounts replacing 2+ vendors. 3-year contract option with locked pricing.</p>
+        <div class="seq-actions"><span class="seq-act">Tiered Pricing</span><span class="seq-act">Consolidation Offer</span><span class="seq-act">3-Year Lock</span></div>
+      </div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-week">Week 10–11</div>
+      <div class="seq-body">
+        <h4>Negotiation &amp; Legal</h4>
+        <p>Anticipate: pricing pushback, SLA negotiation, data residency requirements. Pre-negotiate redlines on DPA and SLA template. Involve legal early — never in the last week.</p>
+        <div class="seq-actions"><span class="seq-act">DPA Template</span><span class="seq-act">SLA Redlines</span><span class="seq-act">Data Residency</span></div>
+      </div>
+    </div>
+    <div class="seq-item">
+      <div class="seq-week">Week 12–13</div>
+      <div class="seq-body">
+        <h4>Close &amp; Handoff</h4>
+        <p>Signed MSA + SOW. Immediate handoff to CS team with deal brief and key relationships mapped. Day 1 onboarding call within 48 hours of signature.</p>
+        <div class="seq-actions"><span class="seq-act">MSA + SOW</span><span class="seq-act">CS Handoff</span><span class="seq-act">Day 1 Call</span></div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- WIN THEMES -->
+<section id="winthemes">
+  <div class="sec-tag">Win Themes</div>
+  <h2>4 Positioning Pillars</h2>
+  <div class="rule"></div>
+  <div class="wt-grid">
+    <div class="wt-card"><div class="wt-n">01</div><div class="wt-title">Compliance-First Architecture</div><div class="wt-body">Lead with DLT consent management. Banks buy CPaaS to grow — they switch CPaaS to stay compliant. Owning the compliance narrative wins the CTO before the commercial conversation starts.</div></div>
+    <div class="wt-card"><div class="wt-n">02</div><div class="wt-title">Vendor Consolidation ROI</div><div class="wt-body">The average BFSI company has 3.2 CPaaS vendors. Consolidating to one reduces licensing cost by 20–30%, cuts integration maintenance, and eliminates multi-vendor SLA blame games.</div></div>
+    <div class="wt-card"><div class="wt-n">03</div><div class="wt-title">Personalised Video at Scale</div><div class="wt-body">VSPAGY personalised video for loan statements and policy renewals drives 3–4x engagement vs. static SMS. Differentiated capability that no competitor offers natively in India.</div></div>
+    <div class="wt-card"><div class="wt-n">04</div><div class="wt-title">India-Right Pricing Model</div><div class="wt-body">Per-message pricing built for Indian transaction volumes — not global CPaaS rates. Combined with on-premise deployment option for RBI data localisation compliance.</div></div>
+  </div>
+</section>
+
+<!-- PIPELINE TARGETS -->
+<section id="pipeline">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Pipeline Targets</div>
+  <h2 class="ld">90-Day Pipeline Build — ₹12Cr</h2>
+  <div class="rule"></div>
+  <div class="pipe-row">
+    <div class="pipe-month">Month 1</div>
+    <div class="pipe-activity">Prospect 60 accounts, qualify 20, discovery calls with top 10. Build pipeline from Segment A (private banks).</div>
+    <div class="pipe-target">₹2Cr</div>
+  </div>
+  <div class="pipe-row">
+    <div class="pipe-month">Month 2</div>
+    <div class="pipe-activity">POCs with 5 accounts. Demos with 8 NBFC targets. First commercial proposals out to 3 accounts.</div>
+    <div class="pipe-target">₹5Cr</div>
+  </div>
+  <div class="pipe-row">
+    <div class="pipe-month">Month 3</div>
+    <div class="pipe-activity">Close 2 accounts. Advance 4 to commercial stage. First insurance segment discovery calls. Cumulative pipeline qualified.</div>
+    <div class="pipe-target">₹12Cr</div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">Shreyas Singh</div>
+  <div class="f-meta">Pre-Sales &amp; IT Solutions · Gurgaon · 2026</div>
+  <nav class="f-links"><a href="../index.html">Home</a><a href="../index.html#projects">Projects</a><a href="../index.html#contact">Contact</a></nav>
+</footer>
+</body>
+</html>

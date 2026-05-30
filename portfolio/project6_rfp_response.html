@@ -1,0 +1,361 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Mock RFP — Cloud Migration · Shreyas Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <style>
+    :root{--navy:#0f2b4a;--navy-m:#142848;--navy-l:#1e3d6e;--gold:#c8972a;--gold-l:#e8b84b;--gold-p:#fbf3e2;--cream:#f9f7f4;--white:#ffffff;--grey:#64748b;--grey-l:#f1f5f9;--grey-b:#e2e8f0;--text:#0f172a;--border:rgba(0,0,0,0.07);--green:#10b981;--blue:#2563eb;--red:#ef4444;}
+    *{margin:0;padding:0;box-sizing:border-box;}html{scroll-behavior:smooth;}
+    body{font-family:"Outfit",sans-serif;background:var(--cream);color:var(--text);overflow-x:hidden;-webkit-font-smoothing:antialiased;}
+    ::-webkit-scrollbar{width:3px;}::-webkit-scrollbar-thumb{background:var(--gold);border-radius:2px;}
+    body > nav{position:fixed;top:0;left:0;right:0;z-index:1000;display:flex;align-items:center;justify-content:space-between;padding:16px 60px;background:rgba(10,22,40,0.97);backdrop-filter:blur(20px);border-bottom:1px solid rgba(200,151,42,0.15);}
+    .nav-brand{display:flex;align-items:center;gap:12px;text-decoration:none;}
+    .nav-mono{width:38px;height:38px;border-radius:50%;background:linear-gradient(135deg,var(--gold),var(--gold-l));display:flex;align-items:center;justify-content:center;font-family:"Cormorant Garamond",serif;font-size:16px;font-weight:700;color:var(--navy);}
+    .nav-name{font-family:"Cormorant Garamond",serif;font-size:19px;font-weight:600;color:var(--white);}
+    .nav-links{display:flex;gap:28px;list-style:none;}
+    .nav-links a{color:rgba(255,255,255,0.6);text-decoration:none;font-size:11px;font-weight:500;letter-spacing:1.3px;text-transform:uppercase;transition:color 0.2s;}
+    .nav-links a:hover{color:var(--gold-l);}
+    .nav-back{background:var(--gold);color:var(--navy);padding:8px 20px;font-size:11px;font-weight:700;letter-spacing:1px;text-transform:uppercase;text-decoration:none;border-radius:2px;transition:all 0.2s;}
+    .nav-back:hover{background:var(--gold-l);}
+    .proj-hero{min-height:54vh;background:var(--navy);display:flex;align-items:center;position:relative;overflow:hidden;padding:140px 60px 80px;}
+    .orb1{position:absolute;width:700px;height:700px;border-radius:50%;background:radial-gradient(circle,rgba(37,99,235,0.15) 0%,transparent 70%);right:-100px;top:-100px;pointer-events:none;}
+    .orb2{position:absolute;width:500px;height:500px;border-radius:50%;background:radial-gradient(circle,rgba(200,151,42,0.1) 0%,transparent 70%);left:-100px;bottom:-50px;pointer-events:none;}
+    .hero-grid{position:absolute;inset:0;background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px);background-size:80px 80px;}
+    .proj-hero-c{position:relative;z-index:2;max-width:860px;}
+    .proj-eyebrow{font-family:"JetBrains Mono",monospace;font-size:10px;letter-spacing:2.5px;text-transform:uppercase;color:var(--gold);margin-bottom:20px;}
+    .proj-hero-c h1{font-family:"Cormorant Garamond",serif;font-size:clamp(40px,5vw,64px);font-weight:700;color:var(--white);line-height:1.1;margin-bottom:20px;}
+    .proj-hero-c h1 em{font-style:italic;color:var(--gold-l);}
+    .proj-hero-desc{font-size:15px;line-height:1.75;color:rgba(255,255,255,0.6);max-width:600px;margin-bottom:36px;font-weight:300;}
+    .hero-badges{display:flex;flex-wrap:wrap;gap:10px;}
+    .badge{background:rgba(200,151,42,0.12);border:1px solid rgba(200,151,42,0.25);color:var(--gold-l);font-size:10px;font-family:"JetBrains Mono",monospace;letter-spacing:1.5px;text-transform:uppercase;padding:6px 14px;border-radius:100px;}
+    section{padding:80px 60px;}
+    .sec-tag{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:3px;text-transform:uppercase;color:var(--grey);margin-bottom:14px;}
+    h2{font-family:"Cormorant Garamond",serif;font-size:clamp(28px,3vw,40px);font-weight:700;color:var(--navy);margin-bottom:12px;line-height:1.15;}
+    h2.ld{color:var(--white);}
+    .rule{width:48px;height:2px;background:var(--gold);margin-bottom:40px;}
+
+    /* Engagement snapshot */
+    #snapshot{background:var(--navy);}
+    .snap-grid{display:grid;grid-template-columns:repeat(4,1fr);gap:16px;margin-bottom:40px;}
+    .snap-tile{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:28px 20px;text-align:center;border-radius:4px;}
+    .snap-n{font-family:"Cormorant Garamond",serif;font-size:40px;font-weight:700;color:var(--gold-l);line-height:1;margin-bottom:6px;}
+    .snap-l{font-size:11px;color:rgba(255,255,255,0.45);line-height:1.4;font-weight:300;}
+    .snap-sub{font-family:"JetBrains Mono",monospace;font-size:9px;color:rgba(200,151,42,0.5);letter-spacing:1px;margin-top:6px;text-transform:uppercase;}
+
+    /* Executive summary */
+    #exec-summary{background:var(--cream);}
+    .es-box{background:var(--white);border:1px solid var(--border);border-left:4px solid var(--gold);padding:32px;border-radius:4px;margin-bottom:32px;}
+    .es-box p{font-size:14px;line-height:1.85;color:var(--text);font-weight:300;}
+    .es-box strong{color:var(--navy);font-weight:600;}
+
+    /* 5-phase solution */
+    #phases{background:var(--white);}
+    .phase-list{display:flex;flex-direction:column;gap:0;}
+    .phase-item{display:grid;grid-template-columns:160px 1fr;gap:32px;padding:28px 0;border-bottom:1px solid var(--border);}
+    .phase-item:last-child{border-bottom:none;}
+    .phase-left{text-align:right;}
+    .phase-num{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:2px;text-transform:uppercase;color:var(--gold);margin-bottom:4px;}
+    .phase-dur{font-family:"Cormorant Garamond",serif;font-size:20px;font-weight:700;color:var(--navy);line-height:1;}
+    .phase-right h4{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+    .phase-right p{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;margin-bottom:10px;}
+    .phase-tags{display:flex;flex-wrap:wrap;gap:6px;}
+    .phase-tag{font-family:"JetBrains Mono",monospace;font-size:8px;letter-spacing:1px;text-transform:uppercase;background:var(--grey-l);color:var(--navy);padding:4px 10px;border-radius:2px;}
+    .phase-wl{margin-top:10px;background:var(--gold-p);border-left:3px solid var(--gold);padding:10px 14px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--navy);}
+
+    /* Team structure */
+    #team{background:var(--cream);}
+    .team-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .team-card{background:var(--white);border:1px solid var(--border);padding:24px;border-radius:4px;transition:all 0.2s;}
+    .team-card:hover{border-color:var(--gold);}
+    .team-role{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:var(--gold);margin-bottom:6px;}
+    .team-title{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:8px;}
+    .team-body{font-size:12px;line-height:1.75;color:var(--grey);font-weight:300;}
+    .team-fte{margin-top:12px;font-family:"JetBrains Mono",monospace;font-size:10px;color:var(--navy);font-weight:700;}
+
+    /* Pricing */
+    #pricing{background:var(--navy);}
+    .price-grid{display:grid;grid-template-columns:repeat(3,1fr);gap:20px;}
+    .price-card{background:rgba(255,255,255,0.05);border:1px solid rgba(255,255,255,0.08);padding:28px;border-radius:4px;transition:all 0.2s;}
+    .price-card.featured{background:rgba(200,151,42,0.1);border-color:rgba(200,151,42,0.4);}
+    .price-label{font-family:"JetBrains Mono",monospace;font-size:9px;letter-spacing:1.5px;text-transform:uppercase;color:rgba(255,255,255,0.4);margin-bottom:8px;}
+    .price-card.featured .price-label{color:var(--gold);}
+    .price-name{font-family:"Cormorant Garamond",serif;font-size:22px;font-weight:700;color:var(--white);margin-bottom:12px;}
+    .price-amount{font-family:"Cormorant Garamond",serif;font-size:40px;font-weight:700;color:var(--gold-l);line-height:1;margin-bottom:4px;}
+    .price-period{font-size:11px;color:rgba(255,255,255,0.4);margin-bottom:20px;}
+    .price-items{list-style:none;display:flex;flex-direction:column;gap:8px;}
+    .price-items li{font-size:12px;color:rgba(255,255,255,0.6);display:flex;align-items:flex-start;gap:8px;}
+    .price-items li::before{content:"✓";color:var(--green);font-size:11px;margin-top:2px;flex-shrink:0;}
+
+    /* Win themes */
+    #winthemes{background:var(--cream);}
+    .wt-list{display:flex;flex-direction:column;gap:16px;}
+    .wt-item{display:flex;align-items:flex-start;gap:20px;padding:24px;background:var(--white);border:1px solid var(--border);border-radius:4px;transition:all 0.2s;}
+    .wt-item:hover{border-color:var(--gold);}
+    .wt-num{font-family:"Cormorant Garamond",serif;font-size:36px;font-weight:700;color:var(--gold);min-width:48px;line-height:1;}
+    .wt-body h4{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:700;color:var(--navy);margin-bottom:6px;}
+    .wt-body p{font-size:13px;line-height:1.75;color:var(--grey);font-weight:300;}
+
+    footer{background:var(--navy);padding:32px 60px;display:flex;align-items:center;justify-content:space-between;border-top:1px solid rgba(200,151,42,0.1);}
+    .f-brand{font-family:"Cormorant Garamond",serif;font-size:18px;font-weight:600;color:var(--white);}
+    .f-meta{font-size:11px;color:rgba(255,255,255,0.28);letter-spacing:0.5px;}
+    .f-links{display:flex;gap:20px;}
+    .f-links a{font-size:10px;color:rgba(255,255,255,0.28);text-decoration:none;letter-spacing:1px;text-transform:uppercase;font-family:"JetBrains Mono",monospace;transition:color 0.2s;}
+    .f-links a:hover{color:var(--gold);}
+    @media(max-width:960px){
+      body > nav{padding:14px 20px;}.nav-links{display:none;}
+      .proj-hero,section{padding-left:20px;padding-right:20px;}
+      .snap-grid{grid-template-columns:repeat(2,1fr);}
+      .phase-item{grid-template-columns:1fr;}.phase-left{text-align:left;}
+      .team-grid,.price-grid{grid-template-columns:1fr;}
+      footer{flex-direction:column;gap:12px;text-align:center;padding:24px 20px;}
+    }
+  </style>
+</head>
+<body>
+<nav>
+  <a href="../index.html" class="nav-brand"><div class="nav-mono">SS</div><span class="nav-name">Shreyas Singh</span></a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a href="../index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<section class="proj-hero">
+  <div class="orb1"></div><div class="orb2"></div><div class="hero-grid"></div>
+  <div class="proj-hero-c">
+    <div class="proj-eyebrow">Project 06 · Bid Management · Cloud Migration</div>
+    <h1>Mock RFP —<br /><em>Cloud Migration</em></h1>
+    <p class="proj-hero-desc">
+      Complete 15-page bid response for a ₹14.8Cr Azure cloud migration. Covers executive summary, 5-phase solution design, delivery team structure, milestone plan, tiered pricing, and 3 win themes. Written to actual enterprise RFP standards.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">₹14.8Cr Engagement</span>
+      <span class="badge">Azure Migration</span>
+      <span class="badge">340 Workloads</span>
+      <span class="badge">9-Month Delivery</span>
+      <span class="badge">RFP Response</span>
+    </div>
+  </div>
+</section>
+
+<!-- SNAPSHOT -->
+<section id="snapshot">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Engagement Overview</div>
+  <h2 class="ld">The Bid — At a Glance</h2>
+  <div class="rule"></div>
+  <div class="snap-grid">
+    <div class="snap-tile"><div class="snap-n">₹14.8Cr</div><div class="snap-l">Total Contract Value</div><div class="snap-sub">9-Month Engagement</div></div>
+    <div class="snap-tile"><div class="snap-n">340</div><div class="snap-l">Workloads Migrated</div><div class="snap-sub">On-prem to Azure</div></div>
+    <div class="snap-tile"><div class="snap-n">5</div><div class="snap-l">Delivery Phases</div><div class="snap-sub">Wave-based approach</div></div>
+    <div class="snap-tile"><div class="snap-n">99.9%</div><div class="snap-l">SLA Commitment</div><div class="snap-sub">Post-migration uptime</div></div>
+  </div>
+</section>
+
+<!-- EXECUTIVE SUMMARY -->
+<section id="exec-summary">
+  <div class="sec-tag">Executive Summary</div>
+  <h2>The Winning Argument</h2>
+  <div class="rule"></div>
+  <div class="es-box">
+    <p><strong>To the Selection Committee,</strong><br/><br/>
+    We are proposing a <strong>9-month, wave-based Azure migration</strong> for your 340 workloads at a total contract value of <strong>₹14.8Cr</strong>. Our approach is built on three principles that directly address the risks your team flagged in the RFP.<br/><br/>
+    <strong>First, zero production downtime.</strong> Every workload migrates using a test-in-parallel approach — the on-premise system stays live until the Azure workload has been validated for 72 hours post-cutover. Your business never stops.<br/><br/>
+    <strong>Second, a fixed-price commercial model.</strong> Unlike T&M bids, our price doesn't change if migration complexity increases in later waves. We carry that risk — not you.<br/><br/>
+    <strong>Third, certified team depth.</strong> Our proposed team includes 4 Azure-certified architects, 2 of whom have delivered migrations of &gt;300 workloads in the past 24 months at DXC Technology. This is not a junior team learning on your environment.<br/><br/>
+    We are confident this proposal represents the lowest-risk path to a modernised, cloud-native infrastructure — and we look forward to demonstrating that in the technical presentation stage.</p>
+  </div>
+</section>
+
+<!-- 5-PHASE SOLUTION -->
+<section id="phases">
+  <div class="sec-tag">Solution Design</div>
+  <h2>5-Phase Migration Approach</h2>
+  <div class="rule"></div>
+  <div class="phase-list">
+    <div class="phase-item">
+      <div class="phase-left"><div class="phase-num">Phase 1</div><div class="phase-dur">Weeks 1–4</div></div>
+      <div class="phase-right">
+        <h4>Discovery &amp; Assessment</h4>
+        <p>Full workload inventory using Azure Migrate. Dependency mapping for all 340 workloads. Identification of migration blockers (legacy OS, licensing gaps, third-party dependencies). Wave prioritisation based on business criticality and technical risk.</p>
+        <div class="phase-tags"><span class="phase-tag">Azure Migrate</span><span class="phase-tag">Dependency Map</span><span class="phase-tag">Wave Plan</span><span class="phase-tag">Risk Assessment</span></div>
+        <div class="phase-wl">Deliverable: Migration Readiness Report + Wave Prioritisation Matrix</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-left"><div class="phase-num">Phase 2</div><div class="phase-dur">Weeks 5–8</div></div>
+      <div class="phase-right">
+        <h4>Landing Zone &amp; Foundation</h4>
+        <p>Azure landing zone deployment: Hub-and-Spoke network topology, Azure Firewall, ExpressRoute circuit to existing DC, Azure Security Centre, and Azure Monitor baselining. Identity: Azure AD with hybrid join to on-premise AD.</p>
+        <div class="phase-tags"><span class="phase-tag">Landing Zone</span><span class="phase-tag">ExpressRoute</span><span class="phase-tag">Azure AD</span><span class="phase-tag">Security Centre</span></div>
+        <div class="phase-wl">Deliverable: Production-ready landing zone + security baseline signed off</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-left"><div class="phase-num">Phase 3</div><div class="phase-dur">Weeks 9–20</div></div>
+      <div class="phase-right">
+        <h4>Wave 1 — Non-Critical Workloads (150 WLs)</h4>
+        <p>Rehost of 150 non-critical workloads using Azure Site Recovery. Dev/test environments migrated first to validate runbooks. 72-hour parallel run before cutover. Business sign-off required before decommission of each on-premise workload.</p>
+        <div class="phase-tags"><span class="phase-tag">Azure Site Recovery</span><span class="phase-tag">150 Workloads</span><span class="phase-tag">Parallel Run</span><span class="phase-tag">Runbooks</span></div>
+        <div class="phase-wl">SLA: 99.5% uptime during migration window</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-left"><div class="phase-num">Phase 4</div><div class="phase-dur">Weeks 21–32</div></div>
+      <div class="phase-right">
+        <h4>Wave 2 — Business-Critical Workloads (190 WLs)</h4>
+        <p>Migration of production ERP, CRM, and core application workloads. Refactor-and-rehost approach for SQL Server clusters (Azure SQL Managed Instance). Weekend cutover windows with 48-hour rollback capability maintained throughout.</p>
+        <div class="phase-tags"><span class="phase-tag">Azure SQL MI</span><span class="phase-tag">190 Workloads</span><span class="phase-tag">ERP Migration</span><span class="phase-tag">Rollback Plan</span></div>
+        <div class="phase-wl">SLA: 99.9% uptime post-cutover · 48h rollback maintained</div>
+      </div>
+    </div>
+    <div class="phase-item">
+      <div class="phase-left"><div class="phase-num">Phase 5</div><div class="phase-dur">Weeks 33–36</div></div>
+      <div class="phase-right">
+        <h4>Optimisation &amp; Handover</h4>
+        <p>Azure Cost Management right-sizing across all migrated workloads. Reserved instance purchasing recommendations. Full documentation handover. 60-day hypercare support with 4-hour response SLA. Training for your internal cloud operations team.</p>
+        <div class="phase-tags"><span class="phase-tag">Cost Optimisation</span><span class="phase-tag">Reserved Instances</span><span class="phase-tag">Documentation</span><span class="phase-tag">60-Day Hypercare</span></div>
+        <div class="phase-wl">Deliverable: As-built documentation + cost optimisation report + team training</div>
+      </div>
+    </div>
+  </div>
+</section>
+
+<!-- TEAM -->
+<section id="team">
+  <div class="sec-tag">Delivery Team</div>
+  <h2>Proposed Project Team Structure</h2>
+  <div class="rule"></div>
+  <div class="team-grid">
+    <div class="team-card">
+      <div class="team-role">Lead</div>
+      <div class="team-title">Migration Programme Director</div>
+      <div class="team-body">Accountable for programme delivery, client executive relationship, and commercial governance. 15+ years in cloud migration. Prior: DXC Technology — led 500-workload AWS migration for a PSU bank.</div>
+      <div class="team-fte">1.0 FTE · Full engagement</div>
+    </div>
+    <div class="team-card">
+      <div class="team-role">Architecture</div>
+      <div class="team-title">Azure Solution Architects (×2)</div>
+      <div class="team-body">AZ-305 certified. Design landing zone, network topology, security architecture, and migration runbooks for each wave. Both have completed &gt;200-workload migrations in past 18 months.</div>
+      <div class="team-fte">2.0 FTE · Full engagement</div>
+    </div>
+    <div class="team-card">
+      <div class="team-role">Delivery</div>
+      <div class="team-title">Migration Engineers (×4)</div>
+      <div class="team-body">AZ-104 certified. Execute workload migrations using Azure Site Recovery and manual runbooks. Responsible for 72-hour validation windows and cutover documentation per workload.</div>
+      <div class="team-fte">4.0 FTE · Phases 3–4 peak</div>
+    </div>
+    <div class="team-card">
+      <div class="team-role">Data</div>
+      <div class="team-title">Database Migration Specialist</div>
+      <div class="team-body">Specialist in SQL Server to Azure SQL MI migrations. Manages schema conversion, DMS setup, and data validation. MSSQL DBA with 8 years cloud experience.</div>
+      <div class="team-fte">1.0 FTE · Phase 4 focus</div>
+    </div>
+    <div class="team-card">
+      <div class="team-role">Security</div>
+      <div class="team-title">Cloud Security Engineer</div>
+      <div class="team-body">Implements Azure Security Centre policies, Defender for Cloud, identity governance, and VAPT against migrated workloads before go-live sign-off.</div>
+      <div class="team-fte">0.5 FTE · Phase 2 + gates</div>
+    </div>
+    <div class="team-card">
+      <div class="team-role">PMO</div>
+      <div class="team-title">Project Manager</div>
+      <div class="team-body">Azure-certified PM. Manages RAID log, weekly status reporting, client steering committee prep, and milestone tracking across all 5 phases.</div>
+      <div class="team-fte">1.0 FTE · Full engagement</div>
+    </div>
+  </div>
+</section>
+
+<!-- PRICING -->
+<section id="pricing">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Commercial Proposal</div>
+  <h2 class="ld">Tiered Pricing — 3 Options</h2>
+  <div class="rule"></div>
+  <div class="price-grid">
+    <div class="price-card">
+      <div class="price-label">Option A</div>
+      <div class="price-name">Rehost</div>
+      <div class="price-amount">₹9.4Cr</div>
+      <div class="price-period">Lift-and-shift · 340 workloads</div>
+      <ul class="price-items">
+        <li>Pure rehost — no refactoring</li>
+        <li>Azure Site Recovery migrations</li>
+        <li>6-month delivery timeline</li>
+        <li>30-day hypercare post-go-live</li>
+        <li>99.5% SLA commitment</li>
+      </ul>
+    </div>
+    <div class="price-card featured">
+      <div class="price-label">Option B · Recommended</div>
+      <div class="price-name">Rehost + Refactor</div>
+      <div class="price-amount">₹14.8Cr</div>
+      <div class="price-period">Optimised migration · 340 workloads</div>
+      <ul class="price-items">
+        <li>Rehost + SQL MI refactor</li>
+        <li>Landing zone + security baseline</li>
+        <li>9-month delivery timeline</li>
+        <li>60-day hypercare post-go-live</li>
+        <li>99.9% SLA commitment</li>
+        <li>Cost optimisation report included</li>
+        <li>Team training (3 days) included</li>
+      </ul>
+    </div>
+    <div class="price-card">
+      <div class="price-label">Option C</div>
+      <div class="price-name">Full Modernisation</div>
+      <div class="price-amount">₹22Cr</div>
+      <div class="price-period">Rehost + Refactor + Re-platform</div>
+      <ul class="price-items">
+        <li>All Option B deliverables</li>
+        <li>Containerisation (AKS) for 40 WLs</li>
+        <li>CI/CD pipeline implementation</li>
+        <li>12-month delivery timeline</li>
+        <li>90-day hypercare post-go-live</li>
+        <li>FinOps training programme</li>
+      </ul>
+    </div>
+  </div>
+</section>
+
+<!-- WIN THEMES -->
+<section id="winthemes">
+  <div class="sec-tag">Win Themes</div>
+  <h2>3 Reasons We Win This Bid</h2>
+  <div class="rule"></div>
+  <div class="wt-list">
+    <div class="wt-item">
+      <div class="wt-num">01</div>
+      <div class="wt-body">
+        <h4>Zero Production Downtime Architecture</h4>
+        <p>Every migration plan in this RFP response is built around the 72-hour parallel run principle — on-premise workload stays live until Azure workload is validated. This is not a promise; it's a documented runbook requirement for every single workload. Competitors who promise "minimal downtime" are hiding a risk transfer. We're carrying it ourselves.</p>
+      </div>
+    </div>
+    <div class="wt-item">
+      <div class="wt-num">02</div>
+      <div class="wt-body">
+        <h4>Fixed-Price, Not Time &amp; Materials</h4>
+        <p>T&M bids look cheaper until Week 14 when "unforeseen complexity" arrives. Our fixed-price model means your ₹14.8Cr doesn't move — regardless of what we find in Waves 2 and 3. Our detailed discovery phase (Phase 1) is what makes this commitment credible. We've already priced the risk you don't know about yet.</p>
+      </div>
+    </div>
+    <div class="wt-item">
+      <div class="wt-num">03</div>
+      <div class="wt-body">
+        <h4>Certified Team with Comparable Reference</h4>
+        <p>Both proposed Azure architects have delivered &gt;200-workload migrations in the past 18 months. We can provide three client references for migrations of similar scope and complexity — all reachable before the selection decision. You are not our first 300-workload migration. You would be our eighth.</p>
+      </div>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">Shreyas Singh</div>
+  <div class="f-meta">Pre-Sales &amp; IT Solutions · Gurgaon · 2026</div>
+  <nav class="f-links"><a href="../index.html">Home</a><a href="../index.html#projects">Projects</a><a href="../index.html#contact">Contact</a></nav>
+</footer>
+</body>
+</html>

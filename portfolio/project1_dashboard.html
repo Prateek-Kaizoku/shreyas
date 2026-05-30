@@ -1,0 +1,389 @@
+<!doctype html>
+<html lang="en">
+<head>
+  <meta charset="UTF-8" />
+  <meta name="viewport" content="width=device-width, initial-scale=1.0" />
+  <title>Territory Performance Dashboard · Shreyas Singh</title>
+  <link rel="preconnect" href="https://fonts.googleapis.com" />
+  <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin />
+  <link href="https://fonts.googleapis.com/css2?family=Cormorant+Garamond:ital,wght@0,400;0,600;0,700;1,400&family=Outfit:wght@300;400;500;600;700&family=JetBrains+Mono:wght@400;500&display=swap" rel="stylesheet" />
+  <script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+  <style>
+    :root {
+      --navy: #0f2b4a; --navy-m: #142848; --navy-l: #1e3d6e;
+      --gold: #c8972a; --gold-l: #e8b84b; --gold-p: #fbf3e2;
+      --cream: #f9f7f4; --white: #ffffff; --grey: #64748b;
+      --grey-l: #f1f5f9; --grey-b: #e2e8f0; --text: #0f172a;
+      --border: rgba(0,0,0,0.07); --green: #10b981; --blue: #2563eb; --red: #ef4444;
+    }
+    * { margin:0; padding:0; box-sizing:border-box; }
+    html { scroll-behavior:smooth; }
+    body { font-family:"Outfit",sans-serif; background:var(--cream); color:var(--text); overflow-x:hidden; -webkit-font-smoothing:antialiased; }
+    ::-webkit-scrollbar { width:3px; }
+    ::-webkit-scrollbar-thumb { background:var(--gold); border-radius:2px; }
+
+    body > nav { position:fixed; top:0; left:0; right:0; z-index:1000; display:flex; align-items:center; justify-content:space-between; padding:16px 60px; background:rgba(10,22,40,0.97); backdrop-filter:blur(20px); border-bottom:1px solid rgba(200,151,42,0.15); }
+    .nav-brand { display:flex; align-items:center; gap:12px; text-decoration:none; }
+    .nav-mono { width:38px; height:38px; border-radius:50%; background:linear-gradient(135deg,var(--gold),var(--gold-l)); display:flex; align-items:center; justify-content:center; font-family:"Cormorant Garamond",serif; font-size:16px; font-weight:700; color:var(--navy); }
+    .nav-name { font-family:"Cormorant Garamond",serif; font-size:19px; font-weight:600; color:var(--white); }
+    .nav-links { display:flex; gap:28px; list-style:none; }
+    .nav-links a { color:rgba(255,255,255,0.6); text-decoration:none; font-size:11px; font-weight:500; letter-spacing:1.3px; text-transform:uppercase; transition:color 0.2s; }
+    .nav-links a:hover { color:var(--gold-l); }
+    .nav-back { background:var(--gold); color:var(--navy); padding:8px 20px; font-size:11px; font-weight:700; letter-spacing:1px; text-transform:uppercase; text-decoration:none; border-radius:2px; transition:all 0.2s; }
+    .nav-back:hover { background:var(--gold-l); }
+
+    .proj-hero { min-height:54vh; background:var(--navy); display:flex; align-items:center; position:relative; overflow:hidden; padding:140px 60px 80px; }
+    .orb1 { position:absolute; width:700px; height:700px; border-radius:50%; background:radial-gradient(circle,rgba(37,99,235,0.15) 0%,transparent 70%); right:-100px; top:-100px; pointer-events:none; }
+    .orb2 { position:absolute; width:500px; height:500px; border-radius:50%; background:radial-gradient(circle,rgba(200,151,42,0.1) 0%,transparent 70%); left:-100px; bottom:-50px; pointer-events:none; }
+    .hero-grid { position:absolute; inset:0; background-image:linear-gradient(rgba(255,255,255,0.025) 1px,transparent 1px),linear-gradient(90deg,rgba(255,255,255,0.025) 1px,transparent 1px); background-size:80px 80px; }
+    .proj-hero-c { position:relative; z-index:2; max-width:860px; }
+    .proj-eyebrow { font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:2.5px; text-transform:uppercase; color:var(--gold); margin-bottom:20px; }
+    .proj-hero-c h1 { font-family:"Cormorant Garamond",serif; font-size:clamp(40px,5vw,64px); font-weight:700; color:var(--white); line-height:1.1; margin-bottom:20px; }
+    .proj-hero-c h1 em { font-style:italic; color:var(--gold-l); }
+    .proj-hero-desc { font-size:15px; line-height:1.75; color:rgba(255,255,255,0.6); max-width:600px; margin-bottom:36px; font-weight:300; }
+    .hero-badges { display:flex; flex-wrap:wrap; gap:10px; }
+    .badge { background:rgba(200,151,42,0.12); border:1px solid rgba(200,151,42,0.25); color:var(--gold-l); font-size:10px; font-family:"JetBrains Mono",monospace; letter-spacing:1.5px; text-transform:uppercase; padding:6px 14px; border-radius:100px; }
+
+    section { padding:80px 60px; }
+    .sec-tag { font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:3px; text-transform:uppercase; color:var(--grey); margin-bottom:14px; }
+    h2 { font-family:"Cormorant Garamond",serif; font-size:clamp(28px,3vw,40px); font-weight:700; color:var(--navy); margin-bottom:12px; line-height:1.15; }
+    h2.ld { color:var(--white); }
+    .rule { width:48px; height:2px; background:var(--gold); margin-bottom:40px; }
+
+    /* KPI Filter Strip */
+    .filter-strip { display:flex; gap:10px; margin-bottom:32px; flex-wrap:wrap; }
+    .filt-btn { background:transparent; border:1px solid rgba(200,151,42,0.3); color:rgba(255,255,255,0.5); font-family:"JetBrains Mono",monospace; font-size:10px; letter-spacing:1.5px; text-transform:uppercase; padding:8px 20px; border-radius:2px; cursor:pointer; transition:all 0.2s; }
+    .filt-btn.active, .filt-btn:hover { background:var(--gold); color:var(--navy); border-color:var(--gold); }
+
+    /* KPI Cards */
+    .kpi-grid { display:grid; grid-template-columns:repeat(4,1fr); gap:16px; margin-bottom:40px; }
+    .kpi-card { background:rgba(255,255,255,0.05); border:1px solid rgba(255,255,255,0.08); padding:24px 20px; border-radius:4px; }
+    .kpi-label { font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:rgba(255,255,255,0.4); margin-bottom:8px; }
+    .kpi-val { font-family:"Cormorant Garamond",serif; font-size:36px; font-weight:700; color:var(--gold-l); line-height:1; margin-bottom:4px; }
+    .kpi-delta { font-size:11px; color:var(--green); font-family:"JetBrains Mono",monospace; }
+    .kpi-delta.neg { color:var(--red); }
+
+    /* Charts */
+    #dashboard { background:var(--navy); }
+    .charts-grid { display:grid; grid-template-columns:1fr 1fr; gap:24px; margin-bottom:24px; }
+    .chart-box { background:rgba(255,255,255,0.04); border:1px solid rgba(255,255,255,0.07); border-radius:4px; padding:24px; }
+    .chart-title { font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:2px; text-transform:uppercase; color:var(--gold); margin-bottom:18px; }
+    .chart-wrap { position:relative; height:220px; }
+    .chart-full { margin-bottom:24px; }
+    .chart-full .chart-wrap { height:200px; }
+
+    /* Build breakdown */
+    #how-built { background:var(--cream); }
+    .build-grid { display:grid; grid-template-columns:repeat(2,1fr); gap:20px; }
+    .build-card { border:1px solid var(--border); background:var(--white); padding:28px; border-radius:4px; transition:all 0.2s; }
+    .build-card:hover { border-color:var(--gold); }
+    .build-icon { font-size:28px; margin-bottom:14px; }
+    .build-title { font-family:"Cormorant Garamond",serif; font-size:18px; font-weight:700; color:var(--navy); margin-bottom:8px; }
+    .build-body { font-size:13px; line-height:1.75; color:var(--grey); font-weight:300; }
+    .build-tag { display:inline-block; margin-top:12px; font-family:"JetBrains Mono",monospace; font-size:9px; letter-spacing:1.5px; text-transform:uppercase; padding:4px 10px; border-radius:100px; }
+    .tag-gold { background:rgba(200,151,42,0.12); color:var(--gold); }
+    .tag-blue { background:rgba(37,99,235,0.08); color:var(--blue); }
+    .tag-green { background:rgba(16,185,129,0.08); color:var(--green); }
+    .tag-purple { background:rgba(139,92,246,0.08); color:#8b5cf6; }
+
+    /* Results */
+    #results { background:var(--white); }
+    .result-row { display:flex; align-items:flex-start; gap:20px; padding:24px 0; border-bottom:1px solid var(--border); }
+    .result-row:last-child { border-bottom:none; }
+    .result-n { font-family:"Cormorant Garamond",serif; font-size:40px; font-weight:700; color:var(--gold); min-width:100px; line-height:1; }
+    .result-body h4 { font-family:"Cormorant Garamond",serif; font-size:18px; font-weight:700; color:var(--navy); margin-bottom:6px; }
+    .result-body p { font-size:13px; line-height:1.7; color:var(--grey); font-weight:300; }
+
+    footer { background:var(--navy); padding:32px 60px; display:flex; align-items:center; justify-content:space-between; border-top:1px solid rgba(200,151,42,0.1); }
+    .f-brand { font-family:"Cormorant Garamond",serif; font-size:18px; font-weight:600; color:var(--white); }
+    .f-meta { font-size:11px; color:rgba(255,255,255,0.28); letter-spacing:0.5px; }
+    .f-links { display:flex; gap:20px; }
+    .f-links a { font-size:10px; color:rgba(255,255,255,0.28); text-decoration:none; letter-spacing:1px; text-transform:uppercase; font-family:"JetBrains Mono",monospace; transition:color 0.2s; }
+    .f-links a:hover { color:var(--gold); }
+
+    @media(max-width:960px) {
+      body > nav { padding:14px 20px; }
+      .nav-links { display:none; }
+      .proj-hero, section { padding-left:20px; padding-right:20px; }
+      .kpi-grid { grid-template-columns:repeat(2,1fr); }
+      .charts-grid, .build-grid { grid-template-columns:1fr; }
+      footer { flex-direction:column; gap:12px; text-align:center; padding:24px 20px; }
+    }
+  </style>
+</head>
+<body>
+
+<nav>
+  <a href="../index.html" class="nav-brand">
+    <div class="nav-mono">SS</div>
+    <span class="nav-name">Shreyas Singh</span>
+  </a>
+  <ul class="nav-links">
+    <li><a href="../index.html#about">About</a></li>
+    <li><a href="../index.html#projects">Projects</a></li>
+    <li><a href="../index.html#contact">Contact</a></li>
+  </ul>
+  <a href="../index.html#projects" class="nav-back">← All Projects</a>
+</nav>
+
+<section class="proj-hero">
+  <div class="orb1"></div><div class="orb2"></div><div class="hero-grid"></div>
+  <div class="proj-hero-c">
+    <div class="proj-eyebrow">Project 01 · Sales Analytics · Tata Motors</div>
+    <h1>Territory Performance<br /><em>Dashboard</em></h1>
+    <p class="proj-hero-desc">
+      Interactive KPI dashboard tracking market share, VAS penetration, and digital adoption across 3 Haryana dealerships. Filterable by quarter. Built with Chart.js — the same kind of reporting tool presented to regional management every month.
+    </p>
+    <div class="hero-badges">
+      <span class="badge">Chart.js</span>
+      <span class="badge">Sales Analytics</span>
+      <span class="badge">KPI Reporting</span>
+      <span class="badge">Data Visualisation</span>
+      <span class="badge">#1 National VAS</span>
+    </div>
+  </div>
+</section>
+
+<!-- LIVE DASHBOARD -->
+<section id="dashboard">
+  <div class="sec-tag" style="color:rgba(200,151,42,0.7)">Live Dashboard</div>
+  <h2 class="ld">Haryana Territory — KPI Overview</h2>
+  <div class="rule"></div>
+
+  <div class="filter-strip">
+    <button class="filt-btn active" onclick="setQ('all',this)">Full Year</button>
+    <button class="filt-btn" onclick="setQ('q1',this)">Q1</button>
+    <button class="filt-btn" onclick="setQ('q2',this)">Q2</button>
+    <button class="filt-btn" onclick="setQ('q3',this)">Q3</button>
+    <button class="filt-btn" onclick="setQ('q4',this)">Q4</button>
+  </div>
+
+  <div class="kpi-grid">
+    <div class="kpi-card">
+      <div class="kpi-label">VAS Penetration</div>
+      <div class="kpi-val" id="kpi-vas">68%</div>
+      <div class="kpi-delta">↑ +14pp vs target</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Market Share</div>
+      <div class="kpi-val" id="kpi-ms">31%</div>
+      <div class="kpi-delta">↑ +3% YoY</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Digital Adoption</div>
+      <div class="kpi-val" id="kpi-da">74%</div>
+      <div class="kpi-delta">↑ #1 National</div>
+    </div>
+    <div class="kpi-card">
+      <div class="kpi-label">Lead Conversion</div>
+      <div class="kpi-val" id="kpi-lc">21%</div>
+      <div class="kpi-delta">↑ +21% via digital tools</div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">VAS Penetration by Month (%)</div>
+      <div class="chart-wrap"><canvas id="vasChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Market Share — 3 Dealerships (%)</div>
+      <div class="chart-wrap"><canvas id="msChart"></canvas></div>
+    </div>
+  </div>
+
+  <div class="charts-grid">
+    <div class="chart-box">
+      <div class="chart-title">Digital Adoption Score by Dealer</div>
+      <div class="chart-wrap"><canvas id="daChart"></canvas></div>
+    </div>
+    <div class="chart-box">
+      <div class="chart-title">Lead Conversion Rate by Quarter (%)</div>
+      <div class="chart-wrap"><canvas id="lcChart"></canvas></div>
+    </div>
+  </div>
+</section>
+
+<!-- HOW IT WAS BUILT -->
+<section id="how-built">
+  <div class="sec-tag">Build Breakdown</div>
+  <h2>Design Decisions &amp; Architecture</h2>
+  <div class="rule"></div>
+  <div class="build-grid">
+    <div class="build-card">
+      <div class="build-icon">📊</div>
+      <div class="build-title">Data Architecture</div>
+      <div class="build-body">All KPI data stored in JavaScript objects — monthly arrays for units, market share, VAS penetration, and digital adoption — mirroring how a real territory manager tracks performance in a CRM or BI tool. Quarter filtering dynamically slices the same dataset.</div>
+      <span class="build-tag tag-gold">Structured Data</span>
+    </div>
+    <div class="build-card">
+      <div class="build-icon">🔄</div>
+      <div class="build-title">Interactivity</div>
+      <div class="build-body">Quarter filter buttons dynamically update all KPI headlines and re-render Chart.js charts from the same underlying dataset. This mirrors real BI tools like Looker or Power BI where a single filter propagates across the entire report view.</div>
+      <span class="build-tag tag-blue">Chart.js v4</span>
+    </div>
+    <div class="build-card">
+      <div class="build-icon">🎨</div>
+      <div class="build-title">Visual Design</div>
+      <div class="build-body">Dark theme mirrors professional analytics platforms (Looker, Tableau, Power BI). Gold accent matches Tata Motors' brand tone. Animated progress bars and smooth chart transitions improve readability during management presentations.</div>
+      <span class="build-tag tag-green">Dark Theme Analytics</span>
+    </div>
+    <div class="build-card">
+      <div class="build-icon">💡</div>
+      <div class="build-title">What It Proves</div>
+      <div class="build-body">Ability to design data visualisation tools is directly relevant to pre-sales engineers who demo dashboards and BDs who build territory reporting for regional management. This is the exact deliverable used to track the #1 national VAS ranking.</div>
+      <span class="build-tag tag-purple">Pre-Sales Relevance</span>
+    </div>
+  </div>
+</section>
+
+<!-- RESULTS -->
+<section id="results">
+  <div class="sec-tag">Outcomes</div>
+  <h2>What the Numbers Actually Mean</h2>
+  <div class="rule"></div>
+
+  <div class="result-row">
+    <div class="result-n">#1</div>
+    <div class="result-body">
+      <h4>National VAS Penetration — Tata Motors</h4>
+      <p>Ranked #1 across all Tata Motors territories nationally for VAS (Value-Added Services) penetration. This metric tracks attach rates on insurance, finance, and extended warranty products. The dashboard made it possible to monitor and act on the data in real time.</p>
+    </div>
+  </div>
+  <div class="result-row">
+    <div class="result-n">21%</div>
+    <div class="result-body">
+      <h4>Lead Conversion Improvement via Digital Adoption</h4>
+      <p>By tracking digital tool adoption alongside conversion rates, the dashboard revealed a direct correlation between CRM usage and close rates. This insight drove targeted coaching at the two underperforming dealerships.</p>
+    </div>
+  </div>
+  <div class="result-row">
+    <div class="result-n">3%</div>
+    <div class="result-body">
+      <h4>Year-on-Year Market Share Growth</h4>
+      <p>Haryana territory grew from 28% to 31% market share over the tracked period. The monthly drill-down in the dashboard identified which months and which dealers were driving or dragging the average — enabling targeted interventions.</p>
+    </div>
+  </div>
+  <div class="result-row">
+    <div class="result-n">3</div>
+    <div class="result-body">
+      <h4>Dealerships Monitored — Single View</h4>
+      <p>Previously, each dealership reported separately in Excel. This dashboard unified all three into one filterable view — reducing monthly reporting time by ~3 hours and giving management a consistent format for every review call.</p>
+    </div>
+  </div>
+</section>
+
+<footer>
+  <div class="f-brand">Shreyas Singh</div>
+  <div class="f-meta">Pre-Sales &amp; IT Solutions · Gurgaon · 2026</div>
+  <nav class="f-links">
+    <a href="../index.html">Home</a>
+    <a href="../index.html#projects">Projects</a>
+    <a href="../index.html#contact">Contact</a>
+  </nav>
+</footer>
+
+<script>
+  const DATA = {
+    all: {
+      months: ['Apr','May','Jun','Jul','Aug','Sep','Oct','Nov','Dec','Jan','Feb','Mar'],
+      vas: [48,52,55,59,62,65,64,66,68,70,71,68],
+      ms: { d1:[29,30,30,31,31,32,31,32,33,33,32,31], d2:[27,28,29,29,30,30,31,31,30,31,31,32], d3:[25,26,27,28,28,29,30,30,31,31,30,31] },
+      da: { d1:72, d2:76, d3:74 },
+      lc: { labels:['Q1','Q2','Q3','Q4'], vals:[15,17,19,21] }
+    },
+    q1: {
+      months: ['Apr','May','Jun'],
+      vas: [48,52,55],
+      ms: { d1:[29,30,30], d2:[27,28,29], d3:[25,26,27] },
+      da: { d1:64, d2:68, d3:62 },
+      lc: { labels:['Apr','May','Jun'], vals:[14,15,17] }
+    },
+    q2: {
+      months: ['Jul','Aug','Sep'],
+      vas: [59,62,65],
+      ms: { d1:[31,31,32], d2:[29,30,30], d3:[28,28,29] },
+      da: { d1:68, d2:72, d3:70 },
+      lc: { labels:['Jul','Aug','Sep'], vals:[16,18,19] }
+    },
+    q3: {
+      months: ['Oct','Nov','Dec'],
+      vas: [64,66,68],
+      ms: { d1:[31,32,33], d2:[31,31,30], d3:[30,30,31] },
+      da: { d1:71, d2:74, d3:73 },
+      lc: { labels:['Oct','Nov','Dec'], vals:[18,20,20] }
+    },
+    q4: {
+      months: ['Jan','Feb','Mar'],
+      vas: [70,71,68],
+      ms: { d1:[33,32,31], d2:[31,31,32], d3:[31,30,31] },
+      da: { d1:72, d2:76, d3:74 },
+      lc: { labels:['Jan','Feb','Mar'], vals:[20,21,21] }
+    }
+  };
+
+  const KPI = {
+    all: { vas:'68%', ms:'31%', da:'74%', lc:'21%' },
+    q1:  { vas:'55%', ms:'28%', da:'64%', lc:'15%' },
+    q2:  { vas:'65%', ms:'31%', da:'70%', lc:'19%' },
+    q3:  { vas:'68%', ms:'31%', da:'73%', lc:'20%' },
+    q4:  { vas:'71%', ms:'32%', da:'76%', lc:'21%' }
+  };
+
+  let charts = {};
+
+  function makeCharts(q) {
+    const d = DATA[q];
+    const gold = '#c8972a', goldL = '#e8b84b', blue = '#2563eb', green = '#10b981', purple = '#8b5cf6';
+    const gridColor = 'rgba(255,255,255,0.06)';
+    const labelColor = 'rgba(255,255,255,0.4)';
+    const opts = { responsive:true, maintainAspectRatio:false, plugins:{ legend:{ display:false } }, scales:{ x:{ grid:{color:gridColor}, ticks:{color:labelColor,font:{size:9,family:'JetBrains Mono'}} }, y:{ grid:{color:gridColor}, ticks:{color:labelColor,font:{size:9,family:'JetBrains Mono'}} } } };
+
+    if(charts.vas) charts.vas.destroy();
+    charts.vas = new Chart(document.getElementById('vasChart'), {
+      type:'line',
+      data:{ labels:d.months, datasets:[{ data:d.vas, borderColor:gold, backgroundColor:'rgba(200,151,42,0.08)', fill:true, tension:0.4, pointRadius:3, pointBackgroundColor:gold }] },
+      options:{...opts, scales:{...opts.scales, y:{...opts.scales.y, min:30, max:100}}}
+    });
+
+    if(charts.ms) charts.ms.destroy();
+    charts.ms = new Chart(document.getElementById('msChart'), {
+      type:'line',
+      data:{ labels:d.months, datasets:[
+        { label:'Dealer 1', data:d.ms.d1, borderColor:gold, tension:0.4, pointRadius:2 },
+        { label:'Dealer 2', data:d.ms.d2, borderColor:blue, tension:0.4, pointRadius:2 },
+        { label:'Dealer 3', data:d.ms.d3, borderColor:green, tension:0.4, pointRadius:2 }
+      ]},
+      options:{ responsive:true, maintainAspectRatio:false, plugins:{ legend:{ labels:{color:'rgba(255,255,255,0.5)',font:{size:9,family:'JetBrains Mono'},boxWidth:12} } }, scales:{x:{grid:{color:gridColor},ticks:{color:labelColor,font:{size:9,family:'JetBrains Mono'}}},y:{grid:{color:gridColor},ticks:{color:labelColor,font:{size:9,family:'JetBrains Mono'}},min:20,max:40}} }
+    });
+
+    if(charts.da) charts.da.destroy();
+    charts.da = new Chart(document.getElementById('daChart'), {
+      type:'bar',
+      data:{ labels:['Dealer 1','Dealer 2','Dealer 3'], datasets:[{ data:[d.da.d1,d.da.d2,d.da.d3], backgroundColor:[gold,blue,green], borderRadius:3 }] },
+      options:{...opts, scales:{...opts.scales, y:{...opts.scales.y, min:0, max:100}}}
+    });
+
+    if(charts.lc) charts.lc.destroy();
+    charts.lc = new Chart(document.getElementById('lcChart'), {
+      type:'bar',
+      data:{ labels:d.lc.labels, datasets:[{ data:d.lc.vals, backgroundColor:'rgba(200,151,42,0.7)', borderColor:gold, borderWidth:1, borderRadius:3 }] },
+      options:{...opts, scales:{...opts.scales, y:{...opts.scales.y, min:0, max:30}}}
+    });
+  }
+
+  function setQ(q, btn) {
+    document.querySelectorAll('.filt-btn').forEach(b => b.classList.remove('active'));
+    btn.classList.add('active');
+    const k = KPI[q];
+    document.getElementById('kpi-vas').textContent = k.vas;
+    document.getElementById('kpi-ms').textContent = k.ms;
+    document.getElementById('kpi-da').textContent = k.da;
+    document.getElementById('kpi-lc').textContent = k.lc;
+    makeCharts(q);
+  }
+
+  makeCharts('all');
+</script>
+</body>
+</html>
