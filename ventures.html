@@ -418,6 +418,25 @@
     .tab-pane { display: none; }
     .tab-pane.active { display: block; }
 
+    /* ── CALCULATOR BUTTON ── */
+    .calc-btn {
+      display: inline-flex; align-items: center; gap: 6px;
+      margin-top: 12px;
+      background: linear-gradient(135deg, #1e3a8a 0%, #3b82f6 100%);
+      color: white; text-decoration: none;
+      font-size: 12px; font-weight: 700; letter-spacing: 0.03em;
+      padding: 9px 16px; border-radius: 8px;
+      border: none; cursor: pointer;
+      transition: all 0.2s; font-family: 'Georgia', serif;
+      box-shadow: 0 2px 8px rgba(59,130,246,0.35);
+    }
+    .calc-btn:hover {
+      transform: translateY(-1px);
+      box-shadow: 0 4px 14px rgba(59,130,246,0.45);
+      color: white;
+    }
+    .calc-btn:active { transform: translateY(0); }
+
     /* ── RESPONSIVE ── */
     @media (max-width: 768px) {
       .card-row { grid-template-columns: 20px 20px 1fr 60px 60px 28px; }
@@ -593,6 +612,7 @@ const ventures = [
     capex:"₹1.5–2.5 Cr", net:"₹60–80 L", opex:"₹50–55 L/mo", rev:"₹1–1.05 Cr/mo",
     margin:49, be:19, roi:65, beStr:"18–20 mo", roiStr:"~65%/yr",
     tag:"Recommended", tagStyle:"color:#f87171",
+    calcUrl:"calculators/makhana-calculator.html",
     scores:{roi:5,risk:3,ease:3,syn:5,govt:5,mkt:5},
     govt:"70% capex subsidy + OMC guaranteed biodiesel offtake (RUCO scheme) + UP biofuel policy",
     risks:["Hotel supply agreements needed upfront","Urban space constraints for plant","New competition may emerge over time"],
@@ -860,6 +880,14 @@ function renderCards() {
               </div>`).join('')}
           </div>
         </div>
+        ${v.calcUrl ? `
+        <div style="margin-top:14px; padding-top:12px; border-top:1px solid rgba(200,169,110,0.15);">
+          <a href="${v.calcUrl}" class="calc-btn" target="_blank">
+            <svg width="14" height="14" viewBox="0 0 24 24" fill="none" stroke="currentColor" stroke-width="2.5" stroke-linecap="round" stroke-linejoin="round"><rect x="2" y="3" width="20" height="14" rx="2"/><path d="M8 21h8M12 17v4"/><path d="M7 8h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2zM7 12h2v2H7zm4 0h2v2h-2zm4 0h2v2h-2z"/></svg>
+            Open Live Processing Calculator
+          </a>
+          <span style="font-size:10px; color:var(--dimmed); margin-left:10px;">Interactive model — edit any assumption, see P&L update in real time</span>
+        </div>` : ''}
       </div>
     </div>`;
   }).join('');
