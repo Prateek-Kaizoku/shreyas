@@ -1,0 +1,631 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8" />
+<meta name="viewport" content="width=device-width, initial-scale=1.0" />
+<title>Indian Land Unit Converter | Shreyas Singh</title>
+<style>
+:root {
+  --bg:        #0c0e0d;
+  --surface:   #131614;
+  --surface2:  #0f1110;
+  --border:    #242826;
+  --accent:    #a8c186;
+  --gold:      #d4a84b;
+  --muted:     #6b7068;
+  --text:      #e4e7e1;
+  --danger:    #c0614a;
+  --r:         5px;
+  --sans:      'Inter', system-ui, -apple-system, sans-serif;
+  --mono:      'JetBrains Mono', 'Fira Mono', 'Courier New', monospace;
+  --n-bg: #182a1f; --n-fg: #72c49a;
+  --s-bg: #1c1830; --s-fg: #a08de0;
+  --e-bg: #2a1f0f; --e-fg: #c9934a;
+  --w-bg: #0f2028; --w-fg: #4aacc9;
+  --d-bg: #1a1a1a; --d-fg: #999;
+}
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+/* ── BACK NAV ── */
+.back-nav {
+  position: sticky; top: 0; z-index: 100;
+  background: rgba(10,10,10,0.96);
+  backdrop-filter: blur(12px);
+  border-bottom: 1px solid var(--border);
+  display: flex; align-items: center;
+  padding: 0 24px; height: 52px; gap: 20px;
+}
+.back-nav a {
+  font-size: 12px; color: var(--muted); text-decoration: none;
+  letter-spacing: 0.04em; border: 1px solid var(--border);
+  padding: 5px 12px; border-radius: var(--r);
+  transition: all 0.2s; font-family: Georgia, serif;
+  white-space: nowrap;
+}
+.back-nav a:hover { color: var(--gold); border-color: var(--gold); }
+.back-nav .breadcrumb {
+  font-size: 12px; color: var(--muted); display: flex;
+  align-items: center; gap: 6px; letter-spacing: 0.03em;
+}
+.back-nav .breadcrumb .sep { color: var(--border); }
+.back-nav .breadcrumb .cur { color: var(--accent); }
+
+body {
+  background: var(--bg);
+  color: var(--text);
+  font-family: var(--sans);
+  font-size: 14px;
+  line-height: 1.55;
+  min-height: 100vh;
+  padding: 40px 16px 80px;
+  -webkit-font-smoothing: antialiased;
+}
+a { color: var(--accent); text-decoration: none; }
+a:hover { text-decoration: underline; }
+
+/* PAGE */
+.page { max-width: 820px; margin: 0 auto; }
+
+/* HEADER */
+.hdr { margin-bottom: 32px; border-bottom: 1px solid var(--border); padding-bottom: 22px; }
+.hdr-eyebrow {
+  font-size: 11px; letter-spacing: .13em; text-transform: uppercase;
+  color: var(--accent); margin-bottom: 6px;
+}
+.hdr h1 { font-size: clamp(20px, 4vw, 30px); font-weight: 700; letter-spacing: -.02em; margin-bottom: 6px; }
+.hdr p { color: var(--muted); font-size: 13px; max-width: 520px; }
+
+/* HOW-TO */
+.how-box {
+  border: 1px solid var(--border);
+  border-left: 3px solid var(--gold);
+  border-radius: var(--r);
+  margin-bottom: 24px;
+  background: #0f1110;
+}
+.how-toggle {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 12px 16px; cursor: pointer; user-select: none; gap: 8px;
+}
+.how-label { font-size: 12px; font-weight: 600; letter-spacing: .06em; color: var(--gold); }
+.how-arr { color: var(--muted); font-size: 12px; transition: transform .2s; }
+.how-arr.open { transform: rotate(180deg); }
+.how-body { display: none; padding: 0 16px 14px; font-size: 12.5px; color: var(--muted); }
+.how-body.open { display: block; }
+.how-body ol { padding-left: 16px; }
+.how-body li { margin-bottom: 4px; }
+.how-body li strong { color: var(--text); }
+.how-note {
+  margin-top: 10px; padding: 8px 12px;
+  background: var(--bg); border-left: 2px solid var(--gold);
+  border-radius: 3px; color: var(--muted); font-size: 12px;
+}
+.how-note strong { color: var(--gold); }
+
+/* GRID */
+.slots-grid {
+  display: grid;
+  grid-template-columns: repeat(auto-fill, minmax(340px, 1fr));
+  gap: 14px;
+  margin-bottom: 14px;
+}
+
+/* SLOT CARD */
+.slot-card {
+  background: var(--surface);
+  border: 1px solid var(--border);
+  border-radius: var(--r);
+  transition: border-color .15s;
+}
+.slot-card.is-source { border-color: var(--accent); }
+
+.slot-head {
+  display: flex; align-items: center; justify-content: space-between;
+  padding: 8px 12px 7px; border-bottom: 1px solid var(--border);
+  background: var(--surface2);
+}
+.slot-num { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.slot-rm {
+  background: none; border: none; color: var(--muted); cursor: pointer;
+  font-size: 15px; padding: 0 2px; line-height: 1; transition: color .15s;
+}
+.slot-rm:hover { color: var(--danger); }
+.slot-rm:disabled { opacity: .2; cursor: default; }
+
+.slot-body { padding: 12px; }
+
+/* REGION CHIPS */
+.chips { display: flex; flex-wrap: wrap; gap: 4px; margin-bottom: 9px; }
+.chip {
+  font-size: 10.5px; padding: 2px 8px; border-radius: 20px;
+  border: 1px solid var(--border); cursor: pointer;
+  color: var(--muted); background: transparent;
+  font-weight: 500; letter-spacing: .03em; transition: all .12s;
+  font-family: var(--sans);
+}
+.chip:hover { border-color: var(--accent); color: var(--accent); }
+.chip.on.r-all   { background: var(--accent); border-color: var(--accent); color: #0c0e0d; }
+.chip.on.r-north { background: var(--n-bg); border-color: var(--n-fg); color: var(--n-fg); }
+.chip.on.r-south { background: var(--s-bg); border-color: var(--s-fg); color: var(--s-fg); }
+.chip.on.r-east  { background: var(--e-bg); border-color: var(--e-fg); color: var(--e-fg); }
+.chip.on.r-west  { background: var(--w-bg); border-color: var(--w-fg); color: var(--w-fg); }
+.chip.on.r-std   { background: var(--d-bg); border-color: var(--d-fg); color: var(--d-fg); }
+
+/* SELECT */
+.sel-wrap { position: relative; margin-bottom: 10px; }
+.unit-sel {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r); color: var(--text); font-size: 13px;
+  padding: 8px 32px 8px 10px; appearance: none; cursor: pointer;
+  outline: none; font-family: var(--sans); transition: border-color .12s;
+}
+.unit-sel:focus { border-color: var(--accent); }
+.sel-arr {
+  position: absolute; right: 10px; top: 50%;
+  transform: translateY(-50%); pointer-events: none;
+  color: var(--muted); font-size: 11px;
+}
+
+/* INPUT */
+.unit-inp {
+  width: 100%; background: var(--bg); border: 1px solid var(--border);
+  border-radius: var(--r); color: var(--text);
+  font-family: var(--mono); font-size: 20px; font-weight: 700;
+  padding: 10px 12px; outline: none; letter-spacing: -.01em;
+  transition: border-color .12s;
+  -moz-appearance: textfield;
+}
+.unit-inp::-webkit-outer-spin-button,
+.unit-inp::-webkit-inner-spin-button { -webkit-appearance: none; margin: 0; }
+.unit-inp:focus { border-color: var(--accent); }
+.unit-inp::placeholder { color: var(--border); font-weight: 400; font-size: 16px; }
+
+.unit-meta { margin-top: 6px; }
+.unit-name { font-size: 11px; color: var(--muted); }
+.unit-sqft { font-size: 11px; color: var(--gold); min-height: 16px; }
+
+/* ADD BUTTON */
+.add-btn {
+  width: 100%; display: flex; align-items: center; justify-content: center;
+  gap: 8px; background: transparent; border: 1px dashed var(--border);
+  border-radius: var(--r); color: var(--muted); font-size: 12.5px;
+  padding: 11px; cursor: pointer; margin-bottom: 28px;
+  font-family: var(--sans); transition: all .12s;
+}
+.add-btn:hover:not(:disabled) { border-color: var(--accent); color: var(--accent); }
+.add-btn:disabled { opacity: .3; cursor: default; }
+
+/* DIVIDER */
+.divider {
+  display: flex; align-items: center; gap: 12px; margin-bottom: 14px;
+}
+.divider-line { flex: 1; height: 1px; background: var(--border); }
+.divider-label { font-size: 10px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); white-space: nowrap; }
+
+/* REF TABLE */
+.ref-toggle { display: flex; align-items: center; gap: 10px; cursor: pointer; user-select: none; margin-bottom: 12px; }
+.ref-label { font-size: 11px; letter-spacing: .12em; text-transform: uppercase; color: var(--muted); font-weight: 600; }
+.ref-arr { color: var(--muted); font-size: 11px; transition: transform .2s; }
+.ref-arr.open { transform: rotate(180deg); }
+.ref-wrap { display: none; overflow-x: auto; border-radius: var(--r); border: 1px solid var(--border); }
+.ref-wrap.open { display: block; }
+
+.ref-table { width: 100%; border-collapse: collapse; min-width: 500px; }
+.ref-table th {
+  text-align: left; padding: 7px 11px; font-size: 10px;
+  letter-spacing: .08em; text-transform: uppercase; color: var(--muted);
+  border-bottom: 1px solid var(--border); background: var(--surface2);
+  font-weight: 600; white-space: nowrap;
+}
+.ref-table td { padding: 7px 11px; border-bottom: 1px solid #1a1d1b; vertical-align: middle; }
+.ref-table tr:last-child td { border-bottom: none; }
+.ref-table tr:hover td { background: var(--surface); }
+.td-unit { font-weight: 600; font-size: 12.5px; }
+.td-sqft { font-family: var(--mono); font-size: 11.5px; color: var(--gold); }
+.td-states { font-size: 11px; color: var(--muted); }
+
+.rtag {
+  display: inline-block; padding: 1px 6px; border-radius: 3px;
+  font-size: 9.5px; font-weight: 700; letter-spacing: .06em; text-transform: uppercase;
+}
+.rtag-north { background: var(--n-bg); color: var(--n-fg); }
+.rtag-south { background: var(--s-bg); color: var(--s-fg); }
+.rtag-east  { background: var(--e-bg); color: var(--e-fg); }
+.rtag-west  { background: var(--w-bg); color: var(--w-fg); }
+.rtag-std   { background: var(--d-bg); color: var(--d-fg); }
+
+/* FOOTER */
+.footer {
+  margin-top: 40px; padding-top: 18px; border-top: 1px solid var(--border);
+  font-size: 11px; color: var(--muted); text-align: center;
+}
+
+@media (max-width: 480px) {
+  .slots-grid { grid-template-columns: 1fr; }
+  .unit-inp { font-size: 18px; }
+}
+</style>
+</head>
+<body>
+
+<!-- BACK NAV -->
+<div class="back-nav">
+  <a href="../ventures.html">← Venture Ideas</a>
+  <div class="breadcrumb">
+    <span>shreyassingh.in</span>
+    <span class="sep">/</span>
+    <span>ventures</span>
+    <span class="sep">/</span>
+    <span class="cur">Land Unit Converter</span>
+  </div>
+</div>
+
+<div class="page">
+
+  <div class="hdr">
+    <div class="hdr-eyebrow">shreyassingh.in / tools</div>
+    <h1>Indian Land Unit Converter</h1>
+    <p>Bigha means different things in Bihar, UP, and Punjab. So does Katha. This converter knows all the regional variants — pick your units and convert instantly.</p>
+  </div>
+
+  <div class="how-box">
+    <div class="how-toggle" onclick="toggleHow()">
+      <span class="how-label">How to use</span>
+      <span class="how-arr" id="howArr">&#9660;</span>
+    </div>
+    <div class="how-body" id="howBody">
+      <ol>
+        <li>Two unit slots are active by default. Add up to <strong>4 total</strong> using the + button.</li>
+        <li>Use the <strong>region chips</strong> (North / South / East / West / Standard) to filter the dropdown to units from that region.</li>
+        <li><strong>Type any value</strong> in any box — all other boxes update automatically.</li>
+        <li>Remove a slot with the <strong>✕</strong> button (minimum 2 required).</li>
+        <li>Scroll down to the <strong>Reference Table</strong> for sq ft values, states, and notes for every unit.</li>
+      </ol>
+      <div class="how-note">
+        <strong>State-specific units:</strong> Bigha, Katha, Dhur and others have very different values in different states. The dropdown lists them as e.g. <strong>Bigha (Bihar)</strong> vs <strong>Bigha (UP)</strong>. Always match the state to your land's location.
+      </div>
+    </div>
+  </div>
+
+  <div class="slots-grid" id="slotsGrid"></div>
+
+  <button class="add-btn" id="addBtn" onclick="addSlot()">
+    <span style="font-size:16px;line-height:1">+</span> Add another unit
+  </button>
+
+  <div class="divider">
+    <div class="divider-line"></div>
+    <div class="divider-label">Reference Table</div>
+    <div class="divider-line"></div>
+  </div>
+
+  <div class="ref-toggle" onclick="toggleRef()">
+    <span class="ref-label">All 47 units with sq ft values</span>
+    <span class="ref-arr" id="refArr">&#9660;</span>
+  </div>
+  <div class="ref-wrap" id="refWrap">
+    <table class="ref-table" id="refTable"></table>
+  </div>
+
+  <div class="footer">
+    Built for <a href="https://shreyassingh.in" target="_blank">shreyassingh.in</a> &nbsp;&middot;&nbsp;
+    Values sourced from DILRMP, state revenue board records &amp; Wikipedia. Always verify locally before transactions.
+  </div>
+
+</div>
+
+<script>
+var UNITS = [
+  /* === STANDARD / ALL INDIA === */
+  { id:"sqft",      label:"Square Feet",               sqft:1,         region:"std",   states:"All India",                           note:"Universal base unit" },
+  { id:"sqyd",      label:"Square Yard (Gaj)",          sqft:9,         region:"std",   states:"All India",                           note:"1 Sq Yd = 9 Sq Ft; widely used in property ads" },
+  { id:"sqm",       label:"Square Metre",               sqft:10.7639,   region:"std",   states:"All India",                           note:"Metric; 1 Sq M = 10.7639 Sq Ft" },
+  { id:"acre",      label:"Acre",                       sqft:43560,     region:"std",   states:"All India",                           note:"1 Acre = 4840 Sq Yards = 43,560 Sq Ft" },
+  { id:"hectare",   label:"Hectare",                    sqft:107639.1,  region:"std",   states:"All India",                           note:"1 Hectare = 10,000 Sq M = 2.471 Acres" },
+
+  /* === NORTH INDIA === */
+  { id:"bigha_up",  label:"Bigha (Uttar Pradesh)",      sqft:27000,     region:"north", states:"Uttar Pradesh",                       note:"= 20 Biswa; Pucca Bigha" },
+  { id:"bigha_pb",  label:"Bigha (Punjab/Haryana)",     sqft:17820,     region:"north", states:"Punjab, Haryana",                     note:"= 4 Kanal = 20 Biswa (Punjab system)" },
+  { id:"bigha_raj", label:"Bigha (Rajasthan Pucca)",    sqft:27225,     region:"north", states:"Rajasthan",                           note:"Shahjahani Jarib: 165ft x 165ft" },
+  { id:"bigha_raj2",label:"Bigha (Rajasthan Kachha)",   sqft:17424,     region:"north", states:"Rajasthan",                           note:"Gantari Jarib: 132ft x 132ft; varies by tehsil" },
+  { id:"bigha_hp",  label:"Bigha (Himachal Pradesh)",   sqft:8712,      region:"north", states:"Himachal Pradesh",                    note:"= 2 Biswa HP; smaller than plains bigha" },
+  { id:"biswa_up",  label:"Biswa (Uttar Pradesh)",      sqft:1350,      region:"north", states:"Uttar Pradesh",                       note:"1/20 Bigha UP; = 1361.25 Sq Ft in Purvanchal" },
+  { id:"biswa_pb",  label:"Biswa (Punjab/Haryana)",     sqft:1089,      region:"north", states:"Punjab, Haryana",                     note:"= 4 Marla = 1 Guntha (Punjab)" },
+  { id:"biswansi",  label:"Biswansi",                   sqft:67.5625,   region:"north", states:"UP, Rajasthan, Haryana",              note:"1/20 Biswa; = 1 Sq Karam (Haryana)" },
+  { id:"kanal",     label:"Kanal",                      sqft:5445,      region:"north", states:"Punjab, Haryana, J&K",               note:"8 Kanal = 1 Acre; = 20 Marla" },
+  { id:"marla",     label:"Marla (Manda)",               sqft:272.25,    region:"north", states:"Punjab, Haryana, HP",                note:"= 9 Sarsahi; 20 Marla = 1 Kanal" },
+  { id:"sarsai",    label:"Sarsahi / Sarsai",            sqft:30.25,     region:"north", states:"Punjab, Haryana, HP",                note:"= 1 Sq Karam (5.5ft x 5.5ft); 9 Sarsahi = 1 Marla" },
+  { id:"killa",     label:"Killa (Punjab)",              sqft:43560,     region:"north", states:"Punjab, Haryana",                    note:"= 1 Acre exactly; = 2 Bigha Punjab" },
+  { id:"ghumaon",   label:"Ghumaon",                    sqft:43560,     region:"north", states:"Punjab, HP",                         note:"= 1 Acre; used in HP hill districts" },
+  { id:"murabba",   label:"Murabba",                    sqft:1089000,   region:"north", states:"Punjab",                             note:"25 Acres; large farm holding unit" },
+
+  /* === EAST INDIA === */
+  { id:"bigha_bih", label:"Bigha (Bihar)",               sqft:27220,     region:"east",  states:"Bihar",                              note:"= 20 Katha Bihar = 400 Dhur" },
+  { id:"bigha_wb",  label:"Bigha (West Bengal)",         sqft:14400,     region:"east",  states:"West Bengal",                        note:"= 20 Katha WB = 1600 Sq Yards" },
+  { id:"bigha_as",  label:"Bigha (Assam)",               sqft:14400,     region:"east",  states:"Assam",                              note:"= 5 Katha Assam = 100 Lecha" },
+  { id:"katha_bih", label:"Katha (Bihar)",               sqft:1361.25,   region:"east",  states:"Bihar",                              note:"= 20 Dhur; 20 Katha = 1 Bigha Bihar" },
+  { id:"katha_wb",  label:"Katha (West Bengal)",         sqft:720,       region:"east",  states:"West Bengal",                        note:"= 16 Chhatak; 20 Katha = 1 Bigha WB" },
+  { id:"katha_as",  label:"Katha (Assam)",               sqft:2880,      region:"east",  states:"Assam",                              note:"= 20 Lecha; 5 Katha = 1 Bigha Assam" },
+  { id:"katha_jh",  label:"Katha (Jharkhand)",           sqft:719.8,     region:"east",  states:"Jharkhand",                          note:"~66.89 Sq M; 20 Katha = 1 Bigha" },
+  { id:"katha_mp",  label:"Katha (Madhya Pradesh)",      sqft:600,       region:"east",  states:"Madhya Pradesh",                     note:"Smaller than Bihar Katha; 20 Katha = 1 Bigha" },
+  { id:"dhur_bih",  label:"Dhur (Bihar/Jharkhand)",      sqft:68.0625,   region:"east",  states:"Bihar, Jharkhand",                   note:"= 20 Dhurki; 20 Dhur = 1 Katha Bihar" },
+  { id:"dhur_trip", label:"Dhur (Tripura)",              sqft:3.6,       region:"east",  states:"Tripura",                            note:"Much smaller than Bihar Dhur; local unit" },
+  { id:"dhurki",    label:"Dhurki (Bihar)",              sqft:3.403,     region:"east",  states:"Bihar",                              note:"20 Dhurki = 1 Dhur Bihar; smallest Bihar unit" },
+  { id:"decimal",   label:"Decimal / Dismil",            sqft:435.6,     region:"east",  states:"Bihar, WB, Assam, Odisha, Jharkhand",note:"100 Decimal = 1 Acre; same as Cent" },
+  { id:"chatak",    label:"Chhatak (West Bengal)",       sqft:45,        region:"east",  states:"West Bengal",                        note:"16 Chhatak = 1 Katha WB; smallest WB unit" },
+  { id:"lecha",     label:"Lecha (Assam)",               sqft:144,       region:"east",  states:"Assam",                              note:"20 Lecha = 1 Katha Assam; = 16 Sq Yards" },
+
+  /* === WEST INDIA === */
+  { id:"bigha_guj", label:"Bigha (Gujarat)",             sqft:17424,     region:"west",  states:"Gujarat",                            note:"= 1936 Sq Yards; Gantari measurement" },
+  { id:"bigha_mp",  label:"Bigha (Madhya Pradesh)",      sqft:12000,     region:"west",  states:"Madhya Pradesh",                     note:"= 1333 Sq Yards approx" },
+  { id:"guntha",    label:"Guntha / Gunta",              sqft:1089,      region:"west",  states:"Maharashtra, Karnataka, AP, Odisha", note:"40 Guntha = 1 Acre; = 121 Sq Yards" },
+  { id:"vigha",     label:"Vigha (Gujarat)",             sqft:2178,      region:"west",  states:"Gujarat",                            note:"20 Vigha = 1 Acre; smaller than Bigha" },
+  { id:"anna",      label:"Anna (Maharashtra/AP)",       sqft:68.0625,   region:"west",  states:"Maharashtra, Andhra Pradesh",        note:"16 Anna = 1 Guntha; old revenue unit" },
+
+  /* === SOUTH INDIA === */
+  { id:"cent",      label:"Cent",                        sqft:435.6,     region:"south", states:"Kerala, Tamil Nadu, Karnataka",       note:"100 Cent = 1 Acre; same as Decimal" },
+  { id:"ground",    label:"Ground (Tamil Nadu)",         sqft:2400,      region:"south", states:"Tamil Nadu",                         note:"Used in Chennai & urban TN; 18.15 Ground = 1 Acre" },
+  { id:"ankanam",   label:"Ankanam",                    sqft:72,        region:"south", states:"Andhra Pradesh, Karnataka",           note:"605 Ankanam = 1 Acre; = 8 Sq Yards" },
+  { id:"kuncham",   label:"Kuncham",                    sqft:4356,      region:"south", states:"Andhra Pradesh",                     note:"= 10 Cent = 484 Sq Yards; 10 Kuncham = 1 Acre" },
+  { id:"veli",      label:"Veli (Tamil Nadu)",           sqft:523008,    region:"south", states:"Tamil Nadu",                         note:"= 20 Maa; large traditional unit (~12 Acres)" },
+  { id:"ma",        label:"Maa (Tamil Nadu)",            sqft:26150.4,   region:"south", states:"Tamil Nadu",                         note:"= 100 Kuli; 20 Maa = 1 Veli" },
+  { id:"cheddi",    label:"Gaj / Sq Yard (South)",      sqft:9,         region:"south", states:"Andhra Pradesh, Telangana",          note:"= 1 Sq Yard; local name for square yard" },
+];
+
+var REGIONS = [
+  { key:"all",   label:"All" },
+  { key:"std",   label:"Standard" },
+  { key:"north", label:"North" },
+  { key:"south", label:"South" },
+  { key:"east",  label:"East" },
+  { key:"west",  label:"West" },
+];
+
+var REGION_NAMES = { std:"Standard", north:"North India", south:"South India", east:"East India", west:"West India" };
+var REGION_TAG   = { std:"rtag-std", north:"rtag-north", south:"rtag-south", east:"rtag-east", west:"rtag-west" };
+
+/* === STATE === */
+var slots = [
+  { id:0, unitId:"acre",      value:"", filter:"all" },
+  { id:1, unitId:"bigha_bih", value:"", filter:"east" },
+];
+var nextId = 2;
+var srcSlot = null;
+
+/* === HELPERS === */
+function getUnit(id) {
+  for (var i = 0; i < UNITS.length; i++) { if (UNITS[i].id === id) return UNITS[i]; }
+  return null;
+}
+function toSqFt(v, uid)   { return parseFloat(v) * getUnit(uid).sqft; }
+function fromSqFt(s, uid) { return s / getUnit(uid).sqft; }
+function fmtNum(v) {
+  if (v === "" || v === null || isNaN(v)) return "";
+  if (v === 0) return "0";
+  var n = parseFloat(v.toPrecision(9));
+  var s = n.toString();
+  if (s.indexOf('e') !== -1) { s = n.toFixed(8).replace(/\.?0+$/, ""); }
+  return s;
+}
+function filteredUnits(filter) {
+  if (filter === "all") return UNITS;
+  var out = [];
+  for (var i = 0; i < UNITS.length; i++) { if (UNITS[i].region === filter) out.push(UNITS[i]); }
+  return out;
+}
+
+/* === PROPAGATE === */
+function propagate(sourceId, rawVal) {
+  var src = null;
+  for (var i = 0; i < slots.length; i++) { if (slots[i].id === sourceId) { src = slots[i]; break; } }
+  if (!src) return;
+
+  var num = parseFloat(rawVal);
+  if (rawVal === "" || rawVal === null || isNaN(num) || num < 0) {
+    for (var i = 0; i < slots.length; i++) slots[i].value = "";
+    renderSlots();
+    return;
+  }
+
+  var sqft = toSqFt(rawVal, src.unitId);
+  for (var i = 0; i < slots.length; i++) {
+    if (slots[i].id === sourceId) {
+      slots[i].value = rawVal;
+    } else {
+      slots[i].value = fmtNum(fromSqFt(sqft, slots[i].unitId));
+    }
+  }
+  renderSlots();
+
+  setTimeout(function() {
+    var el = document.querySelector('[data-sid="' + sourceId + '"] .unit-inp');
+    if (el) { el.focus(); var l = el.value.length; el.setSelectionRange(l, l); }
+  }, 0);
+}
+
+/* === RENDER === */
+function renderSlots() {
+  var grid = document.getElementById("slotsGrid");
+  grid.innerHTML = "";
+
+  for (var si = 0; si < slots.length; si++) {
+    var slot = slots[si];
+    var unit = getUnit(slot.unitId);
+    var funits = filteredUnits(slot.filter);
+    var isSource = (srcSlot === slot.id);
+
+    var chipsHtml = "";
+    for (var ri = 0; ri < REGIONS.length; ri++) {
+      var r = REGIONS[ri];
+      var onCls = (slot.filter === r.key) ? " on r-" + r.key : "";
+      chipsHtml += '<button class="chip' + onCls + '" onclick="setFilter(' + slot.id + ',\'' + r.key + '\')">' + r.label + '</button>';
+    }
+
+    var groups = { std:[], north:[], east:[], west:[], south:[] };
+    for (var ui = 0; ui < funits.length; ui++) {
+      var u = funits[ui];
+      if (groups[u.region]) groups[u.region].push(u);
+    }
+    var groupTitles = {
+      std:"Standard (All India)", north:"North India",
+      east:"East India",          west:"West India", south:"South India"
+    };
+    var optsHtml = "";
+    var gKeys = ["std","north","east","west","south"];
+    for (var gi = 0; gi < gKeys.length; gi++) {
+      var gk = gKeys[gi];
+      var gu = groups[gk];
+      if (!gu || !gu.length) continue;
+      optsHtml += '<optgroup label="' + groupTitles[gk] + '">';
+      for (var ui2 = 0; ui2 < gu.length; ui2++) {
+        var u2 = gu[ui2];
+        optsHtml += '<option value="' + u2.id + '"' + (u2.id === slot.unitId ? " selected" : "") + '>' + u2.label + '</option>';
+      }
+      optsHtml += '</optgroup>';
+    }
+
+    var sqftLine = "";
+    if (slot.value !== "" && !isNaN(parseFloat(slot.value)) && parseFloat(slot.value) >= 0) {
+      var sf = toSqFt(slot.value, slot.unitId);
+      sqftLine = "= " + fmtNum(sf) + " sq ft";
+    }
+
+    var card = document.createElement("div");
+    card.className = "slot-card" + (isSource ? " is-source" : "");
+    card.setAttribute("data-sid", slot.id);
+    card.innerHTML =
+      '<div class="slot-head">' +
+        '<span class="slot-num">Unit ' + (si + 1) + '</span>' +
+        '<button class="slot-rm" onclick="removeSlot(' + slot.id + ')"' + (slots.length <= 2 ? ' disabled title="Need at least 2 slots"' : '') + '>&#10005;</button>' +
+      '</div>' +
+      '<div class="slot-body">' +
+        '<div class="chips">' + chipsHtml + '</div>' +
+        '<div class="sel-wrap">' +
+          '<select class="unit-sel" onchange="setUnit(' + slot.id + ', this.value)">' + optsHtml + '</select>' +
+          '<span class="sel-arr">&#9660;</span>' +
+        '</div>' +
+        '<input class="unit-inp" type="number" min="0" placeholder="0"' +
+          ' value="' + (slot.value || "") + '"' +
+          ' oninput="onInput(' + slot.id + ', this.value)"' +
+          ' onfocus="srcSlot = ' + slot.id + '" />' +
+        '<div class="unit-meta">' +
+          '<div class="unit-name">' + unit.label + ' &middot; ' + unit.states + '</div>' +
+          '<div class="unit-sqft">' + sqftLine + '</div>' +
+        '</div>' +
+      '</div>';
+
+    grid.appendChild(card);
+  }
+
+  var btn = document.getElementById("addBtn");
+  if (btn) btn.disabled = slots.length >= 4;
+}
+
+/* === EVENT HANDLERS === */
+function onInput(slotId, val) {
+  srcSlot = slotId;
+  propagate(slotId, val);
+}
+
+function setUnit(slotId, unitId) {
+  var slot = null;
+  for (var i = 0; i < slots.length; i++) { if (slots[i].id === slotId) { slot = slots[i]; break; } }
+  if (!slot) return;
+  slot.unitId = unitId;
+  var anchor = null;
+  for (var i = 0; i < slots.length; i++) {
+    if (slots[i].value !== "" && slots[i].id !== slotId) { anchor = slots[i]; break; }
+  }
+  if (anchor) {
+    propagate(anchor.id, anchor.value);
+  } else if (slot.value !== "") {
+    propagate(slotId, slot.value);
+  } else {
+    renderSlots();
+  }
+}
+
+function setFilter(slotId, filter) {
+  var slot = null;
+  for (var i = 0; i < slots.length; i++) { if (slots[i].id === slotId) { slot = slots[i]; break; } }
+  if (!slot) return;
+  slot.filter = filter;
+  var available = filteredUnits(filter);
+  var found = false;
+  for (var i = 0; i < available.length; i++) { if (available[i].id === slot.unitId) { found = true; break; } }
+  if (!found && available.length) slot.unitId = available[0].id;
+  renderSlots();
+}
+
+function addSlot() {
+  if (slots.length >= 4) return;
+  slots.push({ id: nextId++, unitId: "sqft", value: "", filter: "all" });
+  renderSlots();
+}
+
+function removeSlot(slotId) {
+  if (slots.length <= 2) return;
+  var newSlots = [];
+  for (var i = 0; i < slots.length; i++) { if (slots[i].id !== slotId) newSlots.push(slots[i]); }
+  slots = newSlots;
+  renderSlots();
+}
+
+/* === REFERENCE TABLE === */
+function buildRefTable() {
+  var t = document.getElementById("refTable");
+  var html = '<thead><tr>' +
+    '<th>Unit</th><th>Sq Feet</th><th>= Acres</th><th>Region</th><th>States / Notes</th>' +
+    '</tr></thead><tbody>';
+
+  var gKeys = ["std","north","east","west","south"];
+  for (var gi = 0; gi < gKeys.length; gi++) {
+    var gk = gKeys[gi];
+    for (var i = 0; i < UNITS.length; i++) {
+      var u = UNITS[i];
+      if (u.region !== gk) continue;
+      var acres = fmtNum(u.sqft / 43560);
+      var tagCls = REGION_TAG[u.region] || "rtag-std";
+      html += '<tr>' +
+        '<td class="td-unit">' + u.label + '</td>' +
+        '<td class="td-sqft">' + u.sqft.toLocaleString("en-IN", {maximumFractionDigits:4}) + '</td>' +
+        '<td class="td-sqft">' + acres + '</td>' +
+        '<td><span class="rtag ' + tagCls + '">' + (REGION_NAMES[u.region] || u.region) + '</span></td>' +
+        '<td class="td-states">' + u.note + ' &middot; ' + u.states + '</td>' +
+        '</tr>';
+    }
+  }
+  html += '</tbody>';
+  t.innerHTML = html;
+}
+
+function toggleRef() {
+  var wrap = document.getElementById("refWrap");
+  var arr  = document.getElementById("refArr");
+  if (wrap.classList.contains("open")) {
+    wrap.classList.remove("open");
+    arr.classList.remove("open");
+  } else {
+    wrap.classList.add("open");
+    arr.classList.add("open");
+    buildRefTable();
+  }
+}
+
+function toggleHow() {
+  var body = document.getElementById("howBody");
+  var arr  = document.getElementById("howArr");
+  if (body.classList.contains("open")) {
+    body.classList.remove("open");
+    arr.classList.remove("open");
+  } else {
+    body.classList.add("open");
+    arr.classList.add("open");
+  }
+}
+
+/* === INIT === */
+renderSlots();
+</script>
+</body>
+</html>
