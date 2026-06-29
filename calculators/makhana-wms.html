@@ -1,0 +1,1137 @@
+<!DOCTYPE html>
+<html lang="en">
+<head>
+<meta charset="UTF-8">
+<meta name="viewport" content="width=device-width, initial-scale=1.0">
+<title>Makhana Processing — WMS Investor Dashboard | Shreyas Singh</title>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
+<script src="https://cdn.jsdelivr.net/npm/chart.js@4.4.0/dist/chart.umd.min.js"></script>
+<style>
+*, *::before, *::after { box-sizing: border-box; margin: 0; padding: 0; }
+
+:root {
+  --green:     #1a3d2b;
+  --green-mid: #2a5c40;
+  --green-lt:  #e8f0ea;
+  --cream:     #faf6ef;
+  --gold:      #c9882a;
+  --gold-lt:   #f5e9d3;
+  --charcoal:  #1c1c1c;
+  --muted:     #6b7c6e;
+  --white:     #ffffff;
+  --border:    #d8e4da;
+  --red:       #c0392b;
+  --red-lt:    #fdf0ef;
+  --pos:       #1a6b3a;
+  --neg:       #c0392b;
+  --shadow:    0 2px 12px rgba(0,0,0,0.07);
+  --r:         10px;
+}
+
+body {
+  font-family: 'Plus Jakarta Sans', system-ui, sans-serif;
+  background: var(--cream);
+  color: var(--charcoal);
+  line-height: 1.5;
+  font-size: 14px;
+}
+
+/* ── HEADER ── */
+.site-header {
+  background: var(--green);
+  padding: 12px 24px;
+  display: flex;
+  align-items: center;
+  justify-content: space-between;
+}
+.site-header a { color: rgba(255,255,255,0.65); text-decoration: none; font-size: 12px; }
+.site-header a:hover { color: var(--gold); }
+.header-brand { color: var(--gold); font-weight: 700; font-size: 14px; }
+
+.hero {
+  background: var(--green);
+  padding: 24px 24px 20px;
+  color: white;
+}
+.hero h1 { font-size: clamp(20px, 4vw, 28px); font-weight: 800; color: white; line-height: 1.2; }
+.hero p { font-size: 13px; color: rgba(255,255,255,0.65); margin-top: 6px; }
+.hero-badge {
+  display: inline-block;
+  background: var(--gold);
+  color: white;
+  font-size: 10px;
+  font-weight: 700;
+  padding: 3px 10px;
+  border-radius: 20px;
+  text-transform: uppercase;
+  letter-spacing: 0.08em;
+  margin-bottom: 10px;
+}
+
+/* ── KPI STRIP ── */
+.kpi-strip {
+  display: grid;
+  grid-template-columns: repeat(4, 1fr);
+  gap: 3px;
+  background: var(--green-mid);
+}
+@media (max-width: 700px) { .kpi-strip { grid-template-columns: repeat(2, 1fr); } }
+
+.kpi-card { background: var(--green); padding: 14px 16px; text-align: center; }
+.kpi-card .kv { font-size: clamp(18px, 3vw, 26px); font-weight: 800; color: var(--gold); line-height: 1; }
+.kpi-card .kl { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; letter-spacing: 0.08em; margin-top: 4px; }
+.kpi-card .ks { font-size: 11px; color: rgba(255,255,255,0.45); margin-top: 2px; }
+
+/* ── LAYOUT ── */
+.layout {
+  display: grid;
+  grid-template-columns: 320px 1fr;
+  gap: 0;
+  min-height: calc(100vh - 200px);
+}
+@media (max-width: 900px) { .layout { grid-template-columns: 1fr; } }
+
+/* ── SIDEBAR ── */
+.sidebar {
+  background: var(--white);
+  border-right: 1px solid var(--border);
+  padding: 16px;
+  overflow-y: auto;
+  max-height: calc(100vh - 200px);
+  position: sticky;
+  top: 0;
+}
+@media (max-width: 900px) { .sidebar { max-height: none; position: static; } }
+
+.sidebar-section { margin-bottom: 18px; padding-bottom: 18px; border-bottom: 1px solid var(--border); }
+.sidebar-section:last-child { border-bottom: none; }
+.sidebar-title { font-size: 10px; font-weight: 700; text-transform: uppercase; letter-spacing: 0.1em; color: var(--gold); margin-bottom: 12px; }
+
+.input-row { display: flex; align-items: center; justify-content: space-between; margin-bottom: 10px; gap: 8px; }
+.input-row label { font-size: 12px; color: var(--muted); flex: 1; min-width: 0; }
+.input-row input[type="range"] { flex: 1.2; accent-color: var(--green); max-width: 120px; }
+.input-row input[type="number"] {
+  width: 80px; border: 1px solid var(--border); border-radius: 6px;
+  padding: 4px 7px; font-size: 12px; font-family: inherit;
+  color: var(--charcoal); text-align: right; background: var(--cream);
+}
+.input-row input[type="number"]:focus { outline: 2px solid var(--green); background: white; }
+
+.preset-row { display: flex; gap: 4px; margin-bottom: 12px; }
+.preset-btn {
+  flex: 1; padding: 5px 4px; font-size: 10px; font-weight: 600;
+  border: 1.5px solid var(--border); border-radius: 6px;
+  background: white; cursor: pointer; color: var(--muted); transition: all 0.15s;
+}
+.preset-btn:hover { border-color: var(--green); color: var(--green); }
+.preset-btn.active { background: var(--green); border-color: var(--green); color: white; }
+
+.reset-btn {
+  width: 100%; padding: 8px; background: var(--green-lt);
+  border: 1px solid var(--border); border-radius: 7px;
+  color: var(--green); font-size: 12px; font-weight: 600; cursor: pointer; margin-top: 6px;
+}
+.reset-btn:hover { background: var(--green); color: white; }
+
+/* ── MAIN ── */
+.main { padding: 20px; overflow-y: auto; }
+
+/* ── TABS ── */
+.tabs {
+  display: flex; gap: 4px; border-bottom: 2px solid var(--border);
+  margin-bottom: 20px; overflow-x: auto; scrollbar-width: none;
+}
+.tab {
+  padding: 8px 16px; font-size: 12px; font-weight: 600; color: var(--muted);
+  cursor: pointer; border-bottom: 2px solid transparent; margin-bottom: -2px;
+  white-space: nowrap; transition: all 0.15s;
+}
+.tab:hover { color: var(--green); }
+.tab.active { color: var(--green); border-bottom-color: var(--green); }
+.tab-content { display: none; }
+.tab-content.active { display: block; }
+
+/* ── CARDS ── */
+.card { background: white; border-radius: var(--r); border: 1px solid var(--border); padding: 18px; margin-bottom: 16px; box-shadow: var(--shadow); }
+.card-title {
+  font-size: 12px; font-weight: 700; text-transform: uppercase;
+  letter-spacing: 0.08em; color: var(--green); margin-bottom: 14px;
+  display: flex; align-items: center; gap: 8px;
+}
+.card-title::after { content: ''; flex: 1; height: 1px; background: var(--border); }
+
+.two-col   { display: grid; grid-template-columns: 1fr 1fr; gap: 14px; }
+.three-col { display: grid; grid-template-columns: 1fr 1fr 1fr; gap: 14px; }
+@media (max-width: 600px) { .two-col, .three-col { grid-template-columns: 1fr; } }
+
+/* ── PROCESS FLOW ── */
+.flow-container { display: flex; align-items: stretch; gap: 0; overflow-x: auto; padding: 12px 0; }
+.flow-step { display: flex; flex-direction: column; align-items: center; min-width: 110px; max-width: 130px; flex-shrink: 0; }
+.flow-machine { background: var(--green); color: white; border-radius: 10px; padding: 12px 8px; text-align: center; width: 100%; position: relative; }
+.flow-machine.bottleneck { background: var(--red); box-shadow: 0 0 0 2px var(--red), 0 0 0 4px rgba(192,57,43,0.2); }
+.flow-machine.manual { background: var(--gold); }
+.flow-machine.storage { background: var(--green-mid); }
+.flow-icon { font-size: 22px; margin-bottom: 4px; }
+.flow-name { font-size: 10px; font-weight: 700; line-height: 1.2; margin-bottom: 4px; }
+.flow-cap { font-size: 9px; color: rgba(255,255,255,0.7); }
+.flow-price { font-size: 9px; color: var(--gold-lt); font-weight: 600; margin-top: 3px; }
+.flow-machine.manual .flow-price,
+.flow-machine.bottleneck .flow-price { color: rgba(255,255,255,0.8); }
+.flow-arrow { display: flex; align-items: center; padding: 0 4px; color: var(--border); font-size: 20px; flex-shrink: 0; align-self: center; padding-bottom: 28px; }
+.flow-label { font-size: 9px; color: var(--muted); text-align: center; margin-top: 6px; max-width: 110px; }
+
+/* ── TABLES ── */
+table { width: 100%; border-collapse: collapse; font-size: 12px; }
+thead th { background: var(--green); color: white; padding: 8px 10px; text-align: left; font-size: 11px; font-weight: 600; text-transform: uppercase; letter-spacing: 0.05em; }
+tbody td { padding: 8px 10px; border-bottom: 1px solid var(--border); }
+tbody tr:nth-child(even) td { background: var(--cream); }
+tbody tr.highlight td { background: var(--gold-lt); font-weight: 700; }
+tbody tr.total td { background: var(--green-lt); font-weight: 700; border-top: 2px solid var(--green); }
+tbody tr.loss td { background: var(--red-lt); }
+tbody tr.profit td { background: rgba(26,107,58,0.08); }
+.num { text-align: right; font-variant-numeric: tabular-nums; }
+.pos-num { color: var(--pos); font-weight: 700; }
+.neg-num { color: var(--neg); font-weight: 700; }
+
+/* ── MINI METRIC ── */
+.metric-row { display: grid; grid-template-columns: repeat(auto-fit, minmax(140px, 1fr)); gap: 10px; margin-bottom: 14px; }
+.metric { background: var(--green-lt); border-radius: 8px; padding: 12px 14px; border-left: 3px solid var(--green); }
+.metric.gold-metric { background: var(--gold-lt); border-left-color: var(--gold); }
+.metric.red-metric  { background: var(--red-lt);  border-left-color: var(--red); }
+.metric-val { font-size: 20px; font-weight: 800; color: var(--green); line-height: 1; }
+.metric.gold-metric .metric-val { color: var(--gold); }
+.metric.red-metric  .metric-val { color: var(--red); }
+.metric-lbl { font-size: 10px; color: var(--muted); margin-top: 4px; text-transform: uppercase; letter-spacing: 0.06em; }
+
+/* ── WATERFALL ── */
+.waterfall { margin: 10px 0; }
+.wf-row { display: flex; align-items: center; gap: 10px; margin-bottom: 6px; }
+.wf-label { font-size: 11px; color: var(--muted); width: 160px; flex-shrink: 0; text-align: right; }
+.wf-bar-wrap { flex: 1; height: 22px; background: var(--green-lt); border-radius: 4px; overflow: hidden; position: relative; }
+.wf-bar { height: 100%; border-radius: 4px; display: flex; align-items: center; padding: 0 8px; font-size: 10px; font-weight: 700; color: white; }
+.wf-val { font-size: 11px; font-weight: 700; color: var(--green); width: 80px; }
+
+/* ── SENSITIVITY ── */
+.sens-table { font-size: 11px; }
+.sens-table td, .sens-table th { padding: 6px 8px; text-align: center; }
+.sens-green  { background: rgba(26,107,58,0.15); color: var(--pos); font-weight: 700; }
+.sens-yellow { background: rgba(201,136,42,0.15); color: #8a5c00; }
+.sens-red    { background: rgba(192,57,43,0.1);   color: var(--neg); font-weight: 700; }
+
+/* ── INVESTOR ── */
+.investor-highlight { background: var(--green); color: white; border-radius: var(--r); padding: 20px; margin-bottom: 16px; }
+.investor-highlight h3 { color: var(--gold); font-size: 14px; margin-bottom: 12px; }
+.inv-grid { display: grid; grid-template-columns: repeat(3, 1fr); gap: 12px; }
+@media (max-width: 600px) { .inv-grid { grid-template-columns: 1fr 1fr; } }
+.inv-stat .iv { font-size: 24px; font-weight: 800; color: white; line-height: 1; }
+.inv-stat .il { font-size: 10px; color: rgba(255,255,255,0.6); text-transform: uppercase; margin-top: 3px; }
+
+/* ── PHASE TOGGLE ── */
+.phase-toggle { display: flex; background: var(--green-lt); border-radius: 8px; padding: 3px; gap: 3px; margin-bottom: 16px; }
+.phase-btn { flex: 1; padding: 7px; border: none; border-radius: 6px; font-size: 12px; font-weight: 600; cursor: pointer; background: transparent; color: var(--muted); transition: all 0.2s; }
+.phase-btn.active { background: var(--green); color: white; }
+
+.chart-wrap { position: relative; height: 220px; }
+
+/* ── ALERTS ── */
+.alert { padding: 10px 14px; border-radius: 8px; font-size: 12px; margin-bottom: 12px; }
+.alert-green { background: rgba(26,107,58,0.1); border-left: 3px solid var(--pos); color: var(--pos); }
+.alert-red   { background: var(--red-lt); border-left: 3px solid var(--red); color: var(--red); }
+.alert-gold  { background: var(--gold-lt); border-left: 3px solid var(--gold); color: #6b4000; }
+
+.tag { display: inline-block; padding: 2px 8px; border-radius: 20px; font-size: 10px; font-weight: 700; text-transform: uppercase; }
+.tag-green { background: var(--green-lt); color: var(--green); }
+.tag-gold  { background: var(--gold-lt);  color: var(--gold); }
+.tag-red   { background: var(--red-lt);   color: var(--red); }
+
+footer { background: var(--green); color: rgba(255,255,255,0.5); text-align: center; padding: 16px; font-size: 11px; }
+</style>
+</head>
+<body>
+
+<!-- HEADER -->
+<div class="site-header">
+  <a href="https://www.shreyassingh.in/">← shreyassingh.in</a>
+  <span class="header-brand">WMS Makhana</span>
+  <a href="https://www.shreyassingh.in/ventures.html">All Ventures →</a>
+</div>
+
+<div class="hero">
+  <div class="hero-badge">Live Investor Calculator</div>
+  <h1>🌰 Makhana Processing Plant<br>Business Model Calculator</h1>
+  <p>Edit any input on the left — all financials, process flow, and investor returns update live.</p>
+</div>
+
+<!-- KPI STRIP -->
+<div class="kpi-strip">
+  <div class="kpi-card">
+    <div class="kv" id="kpi-profit">₹0</div>
+    <div class="kl">Monthly Net Profit</div>
+    <div class="ks" id="kpi-profit-sub">At target volume</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kv" id="kpi-bep">0 kg</div>
+    <div class="kl">Break-Even Volume</div>
+    <div class="ks">Per month to cover all costs</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kv" id="kpi-equity">₹0</div>
+    <div class="kl">Net Equity Needed</div>
+    <div class="ks">After subsidies + bank loan</div>
+  </div>
+  <div class="kpi-card">
+    <div class="kv" id="kpi-roi">0 mo</div>
+    <div class="kl">Equity Payback</div>
+    <div class="ks" id="kpi-irr">IRR: —</div>
+  </div>
+</div>
+
+<!-- MAIN LAYOUT -->
+<div class="layout">
+
+  <!-- SIDEBAR -->
+  <div class="sidebar">
+    <div class="sidebar-section">
+      <div class="sidebar-title">Quick Scenarios</div>
+      <div class="preset-row">
+        <button class="preset-btn active" onclick="loadPreset('realistic', event)">📊 Realistic</button>
+        <button class="preset-btn" onclick="loadPreset('optimistic', event)">🟢 Optimistic</button>
+        <button class="preset-btn" onclick="loadPreset('conservative', event)">🟠 Conservative</button>
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">🌾 Raw Material</div>
+      <div class="input-row">
+        <label>Seed price (₹/kg)</label>
+        <input type="range" id="r-seed" min="180" max="360" step="5" oninput="sync('seed',this.value)">
+        <input type="number" id="n-seed" value="250" oninput="sync('seed',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Seed quantity (kg/mo)</label>
+        <input type="range" id="r-seedqty" min="500" max="8000" step="100" oninput="sync('seedqty',this.value)">
+        <input type="number" id="n-seedqty" value="3000" oninput="sync('seedqty',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Yield % (raw → popped)</label>
+        <input type="range" id="r-yield" min="0.25" max="0.45" step="0.01" oninput="sync('yield',this.value)">
+        <input type="number" id="n-yield" value="0.35" step="0.01" oninput="sync('yield',this.value)">
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">💰 Sales</div>
+      <div class="input-row">
+        <label>Wholesale price (₹/kg)</label>
+        <input type="range" id="r-wsprice" min="500" max="1200" step="10" oninput="sync('wsprice',this.value)">
+        <input type="number" id="n-wsprice" value="700" oninput="sync('wsprice',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Retail price (₹/kg)</label>
+        <input type="range" id="r-retprice" min="800" max="2000" step="50" oninput="sync('retprice',this.value)">
+        <input type="number" id="n-retprice" value="1200" oninput="sync('retprice',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Retail share (%)</label>
+        <input type="range" id="r-retmix" min="0" max="100" step="5" oninput="sync('retmix',this.value)">
+        <input type="number" id="n-retmix" value="0" oninput="sync('retmix',this.value)">
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">👷 Labour</div>
+      <div class="input-row">
+        <label>Daily wage (₹/worker)</label>
+        <input type="range" id="r-wage" min="250" max="700" step="25" oninput="sync('wage',this.value)">
+        <input type="number" id="n-wage" value="400" oninput="sync('wage',this.value)">
+      </div>
+      <div class="input-row">
+        <label>No. of workers</label>
+        <input type="range" id="r-workers" min="2" max="12" step="1" oninput="sync('workers',this.value)">
+        <input type="number" id="n-workers" value="4" oninput="sync('workers',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Working days/mo</label>
+        <input type="range" id="r-wdays" min="15" max="30" step="1" oninput="sync('wdays',this.value)">
+        <input type="number" id="n-wdays" value="20" oninput="sync('wdays',this.value)">
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">📋 Other Variable (₹/kg output)</div>
+      <div class="input-row">
+        <label>Fuel / energy</label>
+        <input type="range" id="r-fuel" min="5" max="30" step="1" oninput="sync('fuel',this.value)">
+        <input type="number" id="n-fuel" value="12" oninput="sync('fuel',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Packaging</label>
+        <input type="range" id="r-pkg" min="5" max="50" step="1" oninput="sync('pkg',this.value)">
+        <input type="number" id="n-pkg" value="15" oninput="sync('pkg',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Breakage / misc</label>
+        <input type="range" id="r-waste" min="3" max="25" step="1" oninput="sync('waste',this.value)">
+        <input type="number" id="n-waste" value="8" oninput="sync('waste',this.value)">
+      </div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">📌 Monthly Fixed (₹)</div>
+      <div class="input-row"><label>Marketing</label><input type="number" id="n-mkt" value="5000" oninput="recalc()"></div>
+      <div class="input-row"><label>Power + water</label><input type="number" id="n-power" value="12000" oninput="recalc()"></div>
+      <div class="input-row"><label>Compliance + admin</label><input type="number" id="n-admin" value="8000" oninput="recalc()"></div>
+      <div class="input-row"><label>Miscellaneous</label><input type="number" id="n-misc" value="10000" oninput="recalc()"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">🏛️ Subsidies (₹)</div>
+      <div class="input-row"><label>PMFME grant</label><input type="number" id="n-pmfme" value="1000000" oninput="recalc()"></div>
+      <div class="input-row"><label>Bihar Startup (0% loan)</label><input type="number" id="n-bsp" value="1000000" oninput="recalc()"></div>
+      <div class="input-row"><label>Bihar MSME grant</label><input type="number" id="n-bmsme" value="200000" oninput="recalc()"></div>
+    </div>
+
+    <div class="sidebar-section">
+      <div class="sidebar-title">🏦 Financing</div>
+      <div class="input-row">
+        <label>Loan % of net capex</label>
+        <input type="range" id="r-loanpct" min="0" max="90" step="5" oninput="sync('loanpct',this.value)">
+        <input type="number" id="n-loanpct" value="50" oninput="sync('loanpct',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Interest rate %</label>
+        <input type="range" id="r-rate" min="7" max="18" step="0.5" oninput="sync('rate',this.value)">
+        <input type="number" id="n-rate" value="11" oninput="sync('rate',this.value)">
+      </div>
+      <div class="input-row">
+        <label>Tenure (years)</label>
+        <input type="range" id="r-tenure" min="3" max="10" step="1" oninput="sync('tenure',this.value)">
+        <input type="number" id="n-tenure" value="7" oninput="sync('tenure',this.value)">
+      </div>
+    </div>
+
+    <button class="reset-btn" onclick="resetAll()">↺ Reset to defaults</button>
+  </div>
+
+  <!-- MAIN PANEL -->
+  <div class="main">
+    <div class="tabs">
+      <div class="tab active" onclick="showTab('flow', event)">⚙️ Process Flow</div>
+      <div class="tab" onclick="showTab('monthly', event)">📊 Monthly P&L</div>
+      <div class="tab" onclick="showTab('capex', event)">💵 Capex & Funding</div>
+      <div class="tab" onclick="showTab('projection', event)">📈 3-Year View</div>
+      <div class="tab" onclick="showTab('investor', event)">🤝 Investor Returns</div>
+      <div class="tab" onclick="showTab('sensitivity', event)">📉 Sensitivity</div>
+    </div>
+
+    <!-- TAB: PROCESS FLOW -->
+    <div id="tab-flow" class="tab-content active">
+      <div class="card">
+        <div class="card-title">Machine Line — Live Throughput Status</div>
+        <div class="flow-container" id="flow-container"></div>
+        <div style="display:flex;gap:12px;margin-top:10px;flex-wrap:wrap;">
+          <span style="font-size:11px;color:var(--muted);"><span style="display:inline-block;width:10px;height:10px;background:var(--green);border-radius:2px;"></span> Auto machine</span>
+          <span style="font-size:11px;color:var(--muted);"><span style="display:inline-block;width:10px;height:10px;background:var(--gold);border-radius:2px;"></span> Manual</span>
+          <span style="font-size:11px;color:var(--muted);"><span style="display:inline-block;width:10px;height:10px;background:var(--red);border-radius:2px;"></span> Bottleneck</span>
+          <span style="font-size:11px;color:var(--muted);"><span style="display:inline-block;width:10px;height:10px;background:var(--green-mid);border-radius:2px;"></span> Storage/manual step</span>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Machine Costs (Supplier Quote)</div>
+          <table>
+            <thead><tr><th>Machine</th><th>Type</th><th class="num">Price</th></tr></thead>
+            <tbody>
+              <tr><td>Makhana Popping Machine</td><td><span class="tag tag-green">Auto</span></td><td class="num">₹6,65,000</td></tr>
+              <tr><td>SS304 Collection Box + E-Panel + Accessories</td><td><span class="tag tag-green">Incl.</span></td><td class="num">₹35,000</td></tr>
+              <tr><td>Seed Washer</td><td><span class="tag tag-green">Auto</span></td><td class="num">₹1,60,000</td></tr>
+              <tr><td>Seed Roaster</td><td><span class="tag tag-green">Auto</span></td><td class="num">₹1,20,000</td></tr>
+              <tr><td>Manual Seed Grader</td><td><span class="tag tag-gold">Manual</span></td><td class="num">₹24,000</td></tr>
+              <tr><td>Manual Lawa Grader</td><td><span class="tag tag-gold">Manual</span></td><td class="num">₹21,000</td></tr>
+              <tr class="total"><td colspan="2">Sub-total (ex-GST)</td><td class="num">₹10,25,000</td></tr>
+              <tr><td colspan="2">GST @ 18%</td><td class="num">₹1,84,500</td></tr>
+              <tr class="highlight"><td colspan="2">Grand Total (incl. GST)</td><td class="num">₹12,09,500</td></tr>
+            </tbody>
+          </table>
+        </div>
+
+        <div class="card">
+          <div class="card-title">Live Flow Numbers</div>
+          <div class="metric-row">
+            <div class="metric"><div class="metric-val" id="flow-input">0 kg</div><div class="metric-lbl">Raw Seed In (monthly)</div></div>
+            <div class="metric gold-metric"><div class="metric-val" id="flow-output">0 kg</div><div class="metric-lbl">Popped Output</div></div>
+          </div>
+          <div class="metric-row">
+            <div class="metric"><div class="metric-val" id="flow-daily">0 kg</div><div class="metric-lbl">Daily Output</div></div>
+            <div class="metric"><div class="metric-val" id="flow-hours">0 hr</div><div class="metric-lbl">Daily Machine Hours</div></div>
+          </div>
+          <div id="flow-bottleneck-alert"></div>
+          <div style="margin-top:10px;">
+            <table>
+              <thead><tr><th>Stage</th><th class="num">Cap (kg/hr)</th><th class="num">Hrs needed/day</th></tr></thead>
+              <tbody id="flow-table-body"></tbody>
+            </table>
+          </div>
+        </div>
+      </div>
+    </div>
+
+    <!-- TAB: MONTHLY P&L -->
+    <div id="tab-monthly" class="tab-content">
+      <div id="monthly-alert"></div>
+      <div class="metric-row">
+        <div class="metric"><div class="metric-val" id="m-rev">₹0</div><div class="metric-lbl">Monthly Revenue</div></div>
+        <div class="metric"><div class="metric-val" id="m-vc">₹0</div><div class="metric-lbl">Variable Costs</div></div>
+        <div class="metric"><div class="metric-val" id="m-fc">₹0</div><div class="metric-lbl">Fixed Costs (incl. EMI)</div></div>
+        <div class="metric" id="m-np-metric"><div class="metric-val" id="m-np">₹0</div><div class="metric-lbl">Net Profit / Loss</div></div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Monthly P&L Breakdown</div>
+          <table><tbody id="monthly-pl-body"></tbody></table>
+        </div>
+        <div class="card">
+          <div class="card-title">First Month — Full Investment View</div>
+          <p style="font-size:11px;color:var(--muted);margin-bottom:10px;">Blackboard method: capex + first month opex = total money needed to start.</p>
+          <table><tbody id="first-month-body"></tbody></table>
+          <div style="margin-top:10px;padding:10px;background:var(--green-lt);border-radius:8px;font-size:12px;">
+            <strong>Revenue Month 1:</strong> <span id="first-month-rev" style="color:var(--green);font-weight:700;"></span><br>
+            <span style="font-size:11px;color:var(--muted);">= Qty × Yield × Selling Price</span>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Monthly Ramp — First Year</div>
+        <div class="chart-wrap"><canvas id="ramp-chart"></canvas></div>
+      </div>
+    </div>
+
+    <!-- TAB: CAPEX & FUNDING -->
+    <div id="tab-capex" class="tab-content">
+      <div class="card">
+        <div class="card-title">Total Capex Breakdown</div>
+        <div class="two-col">
+          <table>
+            <thead><tr><th>Item</th><th class="num">Amount</th></tr></thead>
+            <tbody>
+              <tr><td>Machinery (incl. 18% GST)</td><td class="num">₹12,09,500</td></tr>
+              <tr><td>Civil — Machine hall 1,000 sqft</td><td class="num">₹3,95,000</td></tr>
+              <tr><td>Civil — Storage room 2,000 sqft</td><td class="num">₹7,04,000</td></tr>
+              <tr><td>Transportation of machinery</td><td class="num">₹1,00,000</td></tr>
+              <tr><td>Working capital (seed stockpile)</td><td class="num" id="cx-wc">₹0</td></tr>
+              <tr><td>Licensing + training + misc</td><td class="num">₹1,00,000</td></tr>
+              <tr class="total"><td>Gross Total Capex</td><td class="num" id="cx-gross">₹0</td></tr>
+              <tr style="color:var(--pos);"><td>− PMFME grant</td><td class="num" id="cx-pmfme"></td></tr>
+              <tr style="color:var(--pos);"><td>− Bihar Startup Policy (0% loan)</td><td class="num" id="cx-bsp"></td></tr>
+              <tr style="color:var(--pos);"><td>− Bihar MSME grant</td><td class="num" id="cx-bmsme"></td></tr>
+              <tr class="highlight"><td>Net Capex (after subsidies)</td><td class="num" id="cx-net">₹0</td></tr>
+              <tr><td>Bank loan amount</td><td class="num" id="cx-loan">₹0</td></tr>
+              <tr><td>Monthly EMI</td><td class="num" id="cx-emi">₹0</td></tr>
+              <tr class="total"><td>Own Equity Needed</td><td class="num" id="cx-equity">₹0</td></tr>
+            </tbody>
+          </table>
+          <div>
+            <div class="card-title" style="font-size:11px;">Funding Waterfall</div>
+            <div class="waterfall" id="waterfall"></div>
+          </div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Subsidy Stack — All Schemes</div>
+        <table>
+          <thead><tr><th>Scheme</th><th>Amount</th><th>Type</th><th>Key Condition</th></tr></thead>
+          <tbody>
+            <tr><td>PMFME (Central)</td><td class="num">₹10 Lakh</td><td><span class="tag tag-green">Grant</span></td><td>35% of project, back-ended credit to loan Month 9–18</td></tr>
+            <tr><td>Bihar Startup Policy</td><td class="num">₹10 Lakh</td><td><span class="tag tag-gold">0% Loan</span></td><td>Needs DPIIT recognition. Zero EMI for 2 years. 10yr repayment.</td></tr>
+            <tr><td>Bihar MSME Grant</td><td class="num">₹2 Lakh</td><td><span class="tag tag-green">Grant</span></td><td>5% of plant & machinery. Applied post-commissioning.</td></tr>
+            <tr><td>CGTMSE Guarantee</td><td>Covers 75%</td><td><span class="tag tag-green">Guarantee</span></td><td>No collateral needed. Bank applies on your behalf.</td></tr>
+            <tr><td>DPIIT Startup India</td><td>Tax holiday</td><td><span class="tag tag-gold">Tax</span></td><td>100% income tax exemption for 3 years. Apply before profitability.</td></tr>
+            <tr class="highlight"><td colspan="2"><strong>Total non-repayable grants</strong></td><td colspan="2"><strong>₹12 Lakh</strong></td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: 3-YEAR -->
+    <div id="tab-projection" class="tab-content">
+      <div class="phase-toggle">
+        <button class="phase-btn active" id="phase1-btn" onclick="setPhase(1)">Phase 1 — Wholesale Focus</button>
+        <button class="phase-btn" id="phase2-btn" onclick="setPhase(2)">Phase 2 — Retail Brand</button>
+      </div>
+      <div class="card">
+        <div class="card-title">3-Year Financial Projection</div>
+        <div class="chart-wrap"><canvas id="proj-chart"></canvas></div>
+      </div>
+      <div class="card">
+        <div class="card-title">Year-by-Year Summary</div>
+        <table>
+          <thead><tr><th>Year</th><th>Phase</th><th>Avg Output</th><th>Revenue</th><th>Variable Cost</th><th>Fixed</th><th class="num">Net Profit</th><th class="num">Cumulative</th></tr></thead>
+          <tbody id="projection-body"></tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: INVESTOR -->
+    <div id="tab-investor" class="tab-content">
+      <div class="investor-highlight">
+        <h3>🤝 Investment Proposition</h3>
+        <div class="inv-grid">
+          <div class="inv-stat"><div class="iv">₹15L</div><div class="il">Investment Ask</div></div>
+          <div class="inv-stat"><div class="iv">20%</div><div class="il">Equity Stake</div></div>
+          <div class="inv-stat"><div class="iv" id="inv-return">₹0</div><div class="il">3-Year Total Return</div></div>
+          <div class="inv-stat"><div class="iv" id="inv-multiple">0x</div><div class="il">Return Multiple</div></div>
+          <div class="inv-stat"><div class="iv" id="inv-irr">0%</div><div class="il">Approx. IRR</div></div>
+          <div class="inv-stat"><div class="iv" id="inv-bep-mo">—</div><div class="il">Months to BEP</div></div>
+        </div>
+      </div>
+
+      <div class="two-col">
+        <div class="card">
+          <div class="card-title">Investor Return Breakdown</div>
+          <table><tbody id="inv-return-body"></tbody></table>
+        </div>
+        <div class="card">
+          <div class="card-title">Adjust Investment Stake</div>
+          <div class="input-row" style="margin-bottom:14px;">
+            <label>Investment amount (₹)</label>
+            <input type="number" id="n-invamt" value="1500000" oninput="recalc()" style="width:110px;">
+          </div>
+          <div class="input-row">
+            <label>Equity stake (%)</label>
+            <input type="range" id="r-stake" min="5" max="49" step="1" oninput="sync('stake',this.value)">
+            <input type="number" id="n-stake" value="20" oninput="sync('stake',this.value)">
+          </div>
+          <div class="input-row">
+            <label>Exit multiple (EBITDA)</label>
+            <input type="range" id="r-exitx" min="2" max="10" step="0.5" oninput="sync('exitx',this.value)">
+            <input type="number" id="n-exitx" value="5" step="0.5" oninput="sync('exitx',this.value)">
+          </div>
+          <div id="inv-custom-result" style="margin-top:12px;padding:12px;background:var(--gold-lt);border-radius:8px;"></div>
+        </div>
+      </div>
+
+      <div class="card">
+        <div class="card-title">Why This Investment Makes Sense</div>
+        <table>
+          <tbody>
+            <tr><td style="font-weight:600;color:var(--green);">Govt + bank funding</td><td>₹35L of ₹42L total project = 83% non-equity funded. Investor gets 20% stake for funding only 17% of project.</td></tr>
+            <tr><td style="font-weight:600;color:var(--green);">Cost moat</td><td>Harvest stockpile (₹200–240/kg) vs lean-season market (₹300–340/kg). Permanent ₹80–120/kg advantage on the single biggest cost.</td></tr>
+            <tr><td style="font-weight:600;color:var(--green);">CIPHET technology</td><td>39% yield vs 33% industry standard. 18% more output from same input. Fat-free flavouring capability — unique in mass market.</td></tr>
+            <tr><td style="font-weight:600;color:var(--green);">Own land + existing factory</td><td>10 acres owned. WMS Flyash Brick factory already operational on same land. Proven execution by same team. Zero land cost.</td></tr>
+            <tr><td style="font-weight:600;color:var(--green);">Market timing</td><td>National Makhana Board launched Sep 2025 (₹476 Cr). ODOP designation Purnea. GI Tag 2022. Policy wind is squarely behind this sector.</td></tr>
+            <tr><td style="font-weight:600;color:var(--green);">Exit options</td><td>Founder buyback at Year 3 | Strategic acquisition by national brand (Farmley, Happilo) | NMB institutional partnership</td></tr>
+          </tbody>
+        </table>
+      </div>
+    </div>
+
+    <!-- TAB: SENSITIVITY -->
+    <div id="tab-sensitivity" class="tab-content">
+      <div class="card">
+        <div class="card-title">Seed Price × Selling Price — Monthly Profit Matrix (at current volume)</div>
+        <p style="font-size:11px;color:var(--muted);margin-bottom:12px;">Cells show monthly net profit/loss in ₹k. Green = profitable. Red = loss.</p>
+        <div style="overflow-x:auto;">
+          <table class="sens-table"><thead id="sens-head"></thead><tbody id="sens-body"></tbody></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Volume × Yield — Break-Even Distance</div>
+        <div style="overflow-x:auto;">
+          <table class="sens-table"><thead id="sens2-head"></thead><tbody id="sens2-body"></tbody></table>
+        </div>
+      </div>
+      <div class="card">
+        <div class="card-title">Retail Mix Effect — Monthly Profit at 1,000 kg Output</div>
+        <div class="chart-wrap"><canvas id="mix-chart"></canvas></div>
+      </div>
+    </div>
+
+  </div>
+</div>
+
+<footer>
+  WMS Makhana · Deepeshwar All In One Private Limited · Jainagar, Bhargama, Araria, Bihar<br>
+  shreyassingh.in · shreyas.singh2911@gmail.com · +91 93046 49242
+</footer>
+
+<script>
+// ── STATE ──────────────────────────────────────────────────────────────
+const DEFAULTS = {
+  seed:250, seedqty:3000, yield:0.35,
+  wsprice:700, retprice:1200, retmix:0,
+  wage:400, workers:4, wdays:20,
+  fuel:12, pkg:15, waste:8,
+  loanpct:50, rate:11, tenure:7,
+  stake:20, exitx:5,
+};
+const PRESETS = {
+  realistic:    {seed:250, seedqty:3000, yield:0.35, wsprice:700,  retprice:1200, retmix:0,  wage:400, workers:4, wdays:20, fuel:12, pkg:15, waste:8},
+  optimistic:   {seed:220, seedqty:3000, yield:0.39, wsprice:880,  retprice:1400, retmix:40, wage:400, workers:4, wdays:26, fuel:12, pkg:18, waste:6},
+  conservative: {seed:300, seedqty:2000, yield:0.33, wsprice:650,  retprice:1000, retmix:0,  wage:450, workers:5, wdays:20, fuel:15, pkg:15, waste:12},
+};
+
+const MACH_TOTAL = 1209500;
+const INFRA_SHED  = 395000;
+const INFRA_STORE = 704000;
+const TRANSPORT   = 100000;
+const LICENSING   = 100000;
+
+const MACHINES = [
+  {id:'washer',  name:'Seed Washer',        icon:'💧', cap:400, capUnit:'kg/hr', price:'₹1.60L', type:'auto'},
+  {id:'roaster', name:'Seed Roaster',        icon:'🔥', cap:50,  capUnit:'kg/hr', price:'₹1.20L', type:'auto'},
+  {id:'grader',  name:'Seed Grader',         icon:'📊', cap:120, capUnit:'kg/hr', price:'₹0.24L', type:'manual'},
+  {id:'temper',  name:'Conditioning 48hr',   icon:'⏳', cap:null,capUnit:'',      price:'Jute sacks', type:'storage'},
+  {id:'popper',  name:'Popping Machine',     icon:'💥', cap:22,  capUnit:'kg/hr', price:'₹6.65L', type:'auto'},
+  {id:'lawa',    name:'Lawa Grader',         icon:'✨', cap:150, capUnit:'kg/hr', price:'₹0.21L', type:'manual'},
+  {id:'pack',    name:'Packaging',           icon:'📦', cap:null,capUnit:'',      price:'Heat sealer', type:'storage'},
+];
+
+let rampChart, projChart, mixChart;
+let currentPhase = 1;
+
+function sync(key, val) {
+  const v = parseFloat(val);
+  if (document.getElementById('r-'+key)) document.getElementById('r-'+key).value = v;
+  if (document.getElementById('n-'+key)) document.getElementById('n-'+key).value = v;
+  recalc();
+}
+function get(key) { return parseFloat(document.getElementById('n-'+key).value) || 0; }
+
+function fmt(n) {
+  const abs = Math.abs(n);
+  const sign = n < 0 ? '-₹' : '₹';
+  if (abs >= 10000000) return sign + (abs/10000000).toFixed(1) + 'Cr';
+  if (abs >= 100000)   return sign + (abs/100000).toFixed(1) + 'L';
+  return sign + Math.round(abs).toLocaleString('en-IN');
+}
+function pct(n) { return n.toFixed(1) + '%'; }
+
+function recalc() {
+  const seed    = get('seed');
+  const seedqty = get('seedqty');
+  const yld     = get('yield');
+  const wsprice = get('wsprice');
+  const retprice= get('retprice');
+  const retmix  = get('retmix') / 100;
+  const wage    = get('wage');
+  const workers = get('workers');
+  const wdays   = get('wdays');
+  const fuel    = get('fuel');
+  const pkg     = get('pkg');
+  const waste   = get('waste');
+  const loanpct = get('loanpct') / 100;
+  const rate    = get('rate') / 100;
+  const tenure  = get('tenure');
+  const mkt     = parseFloat(document.getElementById('n-mkt').value)   || 0;
+  const power   = parseFloat(document.getElementById('n-power').value) || 0;
+  const admin   = parseFloat(document.getElementById('n-admin').value) || 0;
+  const misc    = parseFloat(document.getElementById('n-misc').value)  || 0;
+  const pmfme   = parseFloat(document.getElementById('n-pmfme').value) || 0;
+  const bsp     = parseFloat(document.getElementById('n-bsp').value)   || 0;
+  const bmsme   = parseFloat(document.getElementById('n-bmsme').value) || 0;
+
+  const output  = seedqty * yld;
+  const wsMix   = 1 - retmix;
+  const blended = wsMix * wsprice + retmix * retprice;
+
+  const seedVCpkg   = seed / yld;
+  const labourVCpkg = (wage * workers * wdays) / output;
+  const totalVCpkg  = seedVCpkg + fuel + pkg + waste + labourVCpkg;
+
+  const revenue      = output * blended;
+  const variableCost = output * totalVCpkg;
+
+  const wc          = seed * seedqty * 3;
+  const grossCapex  = MACH_TOTAL + INFRA_SHED + INFRA_STORE + TRANSPORT + LICENSING + wc;
+  const totalSubsidy= pmfme + bsp + bmsme;
+  const netCapex    = Math.max(0, grossCapex - totalSubsidy);
+  const loanAmt     = netCapex * loanpct;
+  const mr          = rate / 12;
+  const n           = tenure * 12;
+  const emi         = loanAmt > 0 ? loanAmt * mr * Math.pow(1+mr,n) / (Math.pow(1+mr,n)-1) : 0;
+  const equity      = netCapex - loanAmt;
+
+  const labourFixed = wage * Math.min(workers, 2) * wdays;
+  const totalFixed  = labourFixed + emi + mkt + power + admin + misc;
+  const contribution= blended - (seedVCpkg + fuel + pkg + waste + labourVCpkg);
+
+  const netProfit   = revenue - variableCost - totalFixed;
+  const bep         = totalFixed > 0 && contribution > 0 ? Math.ceil(totalFixed / contribution) : 0;
+  const paybackMo   = netProfit > 0 ? Math.ceil(equity / netProfit) : 9999;
+  const roiPct      = equity > 0 ? (netProfit * 12 / equity) * 100 : 0;
+
+  // KPIs
+  const kpiP = document.getElementById('kpi-profit');
+  kpiP.textContent = fmt(netProfit);
+  kpiP.style.color = netProfit >= 0 ? '#c9882a' : '#c0392b';
+  document.getElementById('kpi-profit-sub').textContent = pct(revenue > 0 ? netProfit/revenue*100 : 0) + ' margin';
+  document.getElementById('kpi-bep').textContent    = bep + ' kg';
+  document.getElementById('kpi-equity').textContent = fmt(equity);
+  document.getElementById('kpi-roi').textContent    = paybackMo < 999 ? paybackMo + ' mo' : '—';
+  document.getElementById('kpi-irr').textContent    = 'Annual ROI: ' + pct(roiPct);
+
+  // Flow
+  const dailyOutput = output / wdays;
+  document.getElementById('flow-input').textContent  = Math.round(seedqty).toLocaleString('en-IN') + ' kg';
+  document.getElementById('flow-output').textContent = Math.round(output).toLocaleString('en-IN') + ' kg';
+  document.getElementById('flow-daily').textContent  = Math.round(dailyOutput).toLocaleString('en-IN') + ' kg/day';
+
+  let minHrs = 0, bottleneckId = 'popper';
+  const machineHrs = {};
+  MACHINES.forEach(m => {
+    if (m.cap && m.type !== 'storage') {
+      const inp = (m.id==='washer'||m.id==='roaster') ? seedqty/wdays : dailyOutput;
+      const hrs = inp / m.cap;
+      machineHrs[m.id] = hrs;
+      if (hrs > minHrs) { minHrs = hrs; bottleneckId = m.id; }
+    }
+  });
+  document.getElementById('flow-hours').textContent = minHrs.toFixed(1) + ' hr';
+
+  const fc = document.getElementById('flow-container');
+  fc.innerHTML = '';
+  MACHINES.forEach((m, i) => {
+    if (i > 0) {
+      const arr = document.createElement('div');
+      arr.className = 'flow-arrow'; arr.innerHTML = '→';
+      fc.appendChild(arr);
+    }
+    const step = document.createElement('div');
+    step.className = 'flow-step';
+    const cls = m.id === bottleneckId ? 'flow-machine bottleneck' : `flow-machine ${m.type}`;
+    const inp = (m.id==='washer'||m.id==='roaster') ? seedqty/wdays : dailyOutput;
+    const hrsStr = m.cap ? (inp/m.cap).toFixed(1)+'hr/day' : '';
+    step.innerHTML = `<div class="${cls}">
+      <div class="flow-icon">${m.icon}</div>
+      <div class="flow-name">${m.name}</div>
+      <div class="flow-cap">${m.cap ? m.cap+' '+m.capUnit : ''}</div>
+      <div class="flow-price">${m.price}</div>
+    </div>
+    <div class="flow-label">${hrsStr}${m.id===bottleneckId?' ⚠️ Bottleneck':''}</div>`;
+    fc.appendChild(step);
+  });
+
+  const ftb = document.getElementById('flow-table-body');
+  ftb.innerHTML = '';
+  MACHINES.forEach(m => {
+    if (m.cap && m.type !== 'storage') {
+      const inp = (m.id==='washer'||m.id==='roaster') ? seedqty/wdays : dailyOutput;
+      const hrs = inp / m.cap;
+      const isBN = m.id === bottleneckId;
+      ftb.innerHTML += `<tr class="${isBN?'highlight':''}">
+        <td>${m.icon} ${m.name}${isBN?' ⚠️':''}</td>
+        <td class="num">${m.cap}</td>
+        <td class="num" style="color:${isBN?'var(--red)':'inherit'}">${hrs.toFixed(1)}</td></tr>`;
+    }
+  });
+
+  const bna = document.getElementById('flow-bottleneck-alert');
+  bna.innerHTML = minHrs > 10
+    ? `<div class="alert alert-red">⚠️ Bottleneck: ${MACHINES.find(m=>m.id===bottleneckId).name} requires ${minHrs.toFixed(1)} hrs/day — above 10hr limit. Consider two shifts or reducing monthly input.</div>`
+    : `<div class="alert alert-green">✅ All machines within capacity. Popper requires ${(machineHrs['popper']||0).toFixed(1)} hrs/day.</div>`;
+
+  // Monthly P&L
+  const alertEl = document.getElementById('monthly-alert');
+  alertEl.innerHTML = netProfit < 0
+    ? `<div class="alert alert-red">⚠️ Loss of ${fmt(Math.abs(netProfit))}/month. Break-even requires ${bep.toLocaleString('en-IN')} kg/month — ${Math.round((bep/output)*100)}% more output.</div>`
+    : netProfit < 50000
+    ? `<div class="alert alert-gold">📊 Thin margins. Profit is ${fmt(netProfit)}/month. Consider raising retail mix or selling price.</div>`
+    : `<div class="alert alert-green">✅ Profitable at ${fmt(netProfit)}/month (${pct(netProfit/revenue*100)} margin).</div>`;
+
+  document.getElementById('m-rev').textContent = fmt(revenue);
+  document.getElementById('m-vc').textContent  = fmt(variableCost);
+  document.getElementById('m-fc').textContent  = fmt(totalFixed);
+  const mnp = document.getElementById('m-np');
+  mnp.textContent = fmt(netProfit);
+  mnp.style.color = netProfit >= 0 ? 'var(--pos)' : 'var(--neg)';
+  document.getElementById('m-np-metric').className = 'metric' + (netProfit < 0 ? ' red-metric' : '');
+
+  const plRows = [
+    ['Revenue',               `${Math.round(output).toLocaleString('en-IN')} kg × ₹${blended.toFixed(0)}/kg`,        fmt(revenue),              false],
+    ['− Raw seed VC',         `₹${seed}/kg ÷ ${yld*100}% = ₹${seedVCpkg.toFixed(0)}/kg output`,                    fmt(-output*seedVCpkg),    false],
+    ['− Labour (variable)',   `₹${wage}×${workers} workers×${wdays}d`,                                              fmt(-output*labourVCpkg),  false],
+    ['− Fuel + energy',       `₹${fuel}/kg`,                                                                        fmt(-output*fuel),         false],
+    ['− Packaging',           `₹${pkg}/kg`,                                                                         fmt(-output*pkg),          false],
+    ['− Breakage + misc',     `₹${waste}/kg`,                                                                       fmt(-output*waste),        false],
+    ['Gross Contribution',    `₹${contribution.toFixed(0)}/kg × ${Math.round(output).toLocaleString('en-IN')} kg`,  fmt(output*contribution),  true ],
+    ['− Labour (fixed)',      `${Math.min(workers,2)} fixed staff`,                                                  fmt(-labourFixed),         false],
+    ['− Loan EMI',            `${fmt(loanAmt)} @ ${pct(rate*100)}, ${tenure}yr`,                                    fmt(-emi),                 false],
+    ['− Marketing',           '',                                                                                    fmt(-mkt),                 false],
+    ['− Power + water',       '',                                                                                    fmt(-power),               false],
+    ['− Compliance + admin',  '',                                                                                    fmt(-admin),               false],
+    ['− Miscellaneous',       '',                                                                                    fmt(-misc),                false],
+    ['NET PROFIT / LOSS',     `${pct(revenue > 0 ? netProfit/revenue*100 : 0)} margin`,                             fmt(netProfit),            true ],
+  ];
+  document.getElementById('monthly-pl-body').innerHTML = plRows.map(([l,d,v,h]) => {
+    const col = h && netProfit < 0 ? 'color:var(--neg)' : h ? 'color:var(--pos)' : '';
+    return `<tr class="${h?'total':''}"><td>${l}</td><td style="font-size:10px;color:var(--muted)">${d}</td><td class="num" style="${col}">${v}</td></tr>`;
+  }).join('');
+
+  // First month view
+  const fmb = document.getElementById('first-month-body');
+  const firstMonthSeed  = seed * seedqty;
+  const firstMonthLabour= wage * workers * wdays;
+  const firstMonthTotal = MACH_TOTAL + INFRA_SHED + INFRA_STORE + TRANSPORT + firstMonthSeed + firstMonthLabour + misc;
+  fmb.innerHTML = `
+    <tr><td style="color:var(--muted);font-size:11px;padding-top:8px;" colspan="3">CAPEX (one-time)</td></tr>
+    <tr><td>Infra — Shed</td><td></td><td class="num">₹3,95,000</td></tr>
+    <tr><td>Infra — Storage room</td><td></td><td class="num">₹7,04,000</td></tr>
+    <tr><td>Machines (incl. GST + transport)</td><td class="num" style="color:var(--muted)">₹12,09,500 + ₹1L</td><td class="num">₹13,09,500</td></tr>
+    <tr><td style="color:var(--muted);font-size:11px;padding-top:8px;" colspan="3">FIRST MONTH OPEX</td></tr>
+    <tr><td>Seed (${seedqty.toLocaleString('en-IN')} kg × ₹${seed})</td><td></td><td class="num">${fmt(firstMonthSeed)}</td></tr>
+    <tr><td>Labour (₹${wage} × ${workers} × ${wdays}d)</td><td></td><td class="num">${fmt(firstMonthLabour)}</td></tr>
+    <tr><td>Power + Admin + Misc</td><td></td><td class="num">${fmt(power+admin+misc)}</td></tr>
+    <tr class="total"><td>TOTAL FIRST MONTH NEED</td><td></td><td class="num" style="color:var(--neg)">${fmt(firstMonthTotal)}</td></tr>`;
+  document.getElementById('first-month-rev').textContent =
+    `${fmt(seedqty*yld*blended)} (${seedqty.toLocaleString('en-IN')} × ${yld*100}% × ₹${blended.toFixed(0)}/kg)`;
+
+  // Capex tab
+  document.getElementById('cx-wc').textContent    = fmt(wc);
+  document.getElementById('cx-gross').textContent = fmt(grossCapex);
+  document.getElementById('cx-pmfme').textContent = '−' + fmt(pmfme);
+  document.getElementById('cx-bsp').textContent   = '−' + fmt(bsp);
+  document.getElementById('cx-bmsme').textContent = '−' + fmt(bmsme);
+  document.getElementById('cx-net').textContent   = fmt(netCapex);
+  document.getElementById('cx-loan').textContent  = fmt(loanAmt);
+  document.getElementById('cx-emi').textContent   = fmt(emi) + '/month';
+  document.getElementById('cx-equity').textContent= fmt(equity);
+
+  const wfItems = [
+    ['Gross Capex',    grossCapex,  '#1a3d2b'],
+    ['− PMFME Grant',  -pmfme,      '#2a8a50'],
+    ['− Bihar Startup',-bsp,        '#3a9a60'],
+    ['− Bihar MSME',   -bmsme,      '#4aaa70'],
+    ['− Bank Loan',    -loanAmt,    '#c9882a'],
+    ['Own Equity',     equity,      '#e05a00'],
+  ];
+  document.getElementById('waterfall').innerHTML = wfItems.map(([l,v,c]) => {
+    const p = Math.max(0, Math.abs(v)/grossCapex*100);
+    const display = v < 0 ? '−' + fmt(Math.abs(v)) : fmt(v);
+    return `<div class="wf-row">
+      <div class="wf-label">${l}</div>
+      <div class="wf-bar-wrap"><div class="wf-bar" style="width:${p}%;background:${c}">${p>15?display:''}</div></div>
+      <div class="wf-val">${display}</div></div>`;
+  }).join('');
+
+  buildProjection(output, revenue, variableCost, totalFixed, netProfit, equity);
+  buildInvestorTab(netProfit, equity, bep, output);
+  buildSensitivity(seedqty, yld, totalFixed, seed, blended, output);
+  buildRampChart(output, totalFixed, blended, totalVCpkg);
+}
+
+function buildProjection(output, revenue, variableCost, totalFixed, netProfit, equity) {
+  const wsprice = get('wsprice'), retprice = get('retprice');
+  const yld = get('yield'), seed = get('seed');
+  const fuel = get('fuel'), pkg = get('pkg'), waste = get('waste');
+  const wage = get('wage'), workers = get('workers'), wdays = get('wdays');
+
+  const years = [
+    {label:'Year 1 (Phase 1)', vol:output,              retmix:get('retmix')/100, seedCost:seed,      yld},
+    {label:'Year 2 (Phase 2)', vol:Math.min(output*1.5,1500), retmix:0.60,       seedCost:seed*0.95, yld:Math.min(yld+0.02,0.40)},
+    {label:'Year 3 (Scale Up)',vol:Math.min(output*1.6,1800), retmix:0.70,       seedCost:seed*0.90, yld:Math.min(yld+0.04,0.42)},
+  ];
+
+  const labels=[], revData=[], profData=[], cumData=[];
+  let cum = 0;
+  document.getElementById('projection-body').innerHTML = years.map(yr => {
+    const blend  = (1-yr.retmix)*wsprice + yr.retmix*retprice;
+    const seedVC = yr.seedCost / yr.yld;
+    const labVC  = (wage*workers*wdays) / yr.vol;
+    const totalVC= (seedVC + fuel + pkg + waste + labVC) * yr.vol * 12;
+    const totalRev = yr.vol * blend * 12;
+    const profit12 = totalRev - totalVC - totalFixed * 12;
+    cum += profit12;
+    labels.push(yr.label.split(' ').slice(0,2).join(' '));
+    revData.push(Math.round(totalRev/100000));
+    profData.push(Math.round(profit12/100000));
+    cumData.push(Math.round(cum/100000));
+    return `<tr class="${profit12>=0?'profit':'loss'}">
+      <td>${yr.label}</td>
+      <td>${yr.label.includes('1')?'Phase 1':'Phase 2'}</td>
+      <td>${Math.round(yr.vol).toLocaleString('en-IN')} kg/mo</td>
+      <td class="num">${fmt(totalRev/12)}/mo</td>
+      <td class="num">${fmt(totalVC/12)}/mo</td>
+      <td class="num">${fmt(totalFixed)}/mo</td>
+      <td class="num ${profit12>=0?'pos-num':'neg-num'}">${fmt(profit12)}</td>
+      <td class="num ${cum>=0?'pos-num':'neg-num'}">${fmt(cum)}</td></tr>`;
+  }).join('');
+
+  if (projChart) projChart.destroy();
+  projChart = new Chart(document.getElementById('proj-chart').getContext('2d'), {
+    data:{labels, datasets:[
+      {type:'bar',  label:'Annual Revenue (₹L)', data:revData, backgroundColor:'rgba(26,61,43,0.2)', borderColor:'#1a3d2b', borderWidth:2},
+      {type:'bar',  label:'Annual Profit (₹L)',  data:profData, backgroundColor:profData.map(v=>v>=0?'rgba(26,107,58,0.7)':'rgba(192,57,43,0.7)'), borderColor:profData.map(v=>v>=0?'#1a6b3a':'#c0392b'), borderWidth:2},
+      {type:'line', label:'Cumulative Profit (₹L)', data:cumData, borderColor:'#c9882a', borderWidth:3, pointBackgroundColor:'#c9882a', fill:false, yAxisID:'y1'},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},
+      scales:{y:{title:{display:true,text:'₹ Lakh',font:{size:10}}},
+              y1:{position:'right',title:{display:true,text:'Cumulative ₹L',font:{size:10}},grid:{drawOnChartArea:false}}}}
+  });
+}
+
+function buildInvestorTab(netProfit, equity, bep, output) {
+  const stake  = get('stake') / 100;
+  const exitx  = get('exitx');
+  const invAmt = parseFloat(document.getElementById('n-invamt').value) || 1500000;
+
+  const yr1 = Math.max(0, netProfit * 12);
+  const yr2 = Math.max(0, netProfit * 12 * 6);
+  const yr3 = Math.max(0, netProfit * 12 * 6.5);
+  const cumProfit = yr1 + yr2 + yr3;
+  const companyVal= yr3 * exitx;
+  const profitShare = cumProfit * stake;
+  const exitVal = companyVal * stake;
+  const totalReturn = profitShare + exitVal;
+  const multiple = invAmt > 0 ? totalReturn / invAmt : 0;
+  const irr = multiple > 1 ? (Math.pow(multiple, 1/3) - 1) * 100 : 0;
+  const bepMo = netProfit > 0 ? Math.ceil(equity / netProfit) : null;
+
+  document.getElementById('inv-return').textContent  = fmt(totalReturn);
+  document.getElementById('inv-multiple').textContent = multiple.toFixed(1) + 'x';
+  document.getElementById('inv-irr').textContent     = irr.toFixed(0) + '%';
+  document.getElementById('inv-bep-mo').textContent  = bepMo ? bepMo + ' mo' : '—';
+
+  document.getElementById('inv-return-body').innerHTML = `
+    <tr><td>Year 1 profit (Phase 1)</td><td class="num pos-num">${fmt(yr1)}</td></tr>
+    <tr><td>Year 2 profit (Phase 2 launch)</td><td class="num pos-num">${fmt(yr2)}</td></tr>
+    <tr><td>Year 3 profit (optimised)</td><td class="num pos-num">${fmt(yr3)}</td></tr>
+    <tr class="total"><td>3-yr cumulative profit</td><td class="num pos-num">${fmt(cumProfit)}</td></tr>
+    <tr><td>Investor profit share (${pct(stake*100)})</td><td class="num pos-num">${fmt(profitShare)}</td></tr>
+    <tr><td>Company value at Year 3 (${exitx}× EBITDA)</td><td class="num">${fmt(companyVal)}</td></tr>
+    <tr><td>Investor exit value (${pct(stake*100)})</td><td class="num pos-num">${fmt(exitVal)}</td></tr>
+    <tr class="highlight"><td>TOTAL INVESTOR RETURN</td><td class="num" style="color:var(--gold);font-size:16px">${fmt(totalReturn)}</td></tr>
+    <tr><td>Return multiple on ${fmt(invAmt)}</td><td class="num" style="color:var(--green);font-weight:800">${multiple.toFixed(1)}×</td></tr>
+    <tr><td>Approximate IRR</td><td class="num" style="color:var(--green);font-weight:700">${irr.toFixed(0)}% pa</td></tr>`;
+
+  document.getElementById('inv-custom-result').innerHTML = `
+    <div style="font-size:12px;color:var(--charcoal);">
+      <strong style="color:var(--gold)">${fmt(invAmt)}</strong> for <strong>${pct(get('stake'))}</strong> equity —<br>
+      <strong style="color:var(--green);font-size:16px;">${multiple.toFixed(1)}× return = ${fmt(totalReturn)}</strong><br>
+      <span style="color:var(--muted);font-size:11px">IRR ~${irr.toFixed(0)}% pa over 3 years</span>
+    </div>`;
+}
+
+function buildSensitivity(seedqty, yld, totalFixed, currentSeed, currentBlended, output) {
+  const seedPrices = [180,220,250,280,310,340];
+  const sellPrices = [600,700,800,900,1000,1100];
+  const fuel=get('fuel'), pkg=get('pkg'), waste=get('waste');
+  const wage=get('wage'), workers=get('workers'), wdays=get('wdays');
+
+  let sh = '<tr><th>Seed↓ / Sell→</th>' + sellPrices.map(s=>`<th class="num">₹${s}</th>`).join('') + '</tr>';
+  let sb = seedPrices.map(sp => {
+    return '<tr><th>₹' + sp + '/kg</th>' + sellPrices.map(sell => {
+      const vc = sp/yld + fuel + pkg + waste + (wage*workers*wdays)/output;
+      const p  = output*sell - output*vc - totalFixed;
+      const cls= p>0?'sens-green':p>-20000?'sens-yellow':'sens-red';
+      return `<td class="${cls}">${p>=0?'+':''}${(p/1000).toFixed(0)}k</td>`;
+    }).join('') + '</tr>';
+  }).join('');
+  document.getElementById('sens-head').innerHTML = sh;
+  document.getElementById('sens-body').innerHTML = sb;
+
+  const vols=[500,750,1000,1250,1500,2000], ylds=[0.30,0.33,0.35,0.37,0.39,0.42];
+  let s2h = '<tr><th>Vol↓ / Yield→</th>' + ylds.map(y=>`<th class="num">${(y*100).toFixed(0)}%</th>`).join('') + '</tr>';
+  let s2b = vols.map(v => {
+    return '<tr><th>' + v + ' kg</th>' + ylds.map(y => {
+      const vc = currentSeed/y + fuel + pkg + waste + (wage*workers*wdays)/v;
+      const p  = v*currentBlended - v*vc - totalFixed;
+      const cls= p>0?'sens-green':p>-20000?'sens-yellow':'sens-red';
+      return `<td class="${cls}">${p>=0?'+':''}${(p/1000).toFixed(0)}k</td>`;
+    }).join('') + '</tr>';
+  }).join('');
+  document.getElementById('sens2-head').innerHTML = s2h;
+  document.getElementById('sens2-body').innerHTML = s2b;
+
+  if (mixChart) mixChart.destroy();
+  const mixes = [0,10,20,30,40,50,60,70,80,90,100];
+  const profits = mixes.map(m => {
+    const b  = (1-m/100)*get('wsprice') + (m/100)*get('retprice');
+    const vc = currentSeed/yld + fuel + pkg + waste + (wage*workers*wdays)/1000;
+    return Math.round((1000*b - 1000*vc - totalFixed)/1000);
+  });
+  mixChart = new Chart(document.getElementById('mix-chart').getContext('2d'), {
+    type:'line',
+    data:{labels:mixes.map(m=>m+'% retail'), datasets:[{
+      label:'Monthly profit (₹k)', data:profits, borderColor:'#1a3d2b',
+      backgroundColor:profits.map(p=>p>=0?'rgba(26,107,58,0.2)':'rgba(192,57,43,0.2)'),
+      borderWidth:2.5, fill:true, pointBackgroundColor:profits.map(p=>p>=0?'#1a6b3a':'#c0392b'), tension:0.3,
+    }]},
+    options:{responsive:true,maintainAspectRatio:false,plugins:{legend:{display:false}},
+      scales:{y:{title:{display:true,text:'Net Profit (₹k)',font:{size:10}}},
+              x:{title:{display:true,text:'Retail % in Sales Mix',font:{size:10}}}}}
+  });
+}
+
+function buildRampChart(targetOutput, totalFixed, blended, totalVCpkg) {
+  const months = ['Dec 26','Jan 27','Feb 27','Mar 27','Apr 27','May 27','Jun 27','Jul 27','Aug 27','Sep 27','Oct 27'];
+  const ramp   = [0.2,0.35,0.55,0.75,0.85,1.0,1.0,1.0,1.0,1.0,1.0];
+  const contrib = blended - totalVCpkg;
+  const profits = ramp.map(r => Math.round((targetOutput*r*contrib - totalFixed)/1000));
+  const vols    = ramp.map(r => Math.round(targetOutput*r));
+
+  if (rampChart) rampChart.destroy();
+  rampChart = new Chart(document.getElementById('ramp-chart').getContext('2d'), {
+    data:{labels:months, datasets:[
+      {type:'bar',  label:'Output (kg)', data:vols, backgroundColor:'rgba(26,61,43,0.15)', borderColor:'#1a3d2b', borderWidth:1, yAxisID:'y1'},
+      {type:'line', label:'Profit/Loss (₹k)', data:profits, borderColor:profits.map(p=>p>=0?'#1a6b3a':'#c0392b'),
+        pointBackgroundColor:profits.map(p=>p>=0?'#1a6b3a':'#c0392b'), borderWidth:2.5, fill:false},
+    ]},
+    options:{responsive:true,maintainAspectRatio:false,
+      plugins:{legend:{position:'bottom',labels:{font:{size:11}}}},
+      scales:{y:{title:{display:true,text:'Profit ₹k',font:{size:10}}},
+              y1:{position:'right',title:{display:true,text:'kg/month',font:{size:10}},grid:{drawOnChartArea:false}}}}
+  });
+}
+
+function loadPreset(name, evt) {
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  if (evt && evt.target) evt.target.classList.add('active');
+  const p = PRESETS[name];
+  Object.entries(p).forEach(([k,v]) => {
+    if (document.getElementById('n-'+k)) document.getElementById('n-'+k).value = v;
+    if (document.getElementById('r-'+k)) document.getElementById('r-'+k).value = v;
+  });
+  recalc();
+}
+
+function resetAll() {
+  Object.entries(DEFAULTS).forEach(([k,v]) => {
+    if (document.getElementById('n-'+k)) document.getElementById('n-'+k).value = v;
+    if (document.getElementById('r-'+k)) document.getElementById('r-'+k).value = v;
+  });
+  document.querySelectorAll('.preset-btn').forEach(b => b.classList.remove('active'));
+  document.querySelector('.preset-btn').classList.add('active');
+  recalc();
+}
+
+function showTab(id, evt) {
+  document.querySelectorAll('.tab').forEach(t => t.classList.remove('active'));
+  document.querySelectorAll('.tab-content').forEach(c => c.classList.remove('active'));
+  if (evt && evt.target) evt.target.classList.add('active');
+  document.getElementById('tab-'+id).classList.add('active');
+  recalc();
+}
+
+function setPhase(n) {
+  currentPhase = n;
+  document.getElementById('phase1-btn').classList.toggle('active', n===1);
+  document.getElementById('phase2-btn').classList.toggle('active', n===2);
+  if (n===2) { sync('retmix',60); sync('seedqty',4286); }
+  else       { sync('retmix',0);  sync('seedqty',3000); }
+}
+
+window.addEventListener('load', () => {
+  Object.entries(DEFAULTS).forEach(([k,v]) => {
+    if (document.getElementById('n-'+k)) document.getElementById('n-'+k).value = v;
+    if (document.getElementById('r-'+k)) document.getElementById('r-'+k).value = v;
+  });
+  recalc();
+});
+</script>
+</body>
+</html>
